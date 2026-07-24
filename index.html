@@ -688,8 +688,23 @@ img{max-width:100%;display:block;}
 
 <script>
 'use strict';
-// ================= PART_1_MARKER: DATA (modules + challenges) will be inserted here =================
+
+// كود مؤقت لتخطي شاشة Boot Screen عند الضغط على زر ابدأ
+document.addEventListener('DOMContentLoaded', () => {
+  const bootLines = document.getElementById('bootLines');
+  const bootCta = document.getElementById('bootCta');
+  const enterBtn = document.getElementById('enterBtn');
+  const bootScreen = document.getElementById('bootScreen');
+
+  // إظهار محاكاة للنص
+  bootLines.innerHTML = "INITIALIZING SYSTEM...\nLOAD_MODULES: OK\nCLEARANCE LEVEL: ZERO\nREADY.";
+  bootCta.classList.add('show');
+
+  // إخفاء الشاشة عند الضغط
+  enterBtn.addEventListener('click', () => {
+    bootScreen.classList.add('fade-out');
+  });
+});
 </script>
-</body>
-</html>
+
 
