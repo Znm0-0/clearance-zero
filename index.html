@@ -1,7 +1,8 @@
 /****************************************************
- * CYBER ACADEMY ULTIMATE - SINGLE FILE MEGA CODE
- * Backend (Node.js + Express) + Frontend (React SPA)
- * كل شيء في ملف واحد كما طلبت، مع تعليقات عربية
+ * CYBER ACADEMY ULTIMATE - SINGLE FILE FULL STACK CORE
+ * Backend: Node.js + Express (Auth, Dashboard, Courses, Labs, CTF, Exams, Leaderboard, Certificates, AI Mentor, Admin)
+ * Frontend: React SPA داخل نفس الملف (Login, Dashboard, Leaderboard, Basic UI)
+ * هذا الملف نواة مشروع فخم، جاهز للتقسيم والتوسعة
  ****************************************************/
 
 // =======================
@@ -13,15 +14,13 @@ import cors from "cors";
 import session from "express-session";
 import bcrypt from "bcrypt";
 import { v4 as uuid } from "uuid";
-
-// في الواقع هنا يفترض نستخدم قاعدة بيانات حقيقية مثل PostgreSQL + Prisma
-// لكن في هذا الملف الواحد سنستخدم "ذاكرة مؤقتة" كمثال، وتقدر تستبدلها لاحقاً بـ DB حقيقية
+import path from "path";
 
 // =======================
-// 2) IN-MEMORY DATABASE MOCK
+// 2) IN-MEMORY "DATABASE"
 // =======================
 
-type UserLevelName =
+type LevelName =
   | "Cyber Beginner"
   | "Network Explorer"
   | "Linux Learner"
@@ -40,7 +39,7 @@ interface User {
   username: string;
   avatarUrl?: string;
   level: number;
-  levelName: UserLevelName;
+  levelName: LevelName;
   xp: number;
   rank: string;
   registeredAt: Date;
@@ -136,7 +135,6 @@ interface LeaderboardEntry {
   totalHours: number;
 }
 
-// "قاعدة بيانات" مؤقتة في الذاكرة
 const db = {
   users: [] as User[],
   courses: [] as Course[],
@@ -144,14 +142,13 @@ const db = {
   labs: [] as Lab[],
   exams: [] as Exam[],
   certificates: [] as Certificate[],
-  leaderboard: [] as LeaderboardEntry[],
 };
 
 // =======================
-// 3) LEVELS & BADGES LOGIC
+// 3) LEVELS & BADGES
 // =======================
 
-const LEVEL_NAMES: UserLevelName[] = [
+const LEVEL_NAMES: LevelName[] = [
   "Cyber Beginner",
   "Network Explorer",
   "Linux Learner",
@@ -164,8 +161,7 @@ const LEVEL_NAMES: UserLevelName[] = [
   "Cyber Expert",
 ];
 
-function getLevelFromXp(xp: number): { level: number; name: UserLevelName } {
-  // مثال بسيط: كل مستوى يحتاج 500 XP
+function getLevelFromXp(xp: number): { level: number; name: LevelName } {
   const level = Math.min(Math.floor(xp / 500) + 1, 10);
   const name = LEVEL_NAMES[level - 1];
   return { level, name };
@@ -183,8 +179,8 @@ const BADGE_DEFINITIONS = {
 
 function awardBadge(user: User, badgeCode: keyof typeof BADGE_DEFINITIONS) {
   const def = BADGE_DEFINITIONS[badgeCode];
-  const already = user.badges.find((b) => b.code === def.code);
-  if (already) return;
+  const exists = user.badges.find((b) => b.code === def.code);
+  if (exists) return;
   user.badges.push({
     id: uuid(),
     name: def.name,
@@ -219,7 +215,7 @@ function getCurrentUser(req: Request): User | undefined {
 }
 
 // =======================
-// 5) EXPRESS APP SETUP
+// 5) EXPRESS APP
 // =======================
 
 const app = express();
@@ -297,19 +293,17 @@ app.post("/api/auth/logout", (req: Request, res: Response) => {
 });
 
 app.post("/api/auth/forgot-password", (req: Request, res: Response) => {
-  // هنا يمكنك لاحقاً إضافة إرسال بريد إلكتروني حقيقي
   res.json({ message: "Password reset link sent (mock)" });
 });
 
 // =======================
-// 7) USER DASHBOARD ROUTES
+// 7) USER DASHBOARD
 // =======================
 
 app.get("/api/users/me", requireAuth, (req: Request, res: Response) => {
   const user = getCurrentUser(req);
   if (!user) return res.status(404).json({ message: "User not found" });
 
-  // حساب بعض الإحصائيات
   const data = {
     username: user.username,
     level: user.level,
@@ -343,7 +337,6 @@ app.put("/api/users/profile", requireAuth, (req: Request, res: Response) => {
 // 8) COURSES & TRACKS
 // =======================
 
-// إنشاء بعض الدورات الافتراضية للمسارات المذكورة
 function seedCourses() {
   if (db.courses.length > 0) return;
 
@@ -391,6 +384,7 @@ function seedCourses() {
     };
     course.exam!.courseId = course.id;
     db.courses.push(course);
+    db.exams.push(course.exam!);
   });
 }
 
@@ -407,7 +401,7 @@ app.get("/api/courses/:id", requireAuth, (req: Request, res: Response) => {
 });
 
 // =======================
-// 9) LABS SYSTEM
+// 9) LABS
 // =======================
 
 function seedLabs() {
@@ -465,7 +459,7 @@ app.get("/api/labs/:id", requireAuth, (req: Request, res: Response) => {
 });
 
 // =======================
-// 10) CTF CHALLENGES
+// 10) CTF
 // =======================
 
 function seedChallenges() {
@@ -530,7 +524,6 @@ app.post("/api/challenges/:id/submit", requireAuth, (req: Request, res: Response
       createdAt: new Date(),
     });
 
-    // مثال: منح بادج CTF Champion بعد عدد معين
     if (user.challengesDone >= 10) {
       awardBadge(user, "CTF_CHAMPION");
     }
@@ -540,7 +533,7 @@ app.post("/api/challenges/:id/submit", requireAuth, (req: Request, res: Response
 });
 
 // =======================
-// 11) EXAMS & QUESTION BANK
+// 11) EXAMS
 // =======================
 
 app.get("/api/exams/:courseId", requireAuth, (req: Request, res: Response) => {
@@ -627,7 +620,7 @@ app.post("/api/certificates/issue", requireAuth, (req: Request, res: Response) =
 });
 
 // =======================
-// 14) AI MENTOR (بسيط)
+// 14) AI MENTOR
 // =======================
 
 app.post("/api/ai/mentor", requireAuth, (req: Request, res: Response) => {
@@ -652,7 +645,7 @@ app.post("/api/ai/mentor", requireAuth, (req: Request, res: Response) => {
 });
 
 // =======================
-// 15) ADMIN PANEL ROUTES (بسيطة)
+// 15) ADMIN (بسيط)
 // =======================
 
 function requireAdmin(req: Request, res: Response, next: NextFunction) {
@@ -683,15 +676,9 @@ app.post("/api/admin/courses", requireAdmin, (req: Request, res: Response) => {
 });
 
 // =======================
-// 16) FRONTEND (REACT SPA) - VERY SIMPLE
+// 16) FRONTEND (React SPA)
 // =======================
-// هنا سنبني واجهة بسيطة جداً داخل نفس الملف، فقط كمثال.
-// في الواقع، الأفضل فصلها في مشروع مستقل (Next.js أو React).
 
-import path from "path";
-import fs from "fs";
-
-// نخدم ملف HTML واحد فيه React SPA
 const FRONTEND_HTML = `
 <!DOCTYPE html>
 <html lang="ar">
@@ -801,6 +788,8 @@ const FRONTEND_HTML = `
       function Dashboard() {
         const [stats, setStats] = React.useState(null);
         const [leaderboard, setLeaderboard] = React.useState([]);
+        const [aiAnswer, setAiAnswer] = React.useState("");
+        const [aiQuestion, setAiQuestion] = React.useState("");
 
         React.useEffect(() => {
           async function load() {
@@ -812,25 +801,35 @@ const FRONTEND_HTML = `
           load();
         }, []);
 
+        async function askAi(ev) {
+          ev.preventDefault();
+          const res = await api("/ai/mentor", "POST", { question: aiQuestion });
+          setAiAnswer(res.answer);
+        }
+
         if (!stats) return e("div", { className: "container" }, e("p", null, "جارِ تحميل لوحة التحكم..."));
 
         return e("div", { className: "container" },
           e("div", { className: "card" },
             e("h2", null, "مرحباً، " + stats.username),
-            e("p", null, "مستواك الحالي: " + stats.levelName + " (XP: " + stats.xp + ")"),
-            e("p", null, "التقدم نحو المستوى التالي: " + stats.progress + "%"),
+            e("p", null, "مستواك الحالي: " + stats.levelName + " | XP: " + stats.xp + " | " + stats.rank),
             e("div", { className: "grid grid-3", style: { marginTop: "1rem" } },
               e("div", { className: "card" },
+                e("h3", null, "التقدم"),
+                e("div", { style: { width: "100%", background: "#1e293b", borderRadius: "999px", overflow: "hidden" } },
+                  e("div", { style: { width: stats.progress + "%", height: "8px", background: "#22d3ee" } })
+                ),
+                e("p", { style: { fontSize: "0.85rem", marginTop: "0.5rem", color: "#9ca3af" } },
+                  stats.progress + "% نحو المستوى التالي"
+                )
+              ),
+              e("div", { className: "card" },
                 e("h3", null, "الدروس المكتملة"),
-                e("p", null, stats.lessonsDone)
+                e("p", { style: { fontSize: "2rem", color: "#22c55e" } }, stats.lessonsDone)
               ),
               e("div", { className: "card" },
                 e("h3", null, "التحديات المكتملة"),
-                e("p", null, stats.challengesDone)
-              ),
-              e("div", { className: "card" },
-                e("h3", null, "الشهادات"),
-                e("p", null, stats.certificates)
+                e("p", { style: { fontSize: "2rem", color: "#f97316" } }, stats.challengesDone)
               )
             ),
             e("h3", { style: { marginTop: "1.5rem" } }, "آخر النشاطات"),
@@ -846,7 +845,18 @@ const FRONTEND_HTML = `
                   (idx + 1) + ". " + entry.username + " - XP: " + entry.xp + " - Challenges: " + entry.challengesDone
                 )
               )
-            )
+            ),
+            e("h3", { style: { marginTop: "1.5rem" } }, "AI Mentor"),
+            e("form", { onSubmit: askAi },
+              e("input", {
+                value: aiQuestion,
+                onChange: ev => setAiQuestion(ev.target.value),
+                placeholder: "اسأل المرشد الذكي عن خطة تعلمك...",
+                style: { marginBottom: "0.5rem" }
+              }),
+              e("button", { className: "btn", style: { marginTop: "0.5rem" } }, "اسأل")
+            ),
+            aiAnswer && e("p", { style: { marginTop: "0.75rem", color: "#a5b4fc" } }, aiAnswer)
           )
         );
       }
@@ -861,7 +871,6 @@ const FRONTEND_HTML = `
 </html>
 `;
 
-// نخدم الـ HTML من مسار /
 app.get("/", (req: Request, res: Response) => {
   res.send(FRONTEND_HTML);
 });
@@ -883,3 +892,2309 @@ const PORT = 4000;
 app.listen(PORT, () => {
   console.log("Cyber Academy Ultimate running on http://localhost:" + PORT);
 });
+/****************************************************
+ * CYBER ACADEMY ULTIMATE — EXTENDED SYSTEMS (PART 2)
+ * إضافة أنظمة جديدة بالكامل داخل نفس الملف
+ ****************************************************/
+
+// =======================
+// 19) ROLES & PERMISSIONS
+// =======================
+
+type Role = "user" | "admin" | "instructor";
+
+interface Permission {
+  id: string;
+  name: string;
+  description: string;
+}
+
+const PERMISSIONS: Permission[] = [
+  { id: uuid(), name: "manage_users", description: "إدارة المستخدمين" },
+  { id: uuid(), name: "manage_courses", description: "إدارة الدورات" },
+  { id: uuid(), name: "manage_challenges", description: "إدارة التحديات" },
+  { id: uuid(), name: "manage_labs", description: "إدارة المختبرات" },
+  { id: uuid(), name: "view_stats", description: "عرض الإحصائيات" },
+];
+
+interface RoleAssignment {
+  userId: string;
+  role: Role;
+  permissions: Permission[];
+}
+
+const roles: RoleAssignment[] = [];
+
+function assignRole(userId: string, role: Role) {
+  const perms =
+    role === "admin"
+      ? PERMISSIONS
+      : role === "instructor"
+      ? PERMISSIONS.filter((p) => p.name.includes("manage"))
+      : [];
+
+  roles.push({
+    userId,
+    role,
+    permissions: perms,
+  });
+}
+
+function requirePermission(permissionName: string) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const user = getCurrentUser(req);
+    if (!user) return res.status(401).json({ message: "Unauthorized" });
+
+    const role = roles.find((r) => r.userId === user.id);
+    if (!role) return res.status(403).json({ message: "No role assigned" });
+
+    const hasPerm = role.permissions.some((p) => p.name === permissionName);
+    if (!hasPerm) return res.status(403).json({ message: "Forbidden" });
+
+    next();
+  };
+}
+
+// =======================
+// 20) NOTIFICATIONS SYSTEM
+// =======================
+
+interface Notification {
+  id: string;
+  userId: string;
+  title: string;
+  message: string;
+  createdAt: Date;
+  read: boolean;
+}
+
+const notifications: Notification[] = [];
+
+function sendNotification(userId: string, title: string, message: string) {
+  notifications.push({
+    id: uuid(),
+    userId,
+    title,
+    message,
+    createdAt: new Date(),
+    read: false,
+  });
+}
+
+app.get("/api/notifications", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const userNotifs = notifications.filter((n) => n.userId === user.id);
+  res.json(userNotifs);
+});
+
+app.post("/api/notifications/read/:id", requireAuth, (req, res) => {
+  const notif = notifications.find((n) => n.id === req.params.id);
+  if (!notif) return res.status(404).json({ message: "Not found" });
+  notif.read = true;
+  res.json({ message: "Marked as read" });
+});
+
+// =======================
+// 21) ACTIVITY TIMELINE ADVANCED
+// =======================
+
+interface TimelineEvent {
+  id: string;
+  userId: string;
+  type: string;
+  icon: string;
+  description: string;
+  createdAt: Date;
+}
+
+const timeline: TimelineEvent[] = [];
+
+function addTimelineEvent(userId: string, type: string, icon: string, description: string) {
+  timeline.push({
+    id: uuid(),
+    userId,
+    type,
+    icon,
+    description,
+    createdAt: new Date(),
+  });
+}
+
+app.get("/api/timeline", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const events = timeline.filter((t) => t.userId === user.id);
+  res.json(events);
+});
+
+// =======================
+// 22) ACHIEVEMENTS ENGINE
+// =======================
+
+interface Achievement {
+  id: string;
+  code: string;
+  name: string;
+  description: string;
+  condition: (user: User) => boolean;
+}
+
+const ACHIEVEMENTS: Achievement[] = [
+  {
+    id: uuid(),
+    code: "FIRST_LOGIN",
+    name: "First Login",
+    description: "سجل دخولك لأول مرة",
+    condition: (user) => user.activities.length >= 1,
+  },
+  {
+    id: uuid(),
+    code: "LESSONS_10",
+    name: "Learner",
+    description: "أكملت 10 دروس",
+    condition: (user) => user.lessonsDone >= 10,
+  },
+  {
+    id: uuid(),
+    code: "CHALLENGES_5",
+    name: "Rookie Hacker",
+    description: "أكملت 5 تحديات",
+    condition: (user) => user.challengesDone >= 5,
+  },
+];
+
+interface AchievementUnlock {
+  id: string;
+  userId: string;
+  achievementCode: string;
+  unlockedAt: Date;
+}
+
+const unlockedAchievements: AchievementUnlock[] = [];
+
+function checkAchievements(user: User) {
+  ACHIEVEMENTS.forEach((ach) => {
+    const already = unlockedAchievements.find(
+      (a) => a.userId === user.id && a.achievementCode === ach.code
+    );
+    if (!already && ach.condition(user)) {
+      unlockedAchievements.push({
+        id: uuid(),
+        userId: user.id,
+        achievementCode: ach.code,
+        unlockedAt: new Date(),
+      });
+
+      sendNotification(
+        user.id,
+        "Achievement Unlocked!",
+        `لقد حصلت على إنجاز جديد: ${ach.name}`
+      );
+    }
+  });
+}
+
+app.get("/api/achievements", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const list = unlockedAchievements.filter((a) => a.userId === user.id);
+  res.json(list);
+});
+
+// =======================
+// 23) VIRTUAL MACHINES MANAGER (Mock)
+// =======================
+
+interface VirtualMachine {
+  id: string;
+  userId: string;
+  status: "running" | "stopped";
+  type: "linux" | "windows" | "network-lab";
+  createdAt: Date;
+}
+
+const vms: VirtualMachine[] = [];
+
+app.post("/api/vm/start", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const { type } = req.body;
+
+  const vm: VirtualMachine = {
+    id: uuid(),
+    userId: user.id,
+    status: "running",
+    type,
+    createdAt: new Date(),
+  };
+
+  vms.push(vm);
+  res.json(vm);
+});
+
+app.post("/api/vm/stop/:id", requireAuth, (req, res) => {
+  const vm = vms.find((v) => v.id === req.params.id);
+  if (!vm) return res.status(404).json({ message: "VM not found" });
+  vm.status = "stopped";
+  res.json(vm);
+});
+
+app.get("/api/vm", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const list = vms.filter((v) => v.userId === user.id);
+  res.json(list);
+});
+
+// =======================
+// 24) CYBER QUESTS (Weekly Missions)
+// =======================
+
+interface Quest {
+  id: string;
+  title: string;
+  description: string;
+  xpReward: number;
+  completedBy: string[];
+}
+
+const quests: Quest[] = [
+  {
+    id: uuid(),
+    title: "Complete 3 Networking Lessons",
+    description: "أكمل 3 دروس في مسار الشبكات",
+    xpReward: 150,
+    completedBy: [],
+  },
+  {
+    id: uuid(),
+    title: "Finish 2 CTF Challenges",
+    description: "أكمل تحديين من تحديات CTF",
+    xpReward: 200,
+    completedBy: [],
+  },
+];
+
+app.get("/api/quests", requireAuth, (req, res) => {
+  res.json(quests);
+});
+
+app.post("/api/quests/complete/:id", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const quest = quests.find((q) => q.id === req.params.id);
+  if (!quest) return res.status(404).json({ message: "Quest not found" });
+
+  if (!quest.completedBy.includes(user.id)) {
+    quest.completedBy.push(user.id);
+    user.xp += quest.xpReward;
+  }
+
+  res.json({ message: "Quest completed", xpReward: quest.xpReward });
+});
+
+// =======================
+// 25) DAILY MISSIONS
+// =======================
+
+interface DailyMission {
+  id: string;
+  title: string;
+  xpReward: number;
+  completedBy: string[];
+}
+
+const dailyMissions: DailyMission[] = [
+  {
+    id: uuid(),
+    title: "Login Today",
+    xpReward: 50,
+    completedBy: [],
+  },
+  {
+    id: uuid(),
+    title: "Complete 1 Lesson",
+    xpReward: 75,
+    completedBy: [],
+  },
+];
+
+app.get("/api/daily", requireAuth, (req, res) => {
+  res.json(dailyMissions);
+});
+
+app.post("/api/daily/complete/:id", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const mission = dailyMissions.find((m) => m.id === req.params.id);
+  if (!mission) return res.status(404).json({ message: "Mission not found" });
+
+  if (!mission.completedBy.includes(user.id)) {
+    mission.completedBy.push(user.id);
+    user.xp += mission.xpReward;
+  }
+
+  res.json({ message: "Daily mission completed", xpReward: mission.xpReward });
+});
+
+// =======================
+// 26) XP BOOSTERS
+// =======================
+
+interface Booster {
+  id: string;
+  userId: string;
+  multiplier: number;
+  expiresAt: Date;
+}
+
+const boosters: Booster[] = [];
+
+app.post("/api/boosters/apply", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const { multiplier, durationMinutes } = req.body;
+
+  const booster: Booster = {
+    id: uuid(),
+    userId: user.id,
+    multiplier,
+    expiresAt: new Date(Date.now() + durationMinutes * 60000),
+  };
+
+  boosters.push(booster);
+  res.json(booster);
+});
+
+// =======================
+// 27) USER INVENTORY
+// =======================
+
+interface InventoryItem {
+  id: string;
+  userId: string;
+  name: string;
+  type: string;
+  quantity: number;
+}
+
+const inventory: InventoryItem[] = [];
+
+app.get("/api/inventory", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const items = inventory.filter((i) => i.userId === user.id);
+  res.json(items);
+});
+
+app.post("/api/inventory/add", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const { name, type, quantity } = req.body;
+
+  inventory.push({
+    id: uuid(),
+    userId: user.id,
+    name,
+    type,
+    quantity,
+  });
+
+  res.json({ message: "Item added" });
+});
+
+// =======================
+// 28) SHOP SYSTEM
+// =======================
+
+interface ShopItem {
+  id: string;
+  name: string;
+  price: number;
+  type: string;
+}
+
+const shopItems: ShopItem[] = [
+  { id: uuid(), name: "XP Booster x2", price: 200, type: "booster" },
+  { id: uuid(), name: "CTF Hint Pack", price: 150, type: "hint" },
+  { id: uuid(), name: "Cyber Badge Skin", price: 300, type: "cosmetic" },
+];
+
+app.get("/api/shop", requireAuth, (req, res) => {
+  res.json(shopItems);
+});
+
+app.post("/api/shop/buy/:id", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const item = shopItems.find((i) => i.id === req.params.id);
+  if (!item) return res.status(404).json({ message: "Item not found" });
+
+  inventory.push({
+    id: uuid(),
+    userId: user.id,
+    name: item.name,
+    type: item.type,
+    quantity: 1,
+  });
+
+  res.json({ message: "Item purchased", item });
+});
+
+// =======================
+// 29) FRIENDS SYSTEM
+// =======================
+
+interface Friend {
+  id: string;
+  userId: string;
+  friendId: string;
+}
+
+const friends: Friend[] = [];
+
+app.post("/api/friends/add/:id", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  friends.push({
+    id: uuid(),
+    userId: user.id,
+    friendId: req.params.id,
+  });
+  res.json({ message: "Friend added" });
+});
+
+app.get("/api/friends", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const list = friends.filter((f) => f.userId === user.id);
+  res.json(list);
+});
+
+// =======================
+// 30) MESSAGES / CHAT
+// =======================
+
+interface Message {
+  id: string;
+  from: string;
+  to: string;
+  text: string;
+  createdAt: Date;
+}
+
+const messages: Message[] = [];
+
+app.post("/api/messages/send", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const { to, text } = req.body;
+
+  messages.push({
+    id: uuid(),
+    from: user.id,
+    to,
+    text,
+    createdAt: new Date(),
+  });
+
+  res.json({ message: "Message sent" });
+});
+
+app.get("/api/messages/:id", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const chat = messages.filter(
+    (m) => (m.from === user.id && m.to === req.params.id) || (m.to === user.id && m.from === req.params.id)
+  );
+  res.json(chat);
+});
+
+// =======================
+// 31) TEAMS / CLANS
+// =======================
+
+interface Team {
+  id: string;
+  name: string;
+  members: string[];
+}
+
+const teams: Team[] = [];
+
+app.post("/api/teams/create", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const { name } = req.body;
+
+  const team: Team = {
+    id: uuid(),
+    name,
+    members: [user.id],
+  };
+
+  teams.push(team);
+  res.json(team);
+});
+
+app.post("/api/teams/join/:id", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const team = teams.find((t) => t.id === req.params.id);
+  if (!team) return res.status(404).json({ message: "Team not found" });
+
+  if (!team.members.includes(user.id)) team.members.push(user.id);
+
+  res.json({ message: "Joined team", team });
+});
+
+app.get("/api/teams", requireAuth, (req, res) => {
+  res.json(teams);
+});
+
+// =======================
+// 32) EVENTS SYSTEM
+// =======================
+
+interface Event {
+  id: string;
+  title: string;
+  description: string;
+  date: Date;
+  participants: string[];
+}
+
+const events: Event[] = [
+  {
+    id: uuid(),
+    title: "Cyber Week",
+    description: "أسبوع كامل من التحديات والدروس",
+    date: new Date(Date.now() + 86400000 * 7),
+    participants: [],
+  },
+];
+
+app.get("/api/events", requireAuth, (req, res) => {
+  res.json(events);
+});
+
+app.post("/api/events/join/:id", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const event = events.find((e) => e.id === req.params.id);
+  if (!event) return res.status(404).json({ message: "Event not found" });
+
+  if (!event.participants.includes(user.id)) event.participants.push(user.id);
+
+  res.json({ message: "Joined event", event });
+});
+
+// =======================
+// 33) SEASON PASS
+// =======================
+
+interface SeasonPass {
+  id: string;
+  userId: string;
+  level: number;
+  rewardsClaimed: number[];
+}
+
+const seasonPasses: SeasonPass[] = [];
+
+app.post("/api/season-pass/buy", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+
+  const sp: SeasonPass = {
+    id: uuid(),
+    userId: user.id,
+    level: 1,
+    rewardsClaimed: [],
+  };
+
+  seasonPasses.push(sp);
+  res.json(sp);
+});
+
+app.post("/api/season-pass/level-up", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+/****************************************************
+ * CYBER ACADEMY ULTIMATE — EXTENDED SYSTEMS (PART 3)
+ * إضافة أنظمة جديدة بالكامل داخل نفس الملف
+ ****************************************************/
+
+// =======================
+// 34) SEASON PASS (تكملة)
+// =======================
+
+app.post("/api/season-pass/level-up", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const sp = seasonPasses.find((s) => s.userId === user.id);
+  if (!sp) return res.status(404).json({ message: "No season pass" });
+
+  sp.level++;
+  res.json({ message: "Season pass leveled up", level: sp.level });
+});
+
+app.post("/api/season-pass/claim/:rewardId", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const sp = seasonPasses.find((s) => s.userId === user.id);
+  if (!sp) return res.status(404).json({ message: "No season pass" });
+
+  const rewardId = Number(req.params.rewardId);
+
+  if (sp.rewardsClaimed.includes(rewardId)) {
+    return res.status(400).json({ message: "Reward already claimed" });
+  }
+
+  sp.rewardsClaimed.push(rewardId);
+
+  user.xp += 100 * rewardId;
+
+  res.json({ message: "Reward claimed", xpAdded: 100 * rewardId });
+});
+
+// =======================
+// 35) CYBER COINS ECONOMY
+// =======================
+
+interface CoinTransaction {
+  id: string;
+  userId: string;
+  amount: number;
+  type: "earn" | "spend";
+  description: string;
+  createdAt: Date;
+}
+
+const coinTransactions: CoinTransaction[] = [];
+
+function addCoins(userId: string, amount: number, description: string) {
+  coinTransactions.push({
+    id: uuid(),
+    userId,
+    amount,
+    type: "earn",
+    description,
+    createdAt: new Date(),
+  });
+}
+
+function spendCoins(userId: string, amount: number, description: string) {
+  coinTransactions.push({
+    id: uuid(),
+    userId,
+    amount: -amount,
+    type: "spend",
+    description,
+    createdAt: new Date(),
+  });
+}
+
+app.get("/api/coins", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const balance = coinTransactions
+    .filter((t) => t.userId === user.id)
+    .reduce((acc, t) => acc + t.amount, 0);
+
+  res.json({ balance });
+});
+
+app.get("/api/coins/history", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const history = coinTransactions.filter((t) => t.userId === user.id);
+  res.json(history);
+});
+
+// =======================
+// 36) BADGE SKINS (Cosmetics)
+// =======================
+
+interface BadgeSkin {
+  id: string;
+  name: string;
+  color: string;
+  price: number;
+}
+
+const badgeSkins: BadgeSkin[] = [
+  { id: uuid(), name: "Neon Blue", color: "#00eaff", price: 200 },
+  { id: uuid(), name: "Cyber Red", color: "#ff0044", price: 250 },
+  { id: uuid(), name: "Matrix Green", color: "#00ff66", price: 300 },
+];
+
+interface UserBadgeSkin {
+  id: string;
+  userId: string;
+  skinId: string;
+}
+
+const userBadgeSkins: UserBadgeSkin[] = [];
+
+app.get("/api/badge-skins", requireAuth, (req, res) => {
+  res.json(badgeSkins);
+});
+
+app.post("/api/badge-skins/buy/:id", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const skin = badgeSkins.find((s) => s.id === req.params.id);
+  if (!skin) return res.status(404).json({ message: "Skin not found" });
+
+  spendCoins(user.id, skin.price, "Bought badge skin");
+
+  userBadgeSkins.push({
+    id: uuid(),
+    userId: user.id,
+    skinId: skin.id,
+  });
+
+  res.json({ message: "Skin purchased", skin });
+});
+
+// =======================
+// 37) USER PROFILE THEMES
+// =======================
+
+interface Theme {
+  id: string;
+  name: string;
+  background: string;
+  price: number;
+}
+
+const themes: Theme[] = [
+  {
+    id: uuid(),
+    name: "Dark Cyber",
+    background: "#0f172a",
+    price: 150,
+  },
+  {
+    id: uuid(),
+    name: "Neon Grid",
+    background: "linear-gradient(#001, #00f)",
+    price: 200,
+  },
+  {
+    id: uuid(),
+    name: "Hacker Terminal",
+    background: "#001b00",
+    price: 250,
+  },
+];
+
+interface UserTheme {
+  id: string;
+  userId: string;
+  themeId: string;
+}
+
+const userThemes: UserTheme[] = [];
+
+app.get("/api/themes", requireAuth, (req, res) => {
+  res.json(themes);
+});
+
+app.post("/api/themes/buy/:id", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const theme = themes.find((t) => t.id === req.params.id);
+  if (!theme) return res.status(404).json({ message: "Theme not found" });
+
+  spendCoins(user.id, theme.price, "Bought theme");
+
+  userThemes.push({
+    id: uuid(),
+    userId: user.id,
+    themeId: theme.id,
+  });
+
+  res.json({ message: "Theme purchased", theme });
+});
+
+// =======================
+// 38) USER PROFILE STATS
+// =======================
+
+app.get("/api/profile/stats", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+
+  const coins = coinTransactions
+    .filter((t) => t.userId === user.id)
+    .reduce((acc, t) => acc + t.amount, 0);
+
+  const vmCount = vms.filter((v) => v.userId === user.id).length;
+
+  const stats = {
+    lessonsDone: user.lessonsDone,
+    challengesDone: user.challengesDone,
+    certificates: user.certificates.length,
+    coins,
+    vmCount,
+    badges: user.badges.length,
+    achievements: unlockedAchievements.filter((a) => a.userId === user.id).length,
+  };
+
+  res.json(stats);
+});
+
+// =======================
+// 39) ADVANCED CTF RANKING
+// =======================
+
+interface CtfRank {
+  userId: string;
+  score: number;
+}
+
+const ctfRanks: CtfRank[] = [];
+
+app.post("/api/ctf/score", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const { score } = req.body;
+
+  const existing = ctfRanks.find((r) => r.userId === user.id);
+  if (existing) {
+    existing.score = Math.max(existing.score, score);
+  } else {
+    ctfRanks.push({ userId: user.id, score });
+  }
+
+  res.json({ message: "Score updated" });
+});
+
+app.get("/api/ctf/ranking", requireAuth, (req, res) => {
+  const ranking = ctfRanks
+    .map((r) => ({
+      userId: r.userId,
+      username: db.users.find((u) => u.id === r.userId)?.username,
+      score: r.score,
+    }))
+    .sort((a, b) => b.score - a.score);
+
+  res.json(ranking);
+});
+
+// =======================
+// 40) ADVANCED LAB PROGRESS
+// =======================
+
+interface LabProgress {
+  id: string;
+  userId: string;
+  labId: string;
+  stepsCompleted: number;
+  totalSteps: number;
+}
+
+const labProgress: LabProgress[] = [];
+
+app.post("/api/labs/progress/update", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const { labId, stepsCompleted, totalSteps } = req.body;
+
+  let progress = labProgress.find(
+    (p) => p.userId === user.id && p.labId === labId
+  );
+
+  if (!progress) {
+    progress = {
+      id: uuid(),
+      userId: user.id,
+      labId,
+      stepsCompleted,
+      totalSteps,
+    };
+    labProgress.push(progress);
+  } else {
+    progress.stepsCompleted = stepsCompleted;
+  }
+
+  res.json(progress);
+});
+
+app.get("/api/labs/progress/:labId", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const progress = labProgress.find(
+    (p) => p.userId === user.id && p.labId === req.params.labId
+  );
+  res.json(progress || {});
+});
+
+// =======================
+// 41) ADVANCED COURSE PROGRESS
+// =======================
+
+interface CourseProgress {
+  id: string;
+  userId: string;
+  courseId: string;
+  lessonsCompleted: number;
+  totalLessons: number;
+}
+
+const courseProgress: CourseProgress[] = [];
+
+app.post("/api/courses/progress/update", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const { courseId, lessonsCompleted, totalLessons } = req.body;
+
+  let progress = courseProgress.find(
+    (p) => p.userId === user.id && p.courseId === courseId
+  );
+
+  if (!progress) {
+    progress = {
+      id: uuid(),
+      userId: user.id,
+      courseId,
+      lessonsCompleted,
+      totalLessons,
+    };
+    courseProgress.push(progress);
+  } else {
+    progress.lessonsCompleted = lessonsCompleted;
+  }
+
+  res.json(progress);
+});
+
+app.get("/api/courses/progress/:courseId", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const progress = courseProgress.find(
+    (p) => p.userId === user.id && p.courseId === req.params.courseId
+  );
+  res.json(progress || {});
+});
+
+// =======================
+// 42) USER BADGE COLLECTION
+// =======================
+
+app.get("/api/badges", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  res.json(user.badges);
+});
+
+// =======================
+// 43) USER ACHIEVEMENT SUMMARY
+// =======================
+
+app.get("/api/achievements/summary", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+
+  const summary = {
+    totalAchievements: unlockedAchievements.filter((a) => a.userId === user.id)
+      .length,
+    totalBadges: user.badges.length,
+    totalCertificates: user.certificates.length,
+    totalChallenges: user.challengesDone,
+    totalLessons: user.lessonsDone,
+  };
+
+  res.json(summary);
+});
+
+// =======================
+// 44) ADVANCED USER ANALYTICS
+// =======================
+
+app.get("/api/analytics", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+
+  const analytics = {
+    xp: user.xp,
+    level: user.level,
+    lessonsDone: user.lessonsDone,
+    challengesDone: user.challengesDone,
+    certificates: user.certificates.length,
+    coins: coinTransactions
+      .filter((t) => t.userId === user.id)
+      .reduce((acc, t) => acc + t.amount, 0),
+    vmCount: vms.filter((v) => v.userId === user.id).length,
+    achievements: unlockedAchievements.filter((a) => a.userId === user.id)
+      .length,
+    timelineEvents: timeline.filter((t) => t.userId === user.id).length,
+  };
+
+  res.json(analytics);
+});
+
+// =======================
+// 45) END OF PART 3
+// =======================
+
+console.log("PART 3 LOADED — Systems Expanded");
+/****************************************************
+ * CYBER ACADEMY ULTIMATE — EXTENDED SYSTEMS (PART 4)
+ * أنظمة جديدة: Cyber Arena, Boss Fights, Skill Tree,
+ * Threat Intelligence, Malware Sandbox, Network Builder,
+ * AI Auto-Tutor, Guild Wars, Battle Pass 2.0
+ ****************************************************/
+
+// =======================
+// 46) CYBER ARENA (PvP)
+// =======================
+
+interface ArenaMatch {
+  id: string;
+  player1: string;
+  player2: string;
+  winner?: string;
+  logs: string[];
+  createdAt: Date;
+}
+
+const arenaMatches: ArenaMatch[] = [];
+
+app.post("/api/arena/start", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const { opponentId } = req.body;
+
+  const match: ArenaMatch = {
+    id: uuid(),
+    player1: user.id,
+    player2: opponentId,
+    logs: ["Match started"],
+    createdAt: new Date(),
+  };
+
+  arenaMatches.push(match);
+  res.json(match);
+});
+
+app.post("/api/arena/attack/:id", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const match = arenaMatches.find((m) => m.id === req.params.id);
+  if (!match) return res.status(404).json({ message: "Match not found" });
+
+  const damage = Math.floor(Math.random() * 30) + 10;
+  match.logs.push(`${user.username} dealt ${damage} cyber damage`);
+
+  if (damage > 25) {
+    match.winner = user.id;
+    user.xp += 150;
+    match.logs.push(`${user.username} wins the match!`);
+  }
+
+  res.json(match);
+});
+
+app.get("/api/arena", requireAuth, (req, res) => {
+  res.json(arenaMatches);
+});
+
+// =======================
+// 47) BOSS FIGHTS
+// =======================
+
+interface Boss {
+  id: string;
+  name: string;
+  hp: number;
+  rewardXp: number;
+}
+
+const bosses: Boss[] = [
+  { id: uuid(), name: "Firewall Titan", hp: 300, rewardXp: 500 },
+  { id: uuid(), name: "Malware Hydra", hp: 450, rewardXp: 700 },
+];
+
+interface BossFight {
+  id: string;
+  userId: string;
+  bossId: string;
+  bossHp: number;
+  logs: string[];
+}
+
+const bossFights: BossFight[] = [];
+
+app.post("/api/boss/start/:id", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const boss = bosses.find((b) => b.id === req.params.id);
+  if (!boss) return res.status(404).json({ message: "Boss not found" });
+
+  const fight: BossFight = {
+    id: uuid(),
+    userId: user.id,
+    bossId: boss.id,
+    bossHp: boss.hp,
+    logs: [`Fight started against ${boss.name}`],
+  };
+
+  bossFights.push(fight);
+  res.json(fight);
+});
+
+app.post("/api/boss/attack/:fightId", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const fight = bossFights.find((f) => f.id === req.params.fightId);
+  if (!fight) return res.status(404).json({ message: "Fight not found" });
+
+  const damage = Math.floor(Math.random() * 40) + 20;
+  fight.bossHp -= damage;
+  fight.logs.push(`${user.username} dealt ${damage} damage`);
+
+  if (fight.bossHp <= 0) {
+    const boss = bosses.find((b) => b.id === fight.bossId);
+    fight.logs.push(`${user.username} defeated ${boss.name}!`);
+    user.xp += boss.rewardXp;
+  }
+
+  res.json(fight);
+});
+
+// =======================
+// 48) SKILL TREE SYSTEM
+// =======================
+
+interface Skill {
+  id: string;
+  name: string;
+  description: string;
+  xpRequired: number;
+}
+
+const skills: Skill[] = [
+  { id: uuid(), name: "Packet Sniffer", description: "تحليل الشبكات", xpRequired: 500 },
+  { id: uuid(), name: "Shell Master", description: "احتراف أوامر لينكس", xpRequired: 800 },
+  { id: uuid(), name: "Exploit Crafter", description: "إنشاء ثغرات", xpRequired: 1200 },
+];
+
+interface UserSkill {
+  id: string;
+  userId: string;
+  skillId: string;
+}
+
+const userSkills: UserSkill[] = [];
+
+app.get("/api/skills", requireAuth, (req, res) => {
+  res.json(skills);
+});
+
+app.post("/api/skills/unlock/:id", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const skill = skills.find((s) => s.id === req.params.id);
+  if (!skill) return res.status(404).json({ message: "Skill not found" });
+
+  if (user.xp < skill.xpRequired) {
+    return res.status(400).json({ message: "Not enough XP" });
+  }
+
+  userSkills.push({
+    id: uuid(),
+    userId: user.id,
+    skillId: skill.id,
+  });
+
+  res.json({ message: "Skill unlocked", skill });
+});
+
+// =======================
+// 49) THREAT INTELLIGENCE FEED
+// =======================
+
+interface Threat {
+  id: string;
+  name: string;
+  severity: "Low" | "Medium" | "High" | "Critical";
+  description: string;
+  discoveredAt: Date;
+}
+
+const threats: Threat[] = [
+  {
+    id: uuid(),
+    name: "Zero-Day Browser Exploit",
+    severity: "Critical",
+    description: "ثغرة يوم الصفر في المتصفحات",
+    discoveredAt: new Date(),
+  },
+  {
+    id: uuid(),
+    name: "Ransomware Variant X",
+    severity: "High",
+    description: "سلالة جديدة من الفدية",
+    discoveredAt: new Date(),
+  },
+];
+
+app.get("/api/threats", requireAuth, (req, res) => {
+  res.json(threats);
+});
+
+// =======================
+// 50) MALWARE SANDBOX (Mock)
+// =======================
+
+interface MalwareSample {
+  id: string;
+  name: string;
+  behavior: string[];
+}
+
+const malwareSamples: MalwareSample[] = [
+  {
+    id: uuid(),
+    name: "HydraStealer",
+    behavior: ["Keylogging", "Credential Theft", "Network Beaconing"],
+  },
+];
+
+app.get("/api/malware", requireAuth, (req, res) => {
+  res.json(malwareSamples);
+});
+
+app.post("/api/malware/analyze/:id", requireAuth, (req, res) => {
+  const sample = malwareSamples.find((m) => m.id === req.params.id);
+  if (!sample) return res.status(404).json({ message: "Sample not found" });
+
+  const report = {
+    id: uuid(),
+    sampleId: sample.id,
+    analysis: sample.behavior.map((b) => `Detected behavior: ${b}`),
+    createdAt: new Date(),
+  };
+
+  res.json(report);
+});
+
+// =======================
+// 51) NETWORK BUILDER
+// =======================
+
+interface NetworkNode {
+  id: string;
+  userId: string;
+  type: "router" | "switch" | "server" | "client";
+  name: string;
+}
+
+const networkNodes: NetworkNode[] = [];
+
+app.post("/api/network/add", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const { type, name } = req.body;
+
+  const node: NetworkNode = {
+    id: uuid(),
+    userId: user.id,
+    type,
+    name,
+  };
+
+  networkNodes.push(node);
+  res.json(node);
+});
+
+app.get("/api/network", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const nodes = networkNodes.filter((n) => n.userId === user.id);
+  res.json(nodes);
+});
+
+// =======================
+// 52) AI AUTO-TUTOR
+// =======================
+
+app.post("/api/ai/auto-tutor", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const { topic } = req.body;
+
+  const response = `تحليل مستوى المستخدم (${user.levelName})…  
+اقتراح خطة تعلم تلقائية لمسار: ${topic}  
+- درس 1  
+- درس 2  
+- مختبر عملي  
+- تحدي CTF  
+- اختبار نهائي`;
+
+  res.json({ plan: response });
+});
+
+// =======================
+// 53) GUILD WARS
+// =======================
+
+interface Guild {
+  id: string;
+  name: string;
+  members: string[];
+  points: number;
+}
+
+const guilds: Guild[] = [];
+
+app.post("/api/guilds/create", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const { name } = req.body;
+
+  const guild: Guild = {
+    id: uuid(),
+    name,
+    members: [user.id],
+    points: 0,
+  };
+
+  guilds.push(guild);
+  res.json(guild);
+});
+
+app.post("/api/guilds/join/:id", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const guild = guilds.find((g) => g.id === req.params.id);
+  if (!guild) return res.status(404).json({ message: "Guild not found" });
+
+  guild.members.push(user.id);
+  res.json({ message: "Joined guild", guild });
+});
+
+app.post("/api/guilds/battle/:id", requireAuth, (req, res) => {
+  const guild = guilds.find((g) => g.id === req.params.id);
+  if (!guild) return res.status(404).json({ message: "Guild not found" });
+
+  const points = Math.floor(Math.random() * 500) + 100;
+  guild.points += points;
+
+  res.json({ message: "Guild battle completed", points });
+});
+
+// =======================
+// 54) BATTLE PASS 2.0
+// =======================
+
+interface BattlePass {
+  id: string;
+  userId: string;
+  xp: number;
+  rewards: string[];
+}
+
+const battlePasses: BattlePass[] = [];
+
+app.post("/api/battle-pass/buy", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+
+  const bp: BattlePass = {
+    id: uuid(),
+    userId: user.id,
+    xp: 0,
+    rewards: [],
+  };
+
+  battlePasses.push(bp);
+  res.json(bp);
+});
+
+app.post("/api/battle-pass/xp", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const bp = battlePasses.find((b) => b.userId === user.id);
+  if (!bp) return res.status(404).json({ message: "No battle pass" });
+
+  const { xp } = req.body;
+  bp.xp += xp;
+
+  res.json(bp);
+});
+
+app.post("/api/battle-pass/reward/:reward", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const bp = battlePasses.find((b) => b.userId === user.id);
+  if (!bp) return res.status(404).json({ message: "No battle pass" });
+
+  bp.rewards.push(req.params.reward);
+  res.json(bp);
+});
+
+// =======================
+// END OF PART 4
+// =======================
+
+console.log("PART 4 LOADED — Massive Systems Added");
+/****************************************************
+ * CYBER ACADEMY ULTIMATE — DARKNET SIMULATION (PART 5)
+ * نظام سوق مظلم تعليمي داخل المنصة
+ ****************************************************/
+
+// =======================
+// 55) DARKNET IDENTITIES
+// =======================
+
+interface DarknetIdentity {
+  id: string;
+  userId: string;
+  alias: string;
+  reputation: number;
+  createdAt: Date;
+}
+
+const darknetIdentities: DarknetIdentity[] = [];
+
+app.post("/api/darknet/identity/create", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const { alias } = req.body;
+
+  if (!alias) return res.status(400).json({ message: "Alias required" });
+
+  const exists = darknetIdentities.find(
+    (d) => d.userId === user.id || d.alias === alias
+  );
+  if (exists) return res.status(400).json({ message: "Alias already taken" });
+
+  const identity: DarknetIdentity = {
+    id: uuid(),
+    userId: user.id,
+    alias,
+    reputation: 0,
+    createdAt: new Date(),
+  };
+
+  darknetIdentities.push(identity);
+  res.json(identity);
+});
+
+app.get("/api/darknet/identity", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const identity = darknetIdentities.find((d) => d.userId === user.id);
+  res.json(identity || {});
+});
+
+// =======================
+// 56) DARKNET MARKET
+// =======================
+
+interface DarknetItem {
+  id: string;
+  name: string;
+  category: "tools" | "intel" | "access" | "training";
+  description: string;
+  priceCoins: number;
+  reputationRequired: number;
+}
+
+const darknetItems: DarknetItem[] = [
+  {
+    id: uuid(),
+    name: "Recon Toolkit",
+    category: "tools",
+    description: "مجموعة أدوات جمع معلومات (تعليمية)",
+    priceCoins: 300,
+    reputationRequired: 0,
+  },
+  {
+    id: uuid(),
+    name: "Web Vuln Intel Pack",
+    category: "intel",
+    description: "معلومات عن ثغرات ويب شائعة (تعليمية)",
+    priceCoins: 500,
+    reputationRequired: 10,
+  },
+  {
+    id: uuid(),
+    name: "Training: Darknet Ops 101",
+    category: "training",
+    description: "دورة تعليمية عن عمليات السوق المظلم بشكل آمن",
+    priceCoins: 700,
+    reputationRequired: 20,
+  },
+];
+
+interface DarknetPurchase {
+  id: string;
+  userId: string;
+  itemId: string;
+  purchasedAt: Date;
+}
+
+const darknetPurchases: DarknetPurchase[] = [];
+
+app.get("/api/darknet/market", requireAuth, (req, res) => {
+  res.json(darknetItems);
+});
+
+app.post("/api/darknet/market/buy/:id", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const identity = darknetIdentities.find((d) => d.userId === user.id);
+  const item = darknetItems.find((i) => i.id === req.params.id);
+
+  if (!identity)
+    return res.status(400).json({ message: "Create darknet identity first" });
+  if (!item) return res.status(404).json({ message: "Item not found" });
+
+  const balance = coinTransactions
+    .filter((t) => t.userId === user.id)
+    .reduce((acc, t) => acc + t.amount, 0);
+
+  if (balance < item.priceCoins)
+    return res.status(400).json({ message: "Not enough coins" });
+
+  if (identity.reputation < item.reputationRequired)
+    return res
+      .status(400)
+      .json({ message: "Not enough reputation for this item" });
+
+  spendCoins(user.id, item.priceCoins, `Bought darknet item: ${item.name}`);
+
+  const purchase: DarknetPurchase = {
+    id: uuid(),
+    userId: user.id,
+    itemId: item.id,
+    purchasedAt: new Date(),
+  };
+
+  darknetPurchases.push(purchase);
+
+  res.json({ message: "Item purchased", purchase });
+});
+
+app.get("/api/darknet/market/my", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const myPurchases = darknetPurchases.filter((p) => p.userId === user.id);
+  const items = myPurchases.map((p) => ({
+    purchaseId: p.id,
+    item: darknetItems.find((i) => i.id === p.itemId),
+    purchasedAt: p.purchasedAt,
+  }));
+  res.json(items);
+});
+
+// =======================
+// 57) DARKNET MISSIONS
+// =======================
+
+interface DarknetMission {
+  id: string;
+  title: string;
+  description: string;
+  difficulty: "Low" | "Medium" | "High";
+  reputationReward: number;
+  xpReward: number;
+}
+
+const darknetMissions: DarknetMission[] = [
+  {
+    id: uuid(),
+    title: "Analyze Fake Darknet Listing",
+    description: "تحليل إعلان مزيف في السوق المظلم (تعليمي)",
+    difficulty: "Low",
+    reputationReward: 5,
+    xpReward: 150,
+  },
+  {
+    id: uuid(),
+    title: "Trace Transaction Flow",
+    description: "تتبع حركة أموال في سيناريو تعليمي",
+    difficulty: "Medium",
+    reputationReward: 10,
+    xpReward: 250,
+  },
+  {
+    id: uuid(),
+    title: "Detect Scam Operation",
+    description: "اكتشاف عملية احتيال في سوق مظلم وهمي",
+    difficulty: "High",
+    reputationReward: 20,
+    xpReward: 400,
+  },
+];
+
+interface DarknetMissionProgress {
+  id: string;
+  userId: string;
+  missionId: string;
+  status: "in-progress" | "completed";
+  startedAt: Date;
+  completedAt?: Date;
+}
+
+const darknetMissionProgress: DarknetMissionProgress[] = [];
+
+app.get("/api/darknet/missions", requireAuth, (req, res) => {
+  res.json(darknetMissions);
+});
+
+app.post("/api/darknet/missions/start/:id", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const mission = darknetMissions.find((m) => m.id === req.params.id);
+  if (!mission) return res.status(404).json({ message: "Mission not found" });
+
+  const existing = darknetMissionProgress.find(
+    (p) => p.userId === user.id && p.missionId === mission.id
+  );
+  if (existing && existing.status === "in-progress")
+    return res.status(400).json({ message: "Mission already in progress" });
+
+  const progress: DarknetMissionProgress = {
+    id: uuid(),
+    userId: user.id,
+    missionId: mission.id,
+    status: "in-progress",
+    startedAt: new Date(),
+  };
+
+  darknetMissionProgress.push(progress);
+  res.json(progress);
+});
+
+app.post("/api/darknet/missions/complete/:id", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const mission = darknetMissions.find((m) => m.id === req.params.id);
+  if (!mission) return res.status(404).json({ message: "Mission not found" });
+
+  const progress = darknetMissionProgress.find(
+    (p) => p.userId === user.id && p.missionId === mission.id
+  );
+  if (!progress) return res.status(404).json({ message: "Mission not started" });
+
+  if (progress.status === "completed")
+    return res.status(400).json({ message: "Mission already completed" });
+
+  progress.status = "completed";
+  progress.completedAt = new Date();
+
+  const identity = darknetIdentities.find((d) => d.userId === user.id);
+  if (identity) {
+    identity.reputation += mission.reputationReward;
+  }
+
+  user.xp += mission.xpReward;
+  const { level, name } = getLevelFromXp(user.xp);
+  user.level = level;
+  user.levelName = name;
+
+  addTimelineEvent(
+    user.id,
+    "darknet-mission",
+    "🕶️",
+    `أكمل مهمة سوق مظلم: ${mission.title}`
+  );
+
+  res.json({
+    message: "Mission completed",
+    reputationGained: mission.reputationReward,
+    xpGained: mission.xpReward,
+  });
+});
+
+app.get("/api/darknet/missions/my", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const my = darknetMissionProgress.filter((p) => p.userId === user.id);
+  res.json(my);
+});
+
+// =======================
+// 58) DARKNET REPUTATION & RANKS
+// =======================
+
+const DARKNET_RANKS = [
+  { minRep: 0, name: "Observer" },
+  { minRep: 10, name: "Scout" },
+  { minRep: 25, name: "Analyst" },
+  { minRep: 50, name: "Operator" },
+  { minRep: 100, name: "Architect" },
+];
+
+app.get("/api/darknet/reputation", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const identity = darknetIdentities.find((d) => d.userId === user.id);
+
+  if (!identity)
+    return res.status(404).json({ message: "No darknet identity found" });
+
+  const rank =
+    DARKNET_RANKS.filter((r) => identity.reputation >= r.minRep).slice(-1)[0] ||
+    DARKNET_RANKS[0];
+
+  res.json({
+    alias: identity.alias,
+    reputation: identity.reputation,
+    rank: rank.name,
+  });
+});
+
+// =======================
+// 59) DARKNET EDUCATIONAL LOGS
+// =======================
+
+interface DarknetLog {
+  id: string;
+  userId: string;
+  action: string;
+  details: string;
+  createdAt: Date;
+}
+
+const darknetLogs: DarknetLog[] = [];
+
+function addDarknetLog(userId: string, action: string, details: string) {
+  darknetLogs.push({
+    id: uuid(),
+    userId,
+    action,
+    details,
+    createdAt: new Date(),
+  });
+}
+
+app.get("/api/darknet/logs", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const logs = darknetLogs.filter((l) => l.userId === user.id);
+  res.json(logs);
+});
+
+// =======================
+// 60) DARKNET SAFE MODE
+// =======================
+
+app.get("/api/darknet/safe-mode", requireAuth, (req, res) => {
+  res.json({
+    message:
+      "هذا النظام محاكاة تعليمية فقط، لا يتم تنفيذ أي نشاط حقيقي أو غير قانوني.",
+  });
+});
+
+// =======================
+// END OF DARKNET SIMULATION
+// =======================
+
+console.log("PART 5 LOADED — Darknet Simulation Enabled");
+/****************************************************
+ * CYBER ACADEMY ULTIMATE — CYBER WORLD MAP (PART 6)
+ * عالم سيبراني كامل: مناطق، موارد، أحداث، حروب، سيطرة
+ ****************************************************/
+
+// =======================
+// 61) CYBER WORLD REGIONS
+// =======================
+
+interface WorldRegion {
+  id: string;
+  name: string;
+  description: string;
+  difficulty: "Low" | "Medium" | "High" | "Extreme";
+  ownerGuildId?: string;
+  resources: number;
+  dangerLevel: number;
+}
+
+const worldRegions: WorldRegion[] = [
+  {
+    id: uuid(),
+    name: "Neon District",
+    description: "منطقة تعليمية مليئة بمهام الشبكات",
+    difficulty: "Low",
+    resources: 200,
+    dangerLevel: 10,
+  },
+  {
+    id: uuid(),
+    name: "Firewall Mountains",
+    description: "جبال مليئة بتحديات الحماية",
+    difficulty: "Medium",
+    resources: 350,
+    dangerLevel: 25,
+  },
+  {
+    id: uuid(),
+    name: "Malware Swamp",
+    description: "مستنقع مليء بمهام تحليل البرمجيات الخبيثة",
+    difficulty: "High",
+    resources: 500,
+    dangerLevel: 40,
+  },
+  {
+    id: uuid(),
+    name: "Zero-Day Wasteland",
+    description: "أرض قاحلة مليئة بالثغرات المتقدمة",
+    difficulty: "Extreme",
+    resources: 800,
+    dangerLevel: 70,
+  },
+];
+
+app.get("/api/world/regions", requireAuth, (req, res) => {
+  res.json(worldRegions);
+});
+
+// =======================
+// 62) REGION EXPLORATION
+// =======================
+
+interface RegionExploration {
+  id: string;
+  userId: string;
+  regionId: string;
+  progress: number;
+  completed: boolean;
+  startedAt: Date;
+  completedAt?: Date;
+}
+
+const regionExplorations: RegionExploration[] = [];
+
+app.post("/api/world/explore/:regionId", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const region = worldRegions.find((r) => r.id === req.params.regionId);
+
+  if (!region) return res.status(404).json({ message: "Region not found" });
+
+  const existing = regionExplorations.find(
+    (e) => e.userId === user.id && e.regionId === region.id
+  );
+
+  if (existing && !existing.completed)
+    return res.json(existing);
+
+  const exploration: RegionExploration = {
+    id: uuid(),
+    userId: user.id,
+    regionId: region.id,
+    progress: 0,
+    completed: false,
+    startedAt: new Date(),
+  };
+
+  regionExplorations.push(exploration);
+  res.json(exploration);
+});
+
+app.post("/api/world/explore/progress/:explorationId", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const exploration = regionExplorations.find(
+    (e) => e.id === req.params.explorationId
+  );
+
+  if (!exploration) return res.status(404).json({ message: "Exploration not found" });
+
+  exploration.progress += Math.floor(Math.random() * 25) + 10;
+
+  if (exploration.progress >= 100) {
+    exploration.progress = 100;
+    exploration.completed = true;
+    exploration.completedAt = new Date();
+
+    const region = worldRegions.find((r) => r.id === exploration.regionId);
+
+    user.xp += region.resources / 2;
+    const { level, name } = getLevelFromXp(user.xp);
+    user.level = level;
+    user.levelName = name;
+
+    addTimelineEvent(
+      user.id,
+      "world-exploration",
+      "🌍",
+      `استكشف منطقة ${region.name} بالكامل`
+    );
+  }
+
+  res.json(exploration);
+});
+
+// =======================
+// 63) REGION CONTROL (Guild Wars Integration)
+// =======================
+
+interface RegionControl {
+  regionId: string;
+  guildId: string;
+  controlPoints: number;
+}
+
+const regionControl: RegionControl[] = [];
+
+app.post("/api/world/attack-region/:regionId", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const region = worldRegions.find((r) => r.id === req.params.regionId);
+  if (!region) return res.status(404).json({ message: "Region not found" });
+
+  const guild = guilds.find((g) => g.members.includes(user.id));
+  if (!guild) return res.status(400).json({ message: "Join a guild first" });
+
+  let control = regionControl.find((c) => c.regionId === region.id);
+
+  if (!control) {
+    control = {
+      regionId: region.id,
+      guildId: guild.id,
+      controlPoints: 0,
+    };
+    regionControl.push(control);
+  }
+
+  const points = Math.floor(Math.random() * 50) + 20;
+  control.controlPoints += points;
+
+  if (control.controlPoints >= 300) {
+    region.ownerGuildId = guild.id;
+    addTimelineEvent(
+      user.id,
+      "region-capture",
+      "⚔️",
+      `سيطر فريقك على منطقة ${region.name}`
+    );
+  }
+
+  res.json({
+    message: "Region attacked",
+    points,
+    control,
+  });
+});
+
+app.get("/api/world/control", requireAuth, (req, res) => {
+  const controlInfo = worldRegions.map((r) => ({
+    region: r.name,
+    owner: r.ownerGuildId
+      ? guilds.find((g) => g.id === r.ownerGuildId)?.name
+      : "No owner",
+  }));
+  res.json(controlInfo);
+});
+
+// =======================
+// 64) WORLD EVENTS
+// =======================
+
+interface WorldEvent {
+  id: string;
+  title: string;
+  description: string;
+  regionId: string;
+  rewardXp: number;
+  active: boolean;
+  createdAt: Date;
+}
+
+const worldEvents: WorldEvent[] = [
+  {
+    id: uuid(),
+    title: "Zero-Day Storm",
+    description: "عاصفة ثغرات تضرب منطقة Zero-Day Wasteland",
+    regionId: worldRegions[3].id,
+    rewardXp: 400,
+    active: true,
+    createdAt: new Date(),
+  },
+  {
+    id: uuid(),
+    title: "Firewall Collapse",
+    description: "انهيار جدار ناري في Firewall Mountains",
+    regionId: worldRegions[1].id,
+    rewardXp: 250,
+    active: true,
+    createdAt: new Date(),
+  },
+];
+
+app.get("/api/world/events", requireAuth, (req, res) => {
+  res.json(worldEvents.filter((e) => e.active));
+});
+
+app.post("/api/world/events/participate/:id", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const event = worldEvents.find((e) => e.id === req.params.id);
+
+  if (!event) return res.status(404).json({ message: "Event not found" });
+
+  user.xp += event.rewardXp;
+
+  const { level, name } = getLevelFromXp(user.xp);
+  user.level = level;
+  user.levelName = name;
+
+  addTimelineEvent(
+    user.id,
+    "world-event",
+    "⚡",
+    `شارك في حدث عالمي: ${event.title}`
+  );
+
+  res.json({
+    message: "Event completed",
+    xpReward: event.rewardXp,
+  });
+});
+
+// =======================
+// 65) WORLD MAP SUMMARY
+// =======================
+
+app.get("/api/world/summary", requireAuth, (req, res) => {
+  const summary = {
+    regions: worldRegions.length,
+    controlledRegions: worldRegions.filter((r) => r.ownerGuildId).length,
+    activeEvents: worldEvents.filter((e) => e.active).length,
+    totalResources: worldRegions.reduce((acc, r) => acc + r.resources, 0),
+  };
+
+  res.json(summary);
+});
+
+// =======================
+// END OF CYBER WORLD MAP
+// =======================
+
+console.log("PART 6 LOADED — Cyber World Map Enabled");
+/****************************************************
+ * CYBER ACADEMY ULTIMATE — AI ATTACK GENERATOR (PART 7)
+ * نظام توليد هجمات تعليمية بالذكاء الاصطناعي (محاكاة فقط)
+ ****************************************************/
+
+// =======================
+// 66) AI ATTACK SCENARIOS
+// =======================
+
+type AttackVector =
+  | "phishing"
+  | "sql_injection"
+  | "xss"
+  | "brute_force"
+  | "ransomware"
+  | "dos"
+  | "credential_stuffing";
+
+interface AiAttackScenario {
+  id: string;
+  title: string;
+  vector: AttackVector;
+  difficulty: "Easy" | "Medium" | "Hard" | "Expert";
+  description: string;
+  steps: string[];
+  defenses: string[];
+  learningObjectives: string[];
+}
+
+const baseAttackTemplates: AiAttackScenario[] = [
+  {
+    id: uuid(),
+    title: "Phishing Email Campaign",
+    vector: "phishing",
+    difficulty: "Easy",
+    description: "محاكاة حملة تصيّد عبر البريد الإلكتروني ضد شركة وهمية.",
+    steps: [
+      "إنشاء رسالة بريد مزيفة",
+      "إرسالها إلى قائمة مستهدفين",
+      "جمع بيانات تسجيل الدخول الوهمية",
+    ],
+    defenses: [
+      "توعية المستخدمين",
+      "استخدام فلاتر البريد",
+      "تفعيل المصادقة متعددة العوامل",
+    ],
+    learningObjectives: [
+      "فهم آلية التصيّد",
+      "تمييز الرسائل المشبوهة",
+      "تطبيق سياسات حماية البريد",
+    ],
+  },
+  {
+    id: uuid(),
+    title: "SQL Injection on Login Form",
+    vector: "sql_injection",
+    difficulty: "Medium",
+    description: "محاكاة هجوم حقن SQL على نموذج تسجيل دخول بسيط.",
+    steps: [
+      "تحليل طلبات HTTP",
+      "تجربة إدخال payloads في حقول الإدخال",
+      "استخراج بيانات من قاعدة البيانات الوهمية",
+    ],
+    defenses: [
+      "استخدام prepared statements",
+      "التحقق من المدخلات",
+      "تقييد صلاحيات قاعدة البيانات",
+    ],
+    learningObjectives: [
+      "فهم حقن SQL",
+      "تطبيق أفضل ممارسات حماية قواعد البيانات",
+      "تحليل سجلات الهجوم",
+    ],
+  },
+  {
+    id: uuid(),
+    title: "Brute Force Attack on SSH",
+    vector: "brute_force",
+    difficulty: "Hard",
+    description: "محاكاة هجوم تخمين كلمات مرور على خدمة SSH وهمية.",
+    steps: [
+      "تجربة قائمة كلمات مرور",
+      "مراقبة محاولات الدخول",
+      "تحليل سجلات النظام",
+    ],
+    defenses: [
+      "تحديد عدد المحاولات",
+      "استخدام مفاتيح SSH",
+      "تفعيل مراقبة الدخول",
+    ],
+    learningObjectives: [
+      "فهم هجمات brute force",
+      "تطبيق سياسات كلمات المرور",
+      "استخدام أدوات مراقبة الدخول",
+    ],
+  },
+];
+
+// =======================
+// 67) AI ATTACK GENERATOR ENGINE
+// =======================
+
+interface GeneratedAttack {
+  id: string;
+  userId: string;
+  scenarioId: string;
+  title: string;
+  vector: AttackVector;
+  difficulty: string;
+  description: string;
+  steps: string[];
+  defenses: string[];
+  learningObjectives: string[];
+  generatedAt: Date;
+}
+
+const generatedAttacks: GeneratedAttack[] = [];
+
+function generateAttackForUser(
+  user: User,
+  preferredVector?: AttackVector,
+  preferredDifficulty?: "Easy" | "Medium" | "Hard" | "Expert"
+): GeneratedAttack {
+  let templatePool = baseAttackTemplates;
+
+  if (preferredVector) {
+    templatePool = templatePool.filter((t) => t.vector === preferredVector) || templatePool;
+  }
+
+  if (preferredDifficulty) {
+    templatePool =
+      templatePool.filter((t) => t.difficulty === preferredDifficulty) || templatePool;
+  }
+
+  const template =
+    templatePool[Math.floor(Math.random() * templatePool.length)] ||
+    baseAttackTemplates[0];
+
+  const difficultyBoost =
+    user.level >= 7 ? "Expert" : user.level >= 4 ? "Hard" : template.difficulty;
+
+  const attack: GeneratedAttack = {
+    id: uuid(),
+    userId: user.id,
+    scenarioId: template.id,
+    title: `[AI] ${template.title} (${difficultyBoost})`,
+    vector: template.vector,
+    difficulty: difficultyBoost,
+    description: template.description + " (محاكاة تعليمية فقط، لا يتم تنفيذ أي هجوم حقيقي).",
+    steps: template.steps.map(
+      (s, idx) => `Step ${idx + 1}: ${s} (في بيئة تدريبية آمنة)`
+    ),
+    defenses: template.defenses.map(
+      (d) => `Defense: ${d} (تطبيق عملي داخل المنصة)`
+    ),
+    learningObjectives: template.learningObjectives,
+    generatedAt: new Date(),
+  };
+
+  generatedAttacks.push(attack);
+  return attack;
+}
+
+// =======================
+// 68) API: GENERATE AI ATTACK SCENARIO
+// =======================
+
+app.post("/api/ai/attack/generate", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const { vector, difficulty } = req.body as {
+    vector?: AttackVector;
+    difficulty?: "Easy" | "Medium" | "Hard" | "Expert";
+  };
+
+  const attack = generateAttackForUser(user, vector, difficulty);
+
+  addTimelineEvent(
+    user.id,
+    "ai-attack",
+    "💣",
+    `تم إنشاء سيناريو هجوم تعليمي: ${attack.title}`
+  );
+
+  res.json(attack);
+});
+
+// =======================
+// 69) API: LIST GENERATED ATTACKS
+// =======================
+
+app.get("/api/ai/attack/list", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const list = generatedAttacks.filter((a) => a.userId === user.id);
+  res.json(list);
+});
+
+// =======================
+// 70) API: ATTACK DEFENSE QUIZ (Mock)
+// =======================
+
+interface AttackDefenseQuizResult {
+  id: string;
+  userId: string;
+  attackId: string;
+  score: number;
+  passed: boolean;
+  createdAt: Date;
+}
+
+const attackDefenseResults: AttackDefenseQuizResult[] = [];
+
+app.post("/api/ai/attack/defense-quiz/:attackId", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const attack = generatedAttacks.find((a) => a.id === req.params.attackId);
+  if (!attack) return res.status(404).json({ message: "Attack not found" });
+
+  const { answers } = req.body as { answers: string[] };
+
+  const score = Math.min(answers.length * 10, 100);
+  const passed = score >= 60;
+
+  const result: AttackDefenseQuizResult = {
+    id: uuid(),
+    userId: user.id,
+    attackId: attack.id,
+    score,
+    passed,
+    createdAt: new Date(),
+  };
+
+  attackDefenseResults.push(result);
+
+  if (passed) {
+    user.xp += 200;
+    const { level, name } = getLevelFromXp(user.xp);
+    user.level = level;
+    user.levelName = name;
+
+    addTimelineEvent(
+      user.id,
+      "ai-attack-defense",
+      "🛡️",
+      `اجتاز اختبار دفاع عن هجوم: ${attack.title} بنسبة ${score}%`
+    );
+  }
+
+  res.json(result);
+});
+
+// =======================
+// 71) API: AI ATTACK SUMMARY
+// =======================
+
+app.get("/api/ai/attack/summary", requireAuth, (req, res) => {
+  const user = getCurrentUser(req);
+  const myAttacks = generatedAttacks.filter((a) => a.userId === user.id);
+  const myResults = attackDefenseResults.filter((r) => r.userId === user.id);
+
+  const summary = {
+    totalGenerated: myAttacks.length,
+    totalQuizzes: myResults.length,
+    passedQuizzes: myResults.filter((r) => r.passed).length,
+    averageScore:
+      myResults.length > 0
+        ? Math.round(
+            myResults.reduce((acc, r) => acc + r.score, 0) / myResults.length
+          )
+        : 0,
+  };
+
+  res.json(summary);
+});
+
+// =======================
+// END OF AI ATTACK GENERATOR
+// =======================
+
+console.log("PART 7 LOADED — AI Attack Generator Enabled");
