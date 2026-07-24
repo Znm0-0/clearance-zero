@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="Clearance Zero — منصة تعليمية تفاعلية للأمن السيبراني من الصفر حتى الاحتراف">
+<meta name="description" content="Clearance Zero — منصة تعليمية تفاعلية للأمن السيتروني من الصفر حتى الاحتراف">
 <meta name="theme-color" content="#070a09">
 <title>Clearance Zero // تدريب الأمن السيبراني</title>
 <style>
@@ -57,17 +57,14 @@ a{color:var(--cyan);}
 ul{list-style:none;}
 img{max-width:100%;display:block;}
 
-/* scrollbars */
 ::-webkit-scrollbar{width:8px;height:8px;}
 ::-webkit-scrollbar-track{background:var(--void-2);}
 ::-webkit-scrollbar-thumb{background:var(--line-bright);border-radius:10px;}
 ::-webkit-scrollbar-thumb:hover{background:var(--signal-dim);}
 *{scrollbar-color:var(--line-bright) var(--void-2);scrollbar-width:thin;}
 
-/* focus visibility (accessibility floor) */
 :focus-visible{outline:2px solid var(--signal);outline-offset:2px;border-radius:2px;}
 
-/* ---------- utilities ---------- */
 .hidden{display:none !important;}
 .ltr{direction:ltr;unicode-bidi:isolate;text-align:left;}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);}
@@ -111,7 +108,6 @@ img{max-width:100%;display:block;}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);}
 .divider{height:1px;background:linear-gradient(90deg,transparent,var(--line-bright),transparent);margin:28px 0;}
 
-/* ---------- ambient background ---------- */
 #matrixCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:0;opacity:.5;pointer-events:none;}
 #scanlines{
   position:fixed;inset:0;z-index:1;pointer-events:none;
@@ -121,7 +117,6 @@ img{max-width:100%;display:block;}
 #vignette{position:fixed;inset:0;z-index:1;pointer-events:none;
   background:radial-gradient(ellipse at 50% 40%,transparent 40%,rgba(0,0,0,.55) 100%);}
 
-/* ---------- boot / hero ---------- */
 #bootScreen{
   position:fixed;inset:0;z-index:50;background:var(--void);
   display:flex;align-items:center;justify-content:center;padding:24px;
@@ -138,7 +133,6 @@ img{max-width:100%;display:block;}
 .boot-cta.show{opacity:1;transform:translateY(0);}
 .boot-title{font-family:var(--font-ar);direction:rtl;font-size:15px;color:var(--paper-dim);margin-bottom:14px;}
 
-/* ---------- topbar ---------- */
 .topbar{
   position:fixed;top:0;inset-inline:0;height:var(--topbar-h);z-index:30;
   display:flex;align-items:center;justify-content:space-between;padding-inline:14px;
@@ -163,7 +157,6 @@ img{max-width:100%;display:block;}
 .stat-chip b{color:var(--signal);font-weight:700;}
 .stat-chip.cyan b{color:var(--cyan);}
 
-/* ---------- side nav ---------- */
 .nav-overlay{
   position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:34;opacity:0;visibility:hidden;
   transition:opacity .25s var(--ease),visibility .25s;
@@ -220,12 +213,10 @@ img{max-width:100%;display:block;}
   .main-content{padding-inline-end:var(--nav-w);}
 }
 
-/* ---------- main content ---------- */
 .main-content{padding-top:var(--topbar-h);position:relative;z-index:5;min-height:100vh;}
 .view{max-width:920px;margin:0 auto;padding:28px 18px 90px;animation:viewIn .35s var(--ease);}
 @keyframes viewIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 
-/* ---------- dossier / file chrome ---------- */
 .file-chrome{
   font-family:var(--font-mono);direction:ltr;text-align:left;font-size:12px;color:var(--paper-faint);
   display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;
@@ -235,7 +226,6 @@ img{max-width:100%;display:block;}
 .file-chrome .path{color:var(--signal);}
 .file-chrome .path .sep{color:var(--paper-faint);}
 
-/* ---------- hub / home ---------- */
 .hero-panel{
   padding:26px 22px;border-radius:var(--radius-lg);border:1px solid var(--line);
   background:linear-gradient(145deg,var(--panel),var(--panel-2));position:relative;overflow:hidden;margin-bottom:26px;
@@ -269,7 +259,6 @@ img{max-width:100%;display:block;}
 .module-card-icon{font-size:22px;}
 .module-card-bonus{border-style:dashed;border-color:var(--cyan);}
 
-/* ---------- module detail ---------- */
 .module-head{margin-bottom:20px;}
 .module-head h1{font-size:clamp(20px,5vw,26px);margin-bottom:6px;}
 .module-head .desc{color:var(--paper-dim);font-size:14px;}
@@ -289,7 +278,6 @@ img{max-width:100%;display:block;}
 .warn-box{margin-top:12px;padding:14px 16px;border-inline-start:3px solid var(--warn);background:rgba(255,176,32,.1);border-radius:var(--radius);}
 .warn-box .lbl{font-family:var(--font-mono);font-size:10.5px;color:var(--warn);letter-spacing:.08em;margin-bottom:6px;display:block;}
 
-/* ---------- quiz ---------- */
 .quiz-gate{text-align:center;padding:26px 16px;border:1px dashed var(--line-bright);border-radius:var(--radius-lg);margin-top:10px;}
 .quiz-gate p{color:var(--paper-dim);font-size:13.5px;margin-bottom:14px;}
 .quiz-wrap{margin-top:10px;}
@@ -317,7 +305,6 @@ img{max-width:100%;display:block;}
 .quiz-result.fail .score{color:var(--alert);}
 .quiz-result p{color:var(--paper-dim);margin:8px 0 18px;}
 
-/* ---------- challenges hub ---------- */
 .challenge-grid{display:grid;grid-template-columns:1fr;gap:12px;}
 @media(min-width:640px){.challenge-grid{grid-template-columns:1fr 1fr;}}
 .challenge-card{
@@ -333,7 +320,6 @@ img{max-width:100%;display:block;}
 .challenge-card .pts{font-family:var(--font-mono);font-size:11px;color:var(--signal);}
 .challenge-back{margin-bottom:16px;}
 
-/* ---------- terminal ---------- */
 .term-window{border:1px solid var(--line-bright);border-radius:var(--radius-lg);overflow:hidden;background:#01100a;}
 .term-titlebar{display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--panel-2);border-bottom:1px solid var(--line);}
 .term-titlebar .dots{display:flex;gap:6px;}
@@ -353,7 +339,6 @@ img{max-width:100%;display:block;}
 }
 .term-hints{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;}
 
-/* ---------- phishing ---------- */
 .mail-card{border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;background:var(--panel);margin-bottom:16px;}
 .mail-head{padding:14px 16px;border-bottom:1px solid var(--line);background:var(--panel-2);}
 .mail-head .from{font-size:13.5px;font-weight:700;}
@@ -370,7 +355,6 @@ img{max-width:100%;display:block;}
 .flag-list li{font-size:12.5px;color:var(--paper-dim);padding-inline-start:16px;position:relative;}
 .flag-list li::before{content:"⚑";position:absolute;inset-inline-start:0;color:var(--warn);}
 
-/* ---------- password challenge ---------- */
 .pw-input-wrap{position:relative;}
 .pw-input{
   width:100%;padding:14px 16px;background:var(--void-2);border:1px solid var(--line-bright);border-radius:var(--radius);
@@ -386,7 +370,6 @@ img{max-width:100%;display:block;}
 .crack-card .v{font-family:var(--font-mono);font-size:15px;color:var(--signal);font-weight:700;direction:ltr;}
 .pw-tips{margin-top:16px;}
 
-/* ---------- decode / crypto ---------- */
 .cipher-box{padding:16px;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--panel);margin-bottom:14px;}
 .cipher-text{
   font-family:var(--font-mono);font-size:16px;letter-spacing:.04em;color:var(--signal);direction:ltr;
@@ -402,7 +385,6 @@ img{max-width:100%;display:block;}
 .playground-toggle{margin-top:26px;}
 .playground{margin-top:14px;padding:16px;border:1px dashed var(--line-bright);border-radius:var(--radius-lg);}
 
-/* ---------- sql injection sim ---------- */
 .fake-browser{border:1px solid var(--line-bright);border-radius:var(--radius-lg);overflow:hidden;}
 .fake-browser-bar{display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--panel-2);border-bottom:1px solid var(--line);}
 .fake-url{flex:1;font-family:var(--font-mono);font-size:11.5px;color:var(--paper-dim);direction:ltr;text-align:left;
@@ -426,7 +408,6 @@ img{max-width:100%;display:block;}
 .sqli-explain{margin-top:16px;padding:16px;border-radius:var(--radius-lg);background:var(--cyan-soft);border-inline-start:3px solid var(--cyan);display:none;}
 .sqli-explain.show{display:block;}
 
-/* ---------- log analysis ---------- */
 .log-console{border:1px solid var(--line-bright);border-radius:var(--radius-lg);overflow:hidden;background:#01100a;}
 .log-line{
   font-family:var(--font-mono);font-size:11.5px;direction:ltr;text-align:left;padding:8px 12px;
@@ -441,7 +422,6 @@ img{max-width:100%;display:block;}
 .log-summary{margin-top:14px;padding:14px;border-radius:var(--radius-lg);background:var(--panel);border:1px solid var(--line);display:none;}
 .log-summary.show{display:block;}
 
-/* ---------- boss challenge ---------- */
 .boss-header{text-align:center;padding:24px 16px;border:1px solid var(--alert);border-radius:var(--radius-lg);
   background:linear-gradient(160deg,rgba(255,77,106,.12),transparent);margin-bottom:20px;}
 .boss-header .skull{font-size:34px;}
@@ -453,7 +433,6 @@ img{max-width:100%;display:block;}
   display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;}
 .boss-stage.done .stage-num{background:var(--signal);border-color:var(--signal);color:#04140a;}
 
-/* ---------- badges ---------- */
 .badge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;margin-top:14px;}
 .badge-tile{padding:14px 10px;text-align:center;border:1px solid var(--line);border-radius:var(--radius-lg);background:var(--panel);}
 .badge-tile.earned{border-color:var(--signal-dim);background:var(--signal-soft);}
@@ -462,7 +441,6 @@ img{max-width:100%;display:block;}
 .badge-tile .nm{font-size:11.5px;color:var(--paper-dim);}
 .badge-tile.earned .nm{color:var(--paper);}
 
-/* ---------- toast / celebration ---------- */
 #toastLayer{position:fixed;top:calc(var(--topbar-h) + 12px);inset-inline:0;z-index:60;display:flex;flex-direction:column;align-items:center;gap:10px;pointer-events:none;}
 .toast{
   pointer-events:auto;min-width:260px;max-width:90vw;padding:14px 18px;border-radius:var(--radius-lg);
@@ -476,9 +454,7 @@ img{max-width:100%;display:block;}
 .toast .ico{font-size:26px;}
 .toast .ttl{font-size:13.5px;font-weight:700;}
 .toast .dsc{font-size:11.5px;color:var(--paper-dim);}
-.particle{position:absolute;border-radius:50%;pointer-events:none;}
 
-/* ---------- settings modal ---------- */
 .modal-overlay{
   position:fixed;inset:0;z-index:70;background:rgba(2,4,3,.75);backdrop-filter:blur(3px);
   display:flex;align-items:flex-end;justify-content:center;opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s;
@@ -507,7 +483,6 @@ img{max-width:100%;display:block;}
 .key-status.set{background:var(--signal-soft);color:var(--signal);}
 .key-status.unset{background:var(--alert-soft);color:var(--alert);}
 
-/* ---------- AI widget ---------- */
 .ai-fab{
   position:fixed;bottom:20px;inset-inline-start:20px;z-index:40;width:56px;height:56px;border-radius:50%;
   background:var(--signal);color:#04140a;font-size:24px;display:flex;align-items:center;justify-content:center;
@@ -551,7 +526,6 @@ img{max-width:100%;display:block;}
 .ai-empty{padding:20px 16px;text-align:center;}
 .ai-empty p{font-size:12.5px;color:var(--paper-dim);margin-bottom:12px;}
 
-/* ---------- glitch effect ---------- */
 .glitch{position:relative;display:inline-block;}
 .glitch.active::before,.glitch.active::after{
   content:attr(data-text);position:absolute;top:0;inset-inline-start:0;width:100%;height:100%;background:transparent;overflow:hidden;
@@ -561,15 +535,10 @@ img{max-width:100%;display:block;}
 @keyframes glitchTop{0%{transform:translate(0,0);}20%{transform:translate(-3px,-1px);}40%{transform:translate(3px,1px);}60%{transform:translate(-2px,0);}80%{transform:translate(2px,-1px);}100%{transform:translate(0,0);}}
 @keyframes glitchBot{0%{transform:translate(0,0);}20%{transform:translate(3px,1px);}40%{transform:translate(-3px,0);}60%{transform:translate(2px,1px);}80%{transform:translate(-2px,-1px);}100%{transform:translate(0,0);}}
 
-/* ---------- typewriter ---------- */
-.tw-cursor{display:inline-block;width:9px;height:1em;background:var(--signal);vertical-align:text-bottom;animation:blink .9s step-end infinite;margin-inline-start:2px;}
-
-/* ---------- reduced motion ---------- */
 @media(prefers-reduced-motion:reduce){
   *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;}
 }
 
-/* ---------- misc responsive ---------- */
 @media(max-width:420px){
   .hero-panel{padding:20px 16px;}
   .term-body{height:280px;}
@@ -689,22 +658,1321 @@ img{max-width:100%;display:block;}
 <script>
 'use strict';
 
-// كود مؤقت لتخطي شاشة Boot Screen عند الضغط على زر ابدأ
-document.addEventListener('DOMContentLoaded', () => {
+// ==================== APP STATE ====================
+const DEFAULT_STATE = {
+  completedModules: [],
+  completedQuizzes: {},
+  completedChallenges: {},
+  earnedBadges: [],
+  bossCompleted: false,
+  xp: 0,
+  settings: {
+    provider: 'anthropic',
+    model: 'claude-sonnet-5',
+    apiKey: ''
+  }
+};
+
+let APP = JSON.parse(JSON.stringify(DEFAULT_STATE));
+
+// ==================== EDUCATIONAL DATA ====================
+const MODULES_DATA = [
+  {
+    id: 'm1',
+    idx: '01',
+    title: 'مقدمة في الأمن السيبراني',
+    desc: 'فهم أساسيات الأمن السيبراني، أنواع التهديدات، ومصطلحات المجال.',
+    icon: '🛡️',
+    requiredModule: null,
+    lessons: [
+      { title: 'ما هو الأمن السيبراني؟', content: 'الأمن السيبراني هو ممارسة حماية الأنظمة والشبكات والبرامج من الهجمات الرقمية. تهدف هذه الهجمات عادةً إلى الوصول إلى المعلومات الحساسة أو تغييرها أو تدميرها، أو ابتزاز المال من المستخدمين، أو مقاطعة العمليات التجارية العادية.\n\nيشمل الأمن السيبراني عدة طبقات من الحماية تنتشر عبر أجهزة الكمبيوتر والشبكات والبرامج والبيانات التي يراد الحفاظ عليها.' },
+      { title: 'مصطلحات أساسية', content: '• التهديد (Threat): أي خطر محتمل قد يستغل ثغرة أمنية.\n• الثغرة (Vulnerability): نقطة ضعف في النظام يمكن استغلالها.\n• الاختراق (Breach): حادث يتم فيه الوصول غير المصرح به للبيانات.\n• التصيد (Phishing): محاولة خداع المستخدمين للحصول على معلومات حساسة.' },
+      { title: 'أنواع الهجمات الشائعة', content: '1. البرمجيات الخبيثة (Malware): فيروسات، ديدان، أحصنة طروادة.\n2. هجمات حجب الخدمة (DDoS): إغراق الخادم بطلبات وهمية.\n3. هجمات الوسيط (MITM): اعتراض الاتصالات بين طرفين.\n4. حقن SQL: إدخال استعلامات ضارة في قواعد البيانات.\n5. هجمات القوة العمياء (Brute Force): تخمين كلمات المرور.' }
+    ],
+    quiz: {
+      title: 'اختبار الوحدة الأولى',
+      questions: [
+        { q: 'ما الهدف الرئيسي للأمن السيبراني؟', options: ['حماية الأنظمة والبيانات', 'تسريع الإنترنت', 'تصميم المواقع', 'بيع البرامج'], correct: 0 },
+        { q: 'ما معنى مصطلح "ثغرة" في الأمن السيبراني؟', options: ['برنامج حماية', 'نقطة ضعف في النظام', 'نوع من الفيروسات', 'جهاز توجيه'], correct: 1 },
+        { q: 'ما هو هجوم التصيد (Phishing)؟', options: ['إغراق الخادم بالطلبات', 'تخمين كلمة المرور', 'خداع المستخدمين للحصول على معلوماتهم', 'حذف قاعدة البيانات'], correct: 2 },
+        { q: 'ما هو اختصار هجمات حجب الخدمة؟', options: ['SQL', 'MITM', 'DDoS', 'VPN'], correct: 2 }
+      ]
+    }
+  },
+  {
+    id: 'm2',
+    idx: '02',
+    title: 'كلمات المرور والمصادقة',
+    desc: 'تعلم كيفية إنشاء كلمات مرور قوية وفهم آليات المصادقة المختلفة.',
+    icon: '🔐',
+    requiredModule: 'm1',
+    lessons: [
+      { title: 'خصائص كلمة المرور القوية', content: 'كلمة المرور القوية يجب أن:\n• تتكون من 12 حرفاً على الأقل\n• تحتوي على أحرف كبيرة وصغيرة\n• تحتوي على أرقام ورموز خاصة\n• لا تحتوي على معلومات شخصية (اسم، تاريخ ميلاد)\n• تكون فريدة لكل حساب' },
+      { title: 'المصادقة الثنائية (2FA)', content: 'المصادقة الثنائية تضيف طبقة حماية إضافية. حتى لو عرف المخترق كلمة مرورك، فلن يستطيع الدخول بدون العامل الثاني مثل:\n• رمز يُرسل إلى هاتفك\n• تطبيق مصادقة (Google Authenticator)\n• مفتاح أمان فيزيائي (YubiKey)' },
+      { title: 'أدوات إدارة كلمات المرور', content: 'مدير كلمات المرور هو تطبيق يُخزّن كلمات مرورك بشكل آمن. أمثلة:\n• Bitwarden (مفتوح المصدر ومجاني)\n• 1Password\n• KeePassXC\n\nكل ما تحتاج لتذكره هو كلمة مرور رئيسية واحدة فقط.' }
+    ],
+    quiz: {
+      title: 'اختبار الوحدة الثانية',
+      questions: [
+        { q: 'ما الحد الأدنى الموصى به لطول كلمة المرور القوية؟', options: ['6 أحرف', '8 أحرف', '12 حرفاً', '20 حرفاً'], correct: 2 },
+        { q: 'ما فائدة المصادقة الثنائية؟', options: ['تسريع تسجيل الدخول', 'إضافة طبقة حماية إضافية', 'حذف كلمة المرور', 'تشفير الملفات'], correct: 1 },
+        { q: 'أي من هذه الأدوات هو مدير كلمات مرور مفتوح المصدر؟', options: ['Notepad', 'Bitwarden', 'Chrome', 'WhatsApp'], correct: 1 }
+      ]
+    }
+  },
+  {
+    id: 'm3',
+    idx: '03',
+    title: 'أساسيات الشبكات',
+    desc: 'فهم بروتوكولات الشبكات، المنافذ، ونماذج الاتصال المختلفة.',
+    icon: '🌐',
+    requiredModule: 'm2',
+    lessons: [
+      { title: 'نموذج OSI', content: 'نموذج OSI يتكون من 7 طبقات:\n1. الطبقة الفيزيائية (Physical)\n2. طبقة ربط البيانات (Data Link)\n3. طبقة الشبكة (Network)\n4. طبقة النقل (Transport)\n5. طبقة الجلسة (Session)\n6. طبقة العرض (Presentation)\n7. طبقة التطبيق (Application)' },
+      { title: 'بروتوكولات مهمة', content: '• HTTP/HTTPS: المنافذ 80/443 - تصفح الويب\n• SSH: المنفذ 22 - إدارة الخوادم عن بُعد\n• FTP: المنفذ 21 - نقل الملفات\n• DNS: المنفذ 53 - ترجمة أسماء النطاقات\n• SMTP: المنفذ 25 - إرسال البريد الإلكتروني' },
+      { title: 'جدار الحماية (Firewall)', content: 'جدار الحماية هو نظام أمني يراقب ويتحكم في حركة البيانات الواردة والصادرة بناءً على قواعد أمان محددة مسبقاً. يعمل كحاجز بين الشبكة الداخلية الموثوقة والشبكات الخارجية غير الموثوقة.' }
+    ],
+    quiz: {
+      title: 'اختبار الوحدة الثالثة',
+      questions: [
+        { q: 'كم عدد طبقات نموذج OSI؟', options: ['5', '6', '7', '8'], correct: 2 },
+        { q: 'ما رقم منفذ HTTPS؟', options: ['80', '443', '22', '53'], correct: 1 },
+        { q: 'ما وظيفة جدار الحماية؟', options: ['تسريع الإنترنت', 'مراقبة حركة البيانات والتحكم بها', 'تخزين الملفات', 'إرسال البريد'], correct: 1 }
+      ]
+    }
+  },
+  {
+    id: 'm4',
+    idx: '04',
+    title: 'مقدمة في الاختراق الأخلاقي',
+    desc: 'تعلم منهجيات الاختراق الأخلاقي ومراحل اختبار الاختراق.',
+    icon: '🎯',
+    requiredModule: 'm3',
+    lessons: [
+      { title: 'ما هو الاختراق الأخلاقي؟', content: 'الاختراق الأخلاقي هو ممارسة اختبار أمان الأنظمة بشكل قانوني ومصرح به لاكتشاف الثغرات قبل أن يستغلها المخترقون الخبيثون. يتم ذلك بموافقة صاحب النظام وضمن إطار قانوني محدد.' },
+      { title: 'مراحل اختبار الاختراق', content: '1. الاستطلاع (Reconnaissance): جمع المعلومات\n2. المسح (Scanning): فحص الأنظمة والمنافذ\n3. استغلال الثغرات (Exploitation)\n4. الحفاظ على الوصول (Maintaining Access)\n5. تغطية الآثار (Covering Tracks)\n6. كتابة التقرير (Reporting)' },
+      { title: 'أدوات أساسية', content: '• Nmap: مسح الشبكات والمنافذ\n• Burp Suite: اختبار تطبيقات الويب\n• Metasploit: إطار عمل لاختبار الاختراق\n• Wireshark: تحليل حزم الشبكة\n• John the Ripper: اختبار كلمات المرور' }
+    ],
+    quiz: {
+      title: 'اختبار الوحدة الرابعة',
+      questions: [
+        { q: 'ما الفرق بين المخترق الأخلاقي والمخترق الخبيث؟', options: ['لا يوجد فرق', 'الأخلاقي يعمل بموافقة قانونية', 'الأخلاقي يستخدم أدوات مختلفة', 'الخبيث أسرع'], correct: 1 },
+        { q: 'ما هي أول مرحلة في اختبار الاختراق؟', options: ['استغلال الثغرات', 'المسح', 'الاستطلاع', 'كتابة التقرير'], correct: 2 },
+        { q: 'ما الأداة المستخدمة لمسح الشبكات والمنافذ؟', options: ['Photoshop', 'Nmap', 'Word', 'Excel'], correct: 1 }
+      ]
+    }
+  },
+  {
+    id: 'm5',
+    idx: '05',
+    title: 'الهجمات الشائعة والحماية منها',
+    desc: 'دراسة تفصيلية لهجمات حقن SQL والتصيد الاحتيالي وتحليل السجلات.',
+    icon: '⚔️',
+    requiredModule: 'm4',
+    lessons: [
+      { title: 'هجمات حقن SQL', content: 'حقن SQL هو أسلوب هجومي يتم فيه إدخال استعلامات SQL ضارة في حقول الإدخال. مثال:\n• إدخال: \' OR 1=1 --\n• هذا قد يتجاوز نموذج تسجيل الدخول ويظهر جميع البيانات.\n\nالحماية: استخدام prepared statements والتحقق من المدخلات.' },
+      { title: 'التصيد الاحتيالي', content: 'التصيد الاحتيالي هو محاولة الحصول على معلومات حساسة عن طريق التظاهر بأنك جهة موثوقة. علامات التحذير:\n• عنوان بريد إلكتروني مشبوه\n• أخطاء إملائية\n• طلبات عاجلة\n• روابط غريبة\n• طلب معلومات شخصية' },
+      { title: 'تحليل السجلات', content: 'تحليل ملفات السجل (Log Analysis) هو عملية فحص سجلات النظام لاكتشاف الأنشطة المشبوهة. ابحث عن:\n• محاولات تسجيل دخول فاشلة متكررة\n• طلبات من عناوين IP غريبة\n• أوامر غير معتادة\n• أنماط حقن SQL أو XSS' }
+    ],
+    quiz: {
+      title: 'اختبار الوحدة الخامسة',
+      questions: [
+        { q: 'ما هو حقن SQL؟', options: ['برنامج لإدارة قواعد البيانات', 'إدخال استعلامات ضارة في حقول الإدخال', 'نوع من جدران الحماية', 'لغة برمجة'], correct: 1 },
+        { q: 'أي من هذه علامات التصيد الاحتيالي؟', options: ['عنوان بريد رسمي', 'عدم وجود أخطاء إملائية', 'روابط غريبة وطلبات عاجلة', 'توقيع إلكتروني رسمي'], correct: 2 },
+        { q: 'ما أفضل طريقة للحماية من حقن SQL؟', options: ['استخدام كلمة مرور قوية', 'استخدام prepared statements', 'تثبيت مضاد فيروسات', 'إغلاق المنفذ 80'], correct: 1 }
+      ]
+    }
+  }
+];
+
+const CHALLENGES_DATA = [
+  {
+    id: 'ch1',
+    title: 'فك التشفير - Base64',
+    desc: 'تم تشفير رسالة سرية بطريقة Base64. هل تستطيع فكها؟',
+    icon: '🔓',
+    xp: 50,
+    type: 'decode',
+    requiredModule: 'm1',
+    data: {
+      cipherText: 'TGVhcm5pbmcgc2VjdXJpdHkgaXMgZnVuIQ==',
+      answer: 'Learning security is fun!',
+      hints: ['تستخدم ترميز Base64', 'جرب فك التشفير أونلاين']
+    }
+  },
+  {
+    id: 'ch2',
+    title: 'تحليل بريد مشبوه',
+    desc: 'حدد ما إذا كان هذا البريد الإلكتروني تصيداً احتيالياً أم لا.',
+    icon: '📧',
+    xp: 75,
+    type: 'phishing',
+    requiredModule: 'm2',
+    data: {
+      from: 'bank-security@alert.com',
+      subject: '⚠️ تنبيه عاجل: تم تعليق حسابك',
+      body: 'عزيزي العميل،\n\nتم اكتشاف نشاط مشبوه في حسابك المصرفي. يرجى النقر على الرابط أدناه لتأكيد هويتك فوراً وإلا سيتم إغلاق حسابك.\n\nhttps://bank-secure-verify.tk/confirm\n\nشكراً لتعاونك،\nفريق أمن البنك',
+      flags: ['رابط مشبوه (.tk)', 'طلب عاجل', 'عنوان مرسل غريب', 'تهديد بإغلاق الحساب'],
+      isPhishing: true
+    }
+  },
+  {
+    id: 'ch3',
+    title: 'محاكاة طرفية',
+    desc: 'استخدم الأوامر الأساسية في الطرفية للعثور على الملف المخفي.',
+    icon: '💻',
+    xp: 100,
+    type: 'terminal',
+    requiredModule: 'm3',
+    data: {
+      scenario: 'أنت متصل بخادم. استخدم الأوامر للعثور على العلم المخفي.',
+      commands: {
+        'ls': 'Documents  Downloads  .secret  Pictures',
+        'ls -a': '.  ..  .secret  Documents  Downloads  Pictures',
+        'cd .secret': 'دخلت إلى المجلد المخفي!',
+        'ls .secret': 'flag.txt',
+        'cat .secret/flag.txt': '🎉 CLEARANCE{trm1nal_m4ster_2024}'
+      },
+      flag: 'CLEARANCE{trm1nal_m4ster_2024}'
+    }
+  },
+  {
+    id: 'ch4',
+    title: 'تحدي كلمة المرور',
+    desc: 'اختبر قوة كلمات المرور وتعرف على زمن اختراقها.',
+    icon: '🔑',
+    xp: 60,
+    type: 'password',
+    requiredModule: 'm2',
+    data: {}
+  },
+  {
+    id: 'ch5',
+    title: 'محاكاة حقن SQL',
+    desc: 'تجاوز نموذج تسجيل الدخول باستخدام حقن SQL.',
+    icon: '💉',
+    xp: 150,
+    type: 'sqli',
+    requiredModule: 'm5',
+    data: {
+      validPayloads: ["' OR 1=1 --", "' OR '1'='1", "admin' --", "' OR 1=1#", "admin' OR '1'='1"],
+      flag: 'CLEARANCE{sqli_bypass_master}'
+    }
+  },
+  {
+    id: 'ch6',
+    title: 'تحليل ملفات السجل',
+    desc: 'حلل سجلات الخادم لاكتشاف محاولة الاختراق.',
+    icon: '📋',
+    xp: 120,
+    type: 'log',
+    requiredModule: 'm5',
+    data: {
+      logs: [
+        { text: '192.168.1.10 - - [15/Jan/2024:10:00:01] "GET /index.html HTTP/1.1" 200', suspicious: false },
+        { text: '10.0.0.55 - - [15/Jan/2024:10:00:45] "GET /admin/login.php HTTP/1.1" 200', suspicious: false },
+        { text: '45.33.32.156 - - [15/Jan/2024:10:01:12] "GET /admin/login.php?user=admin\' OR 1=1 -- HTTP/1.1" 200', suspicious: true },
+        { text: '45.33.32.156 - - [15/Jan/2024:10:01:14] "GET /admin/dashboard.php HTTP/1.1" 200', suspicious: true },
+        { text: '45.33.32.156 - - [15/Jan/2024:10:01:20] "POST /admin/export.php HTTP/1.1" 200', suspicious: true },
+        { text: '192.168.1.10 - - [15/Jan/2024:10:02:00] "GET /logout.php HTTP/1.1" 302', suspicious: false }
+      ]
+    }
+  },
+  {
+    id: 'ch7',
+    title: 'تحدي الزعيم - اختراق كامل',
+    desc: 'تحدي شامل يختبر كل مهاراتك. يجب إنهاء جميع الوحدات أولاً.',
+    icon: '👑',
+    xp: 500,
+    type: 'boss',
+    requiredModule: 'm5',
+    data: {
+      stages: [
+        { title: 'فك تشفير المفتاح', desc: 'تم تشفير مفتاح الدخول. النص المشفر: V2VsY29tZSB0byB0aGUgZmluYWwgYm9zcyE=\nفك تشفير Base64 للحصول على الكلمة الأولى.', answer: 'Welcome to the final boss!' },
+        { title: 'تحليل البريد', desc: 'حدد: هل البريد من "admin@system-secure.co" بعنوان "تحديث كلمة المرور" ورابط "http://update-password.xyz" هو تصيد؟ (نعم/لا)', answer: 'نعم' },
+        { title: 'ثغرة SQL', desc: 'أدخل payload لتجاوز نموذج تسجيل الدخول:', answer: "' OR 1=1 --" }
+      ]
+    }
+  }
+];
+
+const BADGES_DATA = [
+  { id: 'badge1', name: 'المبتدئ', icon: '🌱', desc: 'أكمل الوحدة الأولى', condition: () => APP.completedModules.includes('m1') },
+  { id: 'badge2', name: 'حارس المرور', icon: '🔐', desc: 'أكمل تحدي كلمة المرور', condition: () => APP.completedChallenges['ch4'] },
+  { id: 'badge3', name: 'مفكك الشفرات', icon: '🔓', desc: 'أكمل تحدي Base64', condition: () => APP.completedChallenges['ch1'] },
+  { id: 'badge4', name: 'صائد التصيد', icon: '🎣', desc: 'أكمل تحدي البريد المشبوه', condition: () => APP.completedChallenges['ch2'] },
+  { id: 'badge5', name: 'محارب الطرفية', icon: '💻', desc: 'أكمل تحدي المحاكاة الطرفية', condition: () => APP.completedChallenges['ch3'] },
+  { id: 'badge6', name: 'مخترق قواعد البيانات', icon: '💉', desc: 'أكمل تحدي حقن SQL', condition: () => APP.completedChallenges['ch5'] },
+  { id: 'badge7', name: 'محقق السجلات', icon: '🔍', desc: 'أكمل تحدي تحليل السجلات', condition: () => APP.completedChallenges['ch6'] },
+  { id: 'badge8', name: 'الأسطورة', icon: '👑', desc: 'أكمل تحدي الزعيم', condition: () => APP.bossCompleted },
+  { id: 'badge9', name: 'خريج Clearance Zero', icon: '🎓', desc: 'أكمل جميع الوحدات', condition: () => MODULES_DATA.every(m => APP.completedModules.includes(m.id)) }
+];
+
+// ==================== PERSISTENCE ====================
+function saveState() {
+  localStorage.setItem('clearanceZero_state', JSON.stringify(APP));
+}
+
+function loadState() {
+  const saved = localStorage.getItem('clearanceZero_state');
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      APP = { ...DEFAULT_STATE, ...parsed, settings: { ...DEFAULT_STATE.settings, ...(parsed.settings || {}) } };
+    } catch(e) {
+      APP = JSON.parse(JSON.stringify(DEFAULT_STATE));
+    }
+  } else {
+    APP = JSON.parse(JSON.stringify(DEFAULT_STATE));
+  }
+}
+
+function resetProgress() {
+  APP = JSON.parse(JSON.stringify(DEFAULT_STATE));
+  saveState();
+  updateAllUI();
+  navigateTo('home');
+  showToast('🔄', 'تم', 'تمت إعادة تعيين كل التقدم');
+}
+
+// ==================== UI HELPERS ====================
+function showToast(ico, title, desc) {
+  const layer = document.getElementById('toastLayer');
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.innerHTML = `<span class="ico">${ico}</span><div><div class="ttl">${title}</div><div class="dsc">${desc}</div></div>`;
+  layer.appendChild(toast);
+  setTimeout(() => {
+    toast.classList.add('leaving');
+    setTimeout(() => toast.remove(), 400);
+  }, 3000);
+}
+
+function updateTopBar() {
+  document.getElementById('topLevel').textContent = calculateLevel();
+  document.getElementById('topXP').textContent = APP.xp;
+}
+
+function updateProgressUI() {
+  const totalModules = MODULES_DATA.length;
+  const completed = APP.completedModules.length;
+  const pct = totalModules > 0 ? Math.round((completed / totalModules) * 100) : 0;
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('overallProgressFill').style.width = pct + '%';
+  document.getElementById('levelLine').textContent = `LV.${calculateLevel()} // ${getLevelTitle()}`;
+  document.getElementById('navChallengeCount').textContent = Object.keys(APP.completedChallenges).length + '/' + CHALLENGES_DATA.length;
+  updateTopBar();
+}
+
+function calculateLevel() {
+  return Math.floor(APP.xp / 200) + 1;
+}
+
+function getLevelTitle() {
+  const lv = calculateLevel();
+  if (lv >= 10) return 'خبير سيبراني';
+  if (lv >= 7) return 'مخترق أخلاقي متقدم';
+  if (lv >= 5) return 'محلل أمني';
+  if (lv >= 3) return 'متدرب أمني';
+  return 'مستخدم مبتدئ';
+}
+
+function addXP(amount) {
+  APP.xp += amount;
+  saveState();
+  updateAllUI();
+  showToast('⭐', 'خبرة مكتسبة', `+${amount} XP`);
+}
+
+function completeModule(moduleId) {
+  if (!APP.completedModules.includes(moduleId)) {
+    APP.completedModules.push(moduleId);
+    addXP(100);
+    checkBadges();
+    saveState();
+  }
+}
+
+function completeChallenge(challengeId) {
+  if (!APP.completedChallenges[challengeId]) {
+    APP.completedChallenges[challengeId] = true;
+    const ch = CHALLENGES_DATA.find(c => c.id === challengeId);
+    if (ch) addXP(ch.xp);
+    checkBadges();
+    saveState();
+  }
+}
+
+function completeQuiz(moduleId) {
+  if (!APP.completedQuizzes[moduleId]) {
+    APP.completedQuizzes[moduleId] = true;
+    addXP(50);
+    checkBadges();
+    saveState();
+  }
+}
+
+function checkBadges() {
+  let newBadges = false;
+  BADGES_DATA.forEach(badge => {
+    if (!APP.earnedBadges.includes(badge.id) && badge.condition()) {
+      APP.earnedBadges.push(badge.id);
+      newBadges = true;
+      showToast('🎖️', 'وسم جديد!', badge.name);
+    }
+  });
+  if (newBadges) {
+    saveState();
+    updateAllUI();
+  }
+}
+
+function isModuleUnlocked(moduleId) {
+  const mod = MODULES_DATA.find(m => m.id === moduleId);
+  if (!mod) return false;
+  if (!mod.requiredModule) return true;
+  return APP.completedModules.includes(mod.requiredModule);
+}
+
+function isChallengeUnlocked(challengeId) {
+  const ch = CHALLENGES_DATA.find(c => c.id === challengeId);
+  if (!ch) return false;
+  if (!ch.requiredModule) return true;
+  return APP.completedModules.includes(ch.requiredModule);
+}
+
+function updateAllUI() {
+  updateProgressUI();
+  renderSideNav();
+  const currentView = document.getElementById('view').dataset.currentView;
+  if (currentView) {
+    const navMap = {
+      'home': renderHome,
+      'module': () => renderModule(document.getElementById('view').dataset.moduleId),
+      'challenges': renderChallengesHub,
+      'challenge': () => renderChallenge(document.getElementById('view').dataset.challengeId),
+      'badges': renderBadges
+    };
+    if (navMap[currentView]) navMap[currentView]();
+  }
+}
+
+// ==================== RENDERING ====================
+function renderSideNav() {
+  const list = document.getElementById('moduleNavList');
+  list.innerHTML = MODULES_DATA.map((mod, i) => {
+    const done = APP.completedModules.includes(mod.id);
+    const unlocked = isModuleUnlocked(mod.id);
+    const active = document.getElementById('view').dataset.moduleId === mod.id;
+    let cls = 'module-nav-item';
+    if (active) cls += ' active';
+    if (done) cls += ' done';
+    if (!unlocked) cls += ' locked';
+    if (unlocked) cls += ' clickable';
+    const statusIcon = done ? '<span class="nav-check">✓</span>' : (!unlocked ? '<span class="nav-lock">🔒</span>' : '');
+    return `
+      <li class="${cls}" data-module="${mod.id}" ${unlocked ? 'tabindex="0"' : ''}>
+        <span class="module-nav-idx">${mod.idx}</span>
+        <span class="module-nav-text">
+          <span class="module-nav-title">${mod.title}</span>
+          <span class="module-nav-sub">${done ? 'مكتمل' : (unlocked ? 'متاح' : 'مقفل')}</span>
+        </span>
+        ${statusIcon}
+      </li>`;
+  }).join('');
+
+  list.querySelectorAll('.module-nav-item.clickable').forEach(item => {
+    item.addEventListener('click', () => navigateTo('module', item.dataset.module));
+  });
+}
+
+function renderHome() {
+  const view = document.getElementById('view');
+  view.dataset.currentView = 'home';
+  const completedCount = APP.completedModules.length;
+  const challengeCount = Object.keys(APP.completedChallenges).length;
+  const badgeCount = APP.earnedBadges.length;
+
+  const unlockedModules = MODULES_DATA.filter(m => isModuleUnlocked(m.id));
+
+  view.innerHTML = `
+    <div class="file-chrome"><span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span><span class="path">home<span class="sep">/</span>dashboard</span></div>
+    <div class="hero-panel">
+      <h1 class="hero-h1">Clearance <span class="zero">Zero</span></h1>
+      <p class="hero-desc">منصة تدريب في الأمن السيبراني تبدأ من الصفر. تعلّم المفاهيم الأساسية، طبّق في تحديات عملية، واحصل على أوسمة الإنجاز.</p>
+      <div class="hero-stats-row">
+        <div class="mini-stat"><div class="num">${completedCount}/${MODULES_DATA.length}</div><div class="lbl">وحدة مكتملة</div></div>
+        <div class="mini-stat"><div class="num">${challengeCount}</div><div class="lbl">تحدي مكتمل</div></div>
+        <div class="mini-stat"><div class="num">${badgeCount}</div><div class="lbl">وسم</div></div>
+        <div class="mini-stat"><div class="num">${APP.xp}</div><div class="lbl">XP</div></div>
+      </div>
+    </div>
+    <div class="section-title"><h2>الوحدات التعليمية</h2><span class="line"></span></div>
+    <div class="module-grid">
+      ${MODULES_DATA.map(mod => {
+        const done = APP.completedModules.includes(mod.id);
+        const unlocked = isModuleUnlocked(mod.id);
+        let cls = 'module-card';
+        if (unlocked && !done) cls += ' clickable';
+        if (!unlocked) cls += ' locked';
+        return `
+          <div class="${cls}" data-module="${mod.id}">
+            <div class="module-card-top">
+              <span class="module-card-idx">${mod.idx} / 05</span>
+              <span class="module-card-icon">${mod.icon}</span>
+            </div>
+            <h3>${mod.title}</h3>
+            <p>${mod.desc}</p>
+            ${done ? '<span class="tag ok">✓ مكتمل</span>' : (!unlocked ? '<span class="tag locked">🔒 مقفل</span>' : '')}
+          </div>`;
+      }).join('')}
+    </div>`;
+
+  view.querySelectorAll('.module-card.clickable').forEach(card => {
+    card.addEventListener('click', () => navigateTo('module', card.dataset.module));
+  });
+}
+
+function renderModule(moduleId) {
+  const mod = MODULES_DATA.find(m => m.id === moduleId);
+  if (!mod) return navigateTo('home');
+
+  const view = document.getElementById('view');
+  view.dataset.currentView = 'module';
+  view.dataset.moduleId = moduleId;
+  const quizDone = APP.completedQuizzes[moduleId];
+  const moduleDone = APP.completedModules.includes(moduleId);
+
+  view.innerHTML = `
+    <div class="file-chrome"><span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span><span class="path">modules<span class="sep">/</span>${mod.idx}_${mod.id}</span></div>
+    <div class="module-head">
+      <h1>${mod.icon} ${mod.title}</h1>
+      <p class="desc">${mod.desc}</p>
+      ${moduleDone ? '<span class="tag ok">✓ مكتمل</span>' : ''}
+    </div>
+    ${mod.lessons.map((l, i) => `
+      <div class="lesson-section">
+        <h3><span class="ico">📖</span> ${i + 1}. ${l.title}</h3>
+        <p style="white-space:pre-wrap;">${l.content}</p>
+      </div>
+    `).join('')}
+    <div class="divider"></div>
+    <div id="quizArea">
+      ${quizDone ? `
+        <div class="quiz-result">
+          <div class="score">✅</div>
+          <p>لقد اجتزت اختبار هذه الوحدة بنجاح!</p>
+        </div>
+      ` : `
+        <div class="quiz-gate">
+          <p>اختبر معرفتك في ${mod.title}</p>
+          <button class="btn btn-cyan" id="startQuizBtn">بدء الاختبار 🧪</button>
+        </div>
+      `}
+    </div>`;
+
+  if (!quizDone) {
+    document.getElementById('startQuizBtn').addEventListener('click', () => startQuiz(mod));
+  }
+  renderSideNav();
+}
+
+function startQuiz(mod) {
+  const quizArea = document.getElementById('quizArea');
+  let currentQ = 0;
+  let score = 0;
+  let answered = false;
+
+  function showQuestion() {
+    if (currentQ >= mod.quiz.questions.length) {
+      showResults();
+      return;
+    }
+    const q = mod.quiz.questions[currentQ];
+    answered = false;
+    quizArea.innerHTML = `
+      <div class="quiz-wrap">
+        <div class="quiz-progress">سؤال ${currentQ + 1} من ${mod.quiz.questions.length}</div>
+        <div class="quiz-q">
+          <div class="quiz-q-text">${q.q}</div>
+          <div class="quiz-options">
+            ${q.options.map((opt, i) => `
+              <button class="quiz-opt" data-idx="${i}">
+                <span class="bullet"></span><span>${opt}</span>
+              </button>`).join('')}
+          </div>
+          <div class="quiz-explain" id="explain"></div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:10px;">
+          <button id="nextBtn" class="btn btn-cyan btn-block" style="display:none;">التالي ➜</button>
+        </div>
+      </div>`;
+
+    const explain = document.getElementById('explain');
+    const nextBtn = document.getElementById('nextBtn');
+
+    quizArea.querySelectorAll('.quiz-opt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (answered) return;
+        answered = true;
+        const idx = parseInt(btn.dataset.idx);
+        const isCorrect = idx === q.correct;
+
+        quizArea.querySelectorAll('.quiz-opt').forEach(b => b.classList.add('disabled'));
+
+        if (isCorrect) {
+          btn.classList.add('correct');
+          score++;
+          explain.textContent = '✓ إجابة صحيحة!';
+          explain.style.color = 'var(--signal)';
+        } else {
+          btn.classList.add('wrong');
+          quizArea.querySelector(`.quiz-opt[data-idx="${q.correct}"]`).classList.add('correct');
+          explain.textContent = `✗ الإجابة الصحيحة: ${q.options[q.correct]}`;
+          explain.style.color = 'var(--alert)';
+        }
+        explain.classList.add('show');
+        nextBtn.style.display = 'flex';
+      });
+    });
+
+    nextBtn.addEventListener('click', () => {
+      currentQ++;
+      showQuestion();
+    });
+  }
+
+  function showResults() {
+    const pct = Math.round((score / mod.quiz.questions.length) * 100);
+    const passed = pct >= 70;
+    quizArea.innerHTML = `
+      <div class="quiz-result ${passed ? '' : 'fail'}">
+        <div class="score">${score}/${mod.quiz.questions.length}</div>
+        <p>${passed ? '🎉 أحسنت! لقد اجتزت الاختبار.' : '😞 حاول مرة أخرى. تحتاج 70% على الأقل للنجاح.'}</p>
+        ${passed ? `<button class="btn btn-solid" id="finishQuizBtn">إنهاء الوحدة 🏁</button>` : `<button class="btn btn-cyan" id="retryQuizBtn">إعادة المحاولة 🔄</button>`}
+      </div>`;
+
+    if (passed) {
+      document.getElementById('finishQuizBtn').addEventListener('click', () => {
+        completeQuiz(mod.id);
+        completeModule(mod.id);
+        updateAllUI();
+        renderModule(mod.id);
+        showToast('🏆', 'أحسنت!', `أكملت ${mod.title} +100XP`);
+      });
+    } else {
+      document.getElementById('retryQuizBtn').addEventListener('click', () => {
+        currentQ = 0;
+        score = 0;
+        showQuestion();
+      });
+    }
+  }
+
+  showQuestion();
+}
+
+function renderChallengesHub() {
+  const view = document.getElementById('view');
+  view.dataset.currentView = 'challenges';
+
+  view.innerHTML = `
+    <div class="file-chrome"><span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span><span class="path">challenges<span class="sep">/</span>hub</span></div>
+    <div class="module-head">
+      <h1>⚡ مركز التحديات</h1>
+      <p class="desc">تحديات عملية لاختبار مهاراتك في سيناريوهات حقيقية.</p>
+    </div>
+    <div class="challenge-grid">
+      ${CHALLENGES_DATA.map(ch => {
+        const done = APP.completedChallenges[ch.id];
+        const unlocked = isChallengeUnlocked(ch.id);
+        let cls = 'challenge-card';
+        if (unlocked && !done) cls += ' clickable';
+        if (!unlocked) cls += ' locked';
+        return `
+          <div class="${cls}" data-challenge="${ch.id}">
+            <div class="top-row"><span class="ico">${ch.icon}</span><span class="pts">${ch.xp}XP</span></div>
+            <h3>${ch.title}</h3>
+            <p>${ch.desc}</p>
+            ${done ? '<span class="tag ok" style="margin-top:8px;">✓ مكتمل</span>' : (!unlocked ? '<span class="tag locked" style="margin-top:8px;">🔒 مقفل</span>' : '')}
+          </div>`;
+      }).join('')}
+    </div>`;
+
+  view.querySelectorAll('.challenge-card.clickable').forEach(card => {
+    card.addEventListener('click', () => navigateTo('challenge', card.dataset.challenge));
+  });
+}
+
+function renderChallenge(challengeId) {
+  const ch = CHALLENGES_DATA.find(c => c.id === challengeId);
+  if (!ch) return navigateTo('challenges');
+
+  const view = document.getElementById('view');
+  view.dataset.currentView = 'challenge';
+  view.dataset.challengeId = challengeId;
+  const done = APP.completedChallenges[challengeId];
+
+  let contentHTML = '';
+  switch(ch.type) {
+    case 'decode': contentHTML = renderDecodeChallenge(ch, done); break;
+    case 'phishing': contentHTML = renderPhishingChallenge(ch, done); break;
+    case 'terminal': contentHTML = renderTerminalChallenge(ch, done); break;
+    case 'password': contentHTML = renderPasswordChallenge(ch, done); break;
+    case 'sqli': contentHTML = renderSQLiChallenge(ch, done); break;
+    case 'log': contentHTML = renderLogChallenge(ch, done); break;
+    case 'boss': contentHTML = renderBossChallenge(ch, done); break;
+    default: contentHTML = '<p>نوع التحدي غير معروف</p>';
+  }
+
+  view.innerHTML = `
+    <div class="challenge-back"><button class="btn btn-ghost btn-sm" id="backToChallenges">← العودة للتحديات</button></div>
+    ${done ? '<span class="tag ok" style="margin-bottom:12px;">✓ تم إكمال هذا التحدي</span>' : ''}
+    <div class="module-head"><h1>${ch.icon} ${ch.title}</h1><p class="desc">${ch.desc} | ${ch.xp}XP</p></div>
+    ${contentHTML}`;
+
+  document.getElementById('backToChallenges').addEventListener('click', () => navigateTo('challenges'));
+
+  if (!done) {
+    switch(ch.type) {
+      case 'decode': initDecodeChallenge(ch); break;
+      case 'phishing': initPhishingChallenge(ch); break;
+      case 'terminal': initTerminalChallenge(ch); break;
+      case 'password': initPasswordChallenge(ch); break;
+      case 'sqli': initSQLiChallenge(ch); break;
+      case 'log': initLogChallenge(ch); break;
+      case 'boss': initBossChallenge(ch); break;
+    }
+  }
+}
+
+// ===== DECODE CHALLENGE =====
+function renderDecodeChallenge(ch, done) {
+  return `
+    <div class="cipher-box">
+      <span class="eyebrow">نص مشفر</span>
+      <div class="cipher-text">${ch.data.cipherText}</div>
+      ${done ? '<span class="tag ok">الإجابة: ' + ch.data.answer + '</span>' : `
+        <div class="cipher-answer-row">
+          <input class="cipher-input" id="decodeInput" placeholder="أدخل النص المفكوك...">
+          <button class="btn btn-cyan" id="decodeCheckBtn">تحقق ✓</button>
+        </div>
+        <button class="btn btn-ghost btn-sm" id="decodeHintBtn" style="margin-top:8px;">💡 تلميح</button>
+        <div class="hint-box" id="decodeHint"></div>
+      `}
+    </div>`;
+}
+function initDecodeChallenge(ch) {
+  document.getElementById('decodeCheckBtn').addEventListener('click', () => {
+    const input = document.getElementById('decodeInput').value.trim();
+    if (input.toLowerCase() === ch.data.answer.toLowerCase()) {
+      completeChallenge(ch.id);
+      showToast('🎉', 'أحسنت!', 'تم فك التشفير بنجاح');
+      renderChallenge(ch.id);
+    } else {
+      showToast('❌', 'خطأ', 'حاول مرة أخرى');
+    }
+  });
+  let hintIdx = 0;
+  document.getElementById('decodeHintBtn').addEventListener('click', () => {
+    const hintBox = document.getElementById('decodeHint');
+    hintBox.textContent = ch.data.hints[hintIdx % ch.data.hints.length];
+    hintBox.classList.add('show');
+    hintIdx++;
+  });
+}
+
+// ===== PHISHING CHALLENGE =====
+function renderPhishingChallenge(ch, done) {
+  return `
+    <div class="mail-card">
+      <div class="mail-head">
+        <div class="from">${ch.data.from}</div>
+        <div class="addr">from: ${ch.data.from}</div>
+        <div class="subj">${ch.data.subject}</div>
+      </div>
+      <div class="mail-body">${ch.data.body}</div>
+      ${!done ? `
+        <div class="mail-actions">
+          <button class="btn btn-danger" id="phishYes">⚠️ تصيد</button>
+          <button class="btn btn-ghost" id="phishNo">✓ آمن</button>
+        </div>` : ''}
+      <div class="mail-verdict right" id="phishVerdict" style="display:none;">
+        ${done ? '<strong>✓ تصيد احتيالي!</strong>' : ''}
+        <p>علامات التصيد:</p>
+        <ul class="flag-list">${ch.data.flags.map(f => `<li>${f}</li>`).join('')}</ul>
+      </div>
+    </div>`;
+}
+function initPhishingChallenge(ch) {
+  const verdict = document.getElementById('phishVerdict');
+  document.getElementById('phishYes').addEventListener('click', () => {
+    verdict.classList.add('show', 'right');
+    completeChallenge(ch.id);
+    showToast('🎉', 'صحيح!', 'هذا بريد تصيد احتيالي');
+    renderChallenge(ch.id);
+  });
+  document.getElementById('phishNo').addEventListener('click', () => {
+    verdict.classList.add('show', 'wrong');
+    verdict.innerHTML = '<strong>✗ خطأ!</strong><p>هذا البريد تصيد احتيالي بالفعل.</p><ul class="flag-list">' + ch.data.flags.map(f => `<li>${f}</li>`).join('') + '</ul>';
+    setTimeout(() => renderChallenge(ch.id), 2000);
+  });
+}
+
+// ===== TERMINAL CHALLENGE =====
+function renderTerminalChallenge(ch, done) {
+  return `
+    <div class="term-window">
+      <div class="term-titlebar"><div class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div><span class="ttl">terminal — clearance-zero</span></div>
+      <div class="term-body" id="termBody">
+        <div class="term-line info">${ch.data.scenario}</div>
+        <div class="term-line">guest@cz:~$ </div>
+      </div>
+      ${!done ? `<div class="term-inputrow"><span class="term-prompt">$</span><input class="term-input" id="termInput" placeholder="أدخل أمراً..." autofocus></div>` : '<div class="term-line info" style="padding:10px 14px;">🏁 التحدي مكتمل</div>'}
+      ${!done ? `<div class="term-hints" style="padding:10px 14px;"><button class="btn btn-ghost btn-sm" id="termHintBtn">💡 تلميح</button></div>` : ''}
+    </div>`;
+}
+function initTerminalChallenge(ch) {
+  const body = document.getElementById('termBody');
+  const input = document.getElementById('termInput');
+  const cmds = ch.data.commands;
+
+  function addLine(text, cls = '') {
+    const line = document.createElement('div');
+    line.className = 'term-line ' + cls;
+    line.textContent = text;
+    body.appendChild(line);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const cmd = input.value.trim().toLowerCase();
+      addLine('$ ' + cmd, 'cmd');
+      input.value = '';
+
+      if (cmds[cmd]) {
+        addLine(cmds[cmd], 'info');
+        if (cmds[cmd].includes('CLEARANCE{')) {
+          completeChallenge(ch.id);
+          showToast('🏆', 'علم!', 'وجدت العلم المخفي');
+          renderChallenge(ch.id);
+        }
+      } else {
+        addLine('الأمر غير معروف: ' + cmd, 'err');
+      }
+    }
+  });
+
+  document.getElementById('termHintBtn').addEventListener('click', () => {
+    addLine('تلميح: جرب الأمر ls ثم ls -a', 'info');
+  });
+}
+
+// ===== PASSWORD CHALLENGE =====
+function renderPasswordChallenge(ch, done) {
+  return `
+    <div class="pw-input-wrap">
+      <input class="pw-input" id="pwInput" type="text" placeholder="أدخل كلمة مرور لاختبار قوتها...">
+    </div>
+    <div class="pw-meter"><div class="pw-meter-fill" id="pwMeterFill"></div></div>
+    <div class="pw-verdict" id="pwVerdict"></div>
+    ${!done ? `<p style="margin-top:12px;color:var(--paper-dim);font-size:12.5px;">أدخل كلمة مرور تتكون من 12 حرفاً على الأقل وتحتوي على أحرف كبيرة وصغيرة وأرقام ورموز.</p>
+    <button class="btn btn-cyan btn-sm" id="pwCompleteBtn" style="display:none;">إكمال التحدي ✓</button>` : '<span class="tag ok" style="margin-top:12px;">✓ تم</span>'}
+    <div class="crack-grid" id="crackGrid" style="display:none;"></div>`;
+}
+function initPasswordChallenge(ch) {
+  const input = document.getElementById('pwInput');
+  const fill = document.getElementById('pwMeterFill');
+  const verdict = document.getElementById('pwVerdict');
+  const completeBtn = document.getElementById('pwCompleteBtn');
+  const crackGrid = document.getElementById('crackGrid');
+
+  input.addEventListener('input', () => {
+    const pw = input.value;
+    let strength = 0;
+    if (pw.length >= 8) strength += 20;
+    if (pw.length >= 12) strength += 20;
+    if (/[a-z]/.test(pw) && /[A-Z]/.test(pw)) strength += 20;
+    if (/\d/.test(pw)) strength += 20;
+    if (/[^a-zA-Z0-9]/.test(pw)) strength += 20;
+
+    fill.style.width = strength + '%';
+    if (strength <= 40) { fill.style.background = 'var(--alert)'; verdict.textContent = 'ضعيفة جداً'; verdict.style.color = 'var(--alert)'; }
+    else if (strength <= 80) { fill.style.background = 'var(--warn)'; verdict.textContent = 'متوسطة'; verdict.style.color = 'var(--warn)'; }
+    else { fill.style.background = 'linear-gradient(90deg, var(--signal-dim), var(--signal))'; verdict.textContent = 'قوية ✓'; verdict.style.color = 'var(--signal)'; }
+
+    if (strength >= 100) {
+      completeBtn.style.display = 'inline-flex';
+      crackGrid.style.display = 'grid';
+      crackGrid.innerHTML = `
+        <div class="crack-card"><div class="t">زمن الاختراق</div><div class="v">${pw.length >= 16 ? 'آلاف السنين' : 'قرون'}</div></div>
+        <div class="crack-card"><div class="t">الطول</div><div class="v">${pw.length} حرف</div></div>
+        <div class="crack-card"><div class="t">التقييم</div><div class="v">ممتاز</div></div>`;
+    } else {
+      completeBtn.style.display = 'none';
+      crackGrid.style.display = 'none';
+    }
+  });
+
+  completeBtn.addEventListener('click', () => {
+    completeChallenge(ch.id);
+    showToast('🔐', 'أحسنت!', 'كلمة مرور قوية جداً');
+    renderChallenge(ch.id);
+  });
+}
+
+// ===== SQLi CHALLENGE =====
+function renderSQLiChallenge(ch, done) {
+  return `
+    <div class="fake-browser">
+      <div class="fake-browser-bar"><div class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div><div class="fake-url">http://target-site.local/login.php</div></div>
+      <div class="login-mock">
+        <h3>تسجيل الدخول</h3>
+        <p class="sub">أدخل بيانات الدخول (أو تجاوز النموذج!)</p>
+        <div class="login-field"><label>اسم المستخدم</label><input id="sqliUser" type="text" value="admin"></div>
+        <div class="login-field"><label>كلمة المرور</label><input id="sqliPass" type="text" placeholder="أدخل payload هنا..."></div>
+        <button class="btn btn-danger btn-block" id="sqliLoginBtn">تسجيل الدخول</button>
+        <div class="query-preview" id="sqliQuery">SELECT * FROM users WHERE username='<span class="k">admin</span>' AND password='<span class="k"></span>'</div>
+        <div class="sqli-result" id="sqliResult"></div>
+      </div>
+    </div>
+    <div class="sqli-explain" id="sqliExplain"></div>`;
+}
+function initSQLiChallenge(ch) {
+  const passInput = document.getElementById('sqliPass');
+  const queryPreview = document.getElementById('sqliQuery');
+  const resultDiv = document.getElementById('sqliResult');
+  const explainDiv = document.getElementById('sqliExplain');
+
+  passInput.addEventListener('input', () => {
+    queryPreview.innerHTML = `SELECT * FROM users WHERE username='<span class="k">admin</span>' AND password='<span class="k">${passInput.value}</span>'`;
+  });
+
+  document.getElementById('sqliLoginBtn').addEventListener('click', () => {
+    const payload = passInput.value.trim();
+    const isValid = ch.data.validPayloads.some(vp => payload.toLowerCase().replace(/\s+/g, ' ') === vp.toLowerCase().replace(/\s+/g, ' '));
+    if (isValid) {
+      resultDiv.className = 'sqli-result bypass show';
+      resultDiv.innerHTML = '⚠️ <strong>تم تجاوز المصادقة!</strong> تم تسجيل الدخول كمسؤول.';
+      explainDiv.className = 'sqli-explain show';
+      explainDiv.innerHTML = '<strong>🎉 أحسنت!</strong> استخدمت حقن SQL لتجاوز نموذج تسجيل الدخول. الثغرة هنا أن المدخلات تُمرر مباشرة إلى استعلام SQL بدون تنظيف.';
+      completeChallenge(ch.id);
+      showToast('💉', 'نجاح!', 'تم استغلال ثغرة SQL بنجاح');
+      setTimeout(() => renderChallenge(ch.id), 2000);
+    } else {
+      resultDiv.className = 'sqli-result fail show';
+      resultDiv.textContent = '❌ فشل تسجيل الدخول. حاول مجدداً.';
+    }
+  });
+}
+
+// ===== LOG CHALLENGE =====
+function renderLogChallenge(ch, done) {
+  return `
+    <div class="log-console">
+      <div class="log-toolbar">
+        <span style="font-family:var(--font-mono);font-size:11px;color:var(--paper-dim);">حدد السطور المشبوهة بالنقر عليها</span>
+        <span id="logCounter" style="font-family:var(--font-mono);font-size:11px;color:var(--signal);margin-inline-start:auto;">0/${ch.data.logs.filter(l=>l.suspicious).length}</span>
+      </div>
+      ${ch.data.logs.map((l, i) => `<div class="log-line ${done && l.suspicious ? 'revealed-bad' : (done && !l.suspicious ? 'revealed-ok' : '')}" data-idx="${i}">${l.text}</div>`).join('')}
+    </div>
+    ${!done ? '<button class="btn btn-cyan btn-block" id="logCheckBtn" style="margin-top:12px;">تحقق من الإجابة ✓</button>' : '<span class="tag ok" style="margin-top:12px;">✓ تم تحديد جميع السجلات المشبوهة</span>'}
+    <div class="log-summary" id="logSummary"></div>`;
+}
+function initLogChallenge(ch) {
+  const lines = document.querySelectorAll('.log-line');
+  const counter = document.getElementById('logCounter');
+  const suspiciousTotal = ch.data.logs.filter(l => l.suspicious).length;
+  let flagged = new Set();
+
+  lines.forEach(line => {
+    line.addEventListener('click', () => {
+      const idx = parseInt(line.dataset.idx);
+      if (flagged.has(idx)) {
+        flagged.delete(idx);
+        line.classList.remove('flagged');
+      } else {
+        flagged.add(idx);
+        line.classList.add('flagged');
+      }
+      counter.textContent = `${flagged.size}/${suspiciousTotal}`;
+    });
+  });
+
+  document.getElementById('logCheckBtn').addEventListener('click', () => {
+    const correct = ch.data.logs.reduce((set, l, i) => { if (l.suspicious) set.add(i); return set; }, new Set());
+    const allCorrect = correct.size === flagged.size && [...correct].every(v => flagged.has(v));
+    const summary = document.getElementById('logSummary');
+    summary.classList.add('show');
+    if (allCorrect) {
+      summary.innerHTML = '<strong style="color:var(--signal);">✓ صحيح!</strong> تم تحديد جميع السجلات المشبوهة. لاحظ محاولة حقن SQL من العنوان 45.33.32.156.';
+      completeChallenge(ch.id);
+      showToast('🔍', 'محقق بارع!', 'حددت جميع التهديدات');
+      setTimeout(() => renderChallenge(ch.id), 2000);
+    } else {
+      summary.innerHTML = '<strong style="color:var(--alert);">✗ غير دقيق.</strong> بعض السجلات المحددة غير صحيحة أو فاتتك سجلات مشبوهة. حاول مجدداً.';
+    }
+  });
+}
+
+// ===== BOSS CHALLENGE =====
+function renderBossChallenge(ch, done) {
+  return `
+    <div class="boss-header"><div class="skull">💀</div><h2 style="margin-top:8px;">تحدي الزعيم</h2><p>يجب إكمال جميع الوحدات أولاً.</p></div>
+    ${ch.data.stages.map((s, i) => {
+      let stateClass = '';
+      if (done) stateClass = 'done';
+      else if (i === 0) stateClass = 'active';
+      return `
+        <div class="boss-stage ${stateClass}" id="bossStage${i}">
+          <div class="stage-title"><span class="stage-num">${i+1}</span>${s.title}</div>
+          <p style="font-size:12.5px;color:var(--paper-dim);margin-bottom:10px;white-space:pre-wrap;">${s.desc}</p>
+          ${stateClass === 'active' ? `<input class="cipher-input" id="bossInput${i}" placeholder="أدخل الإجابة..."><button class="btn btn-cyan btn-sm" id="bossCheck${i}" style="margin-top:8px;">تحقق ✓</button>` : ''}
+        </div>`;
+    }).join('')}
+    ${done ? '<span class="tag ok" style="margin-top:12px;">👑 تحدّي الزعيم مكتمل</span>' : ''}`;
+}
+function initBossChallenge(ch) {
+  let currentStage = 0;
+  setupStage(currentStage);
+
+  function setupStage(idx) {
+    const input = document.getElementById('bossInput' + idx);
+    const btn = document.getElementById('bossCheck' + idx);
+    if (!input || !btn) return;
+
+    btn.addEventListener('click', () => {
+      const answer = input.value.trim();
+      const correctAnswer = ch.data.stages[idx].answer;
+      if (answer.toLowerCase().replace(/\s+/g, ' ') === correctAnswer.toLowerCase().replace(/\s+/g, ' ')) {
+        document.getElementById('bossStage' + idx).classList.add('done');
+        document.getElementById('bossStage' + idx).classList.remove('active');
+        currentStage++;
+        if (currentStage < ch.data.stages.length) {
+          document.getElementById('bossStage' + currentStage).classList.add('active');
+          setupStage(currentStage);
+        } else {
+          APP.bossCompleted = true;
+          completeChallenge(ch.id);
+          showToast('👑', 'أسطورة!', 'أكملت تحدي الزعيم!');
+          renderChallenge(ch.id);
+        }
+      } else {
+        showToast('❌', 'خطأ', 'حاول مرة أخرى');
+      }
+    });
+  }
+}
+
+function renderBadges() {
+  const view = document.getElementById('view');
+  view.dataset.currentView = 'badges';
+  view.innerHTML = `
+    <div class="file-chrome"><span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span><span class="path">badges<span class="sep">/</span>collection</span></div>
+    <div class="module-head"><h1>🎖️ الأوسمة</h1><p class="desc">الأوسمة التي حصلت عليها خلال رحلتك.</p></div>
+    <div class="badge-grid">
+      ${BADGES_DATA.map(b => {
+        const earned = APP.earnedBadges.includes(b.id);
+        return `<div class="badge-tile ${earned ? 'earned' : ''}"><div class="ico">${b.icon}</div><div class="nm">${b.name}</div><div style="font-size:10px;color:var(--paper-faint);">${b.desc}</div>${earned ? '<div style="font-size:10px;color:var(--signal);margin-top:4px;">✓ مكتسب</div>' : ''}</div>`;
+      }).join('')}
+    </div>`;
+}
+
+// ==================== NAVIGATION ====================
+function navigateTo(view, param) {
+  const viewEl = document.getElementById('view');
+  switch(view) {
+    case 'home': renderHome(); break;
+    case 'module': renderModule(param); break;
+    case 'challenges': renderChallengesHub(); break;
+    case 'challenge': renderChallenge(param); break;
+    case 'badges': renderBadges(); break;
+    default: renderHome();
+  }
+  renderSideNav();
+  closeSideNav();
+}
+
+// ==================== AI WIDGET ====================
+function initAIWidget() {
+  const aiPanel = document.getElementById('aiPanel');
+  const aiToggle = document.getElementById('aiToggleBtn');
+  const closeAi = document.getElementById('closeAi');
+  const aiInput = document.getElementById('aiInput');
+  const aiSend = document.getElementById('aiSendBtn');
+  const aiMessages = document.getElementById('aiMessages');
+  const aiSuggest = document.getElementById('aiSuggestRow');
+  const aiDot = document.getElementById('aiDot');
+
+  function addMessage(text, type) {
+    const div = document.createElement('div');
+    div.className = 'ai-msg ' + type;
+    div.textContent = text;
+    aiMessages.appendChild(div);
+    aiMessages.scrollTop = aiMessages.scrollHeight;
+  }
+
+  function showTyping() {
+    const div = document.createElement('div');
+    div.className = 'ai-typing';
+    div.innerHTML = '<span></span><span></span><span></span>';
+    div.id = 'typingIndicator';
+    aiMessages.appendChild(div);
+    aiMessages.scrollTop = aiMessages.scrollHeight;
+  }
+
+  function hideTyping() {
+    const el = document.getElementById('typingIndicator');
+    if (el) el.remove();
+  }
+
+  aiToggle.addEventListener('click', () => aiPanel.classList.toggle('open'));
+  closeAi.addEventListener('click', () => aiPanel.classList.remove('open'));
+
+  const suggestions = ['ما هو حقن SQL؟', 'كيف أحمي كلمة المرور؟', 'اشرح المصادقة الثنائية', 'ما هو Base64؟'];
+  aiSuggest.innerHTML = suggestions.map(s => `<button class="ai-chip">${s}</button>`).join('');
+  aiSuggest.querySelectorAll('.ai-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      aiInput.value = chip.textContent;
+      sendMessage();
+    });
+  });
+
+  async function sendMessage() {
+    const msg = aiInput.value.trim();
+    if (!msg) return;
+    addMessage(msg, 'user');
+    aiInput.value = '';
+    showTyping();
+
+    const apiKey = APP.settings.apiKey;
+    if (!apiKey) {
+      hideTyping();
+      addMessage('الرجاء إضافة مفتاح API في الإعدادات لاستخدام المساعد الذكي.', 'sys');
+      return;
+    }
+
+    try {
+      let response;
+      if (APP.settings.provider === 'anthropic') {
+        response = await callAnthropic(msg, apiKey);
+      } else {
+        response = await callOpenRouter(msg, apiKey);
+      }
+      hideTyping();
+      addMessage(response, 'bot');
+    } catch(e) {
+      hideTyping();
+      addMessage('حدث خطأ: ' + e.message, 'sys');
+    }
+  }
+
+  async function callAnthropic(msg, apiKey) {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify({
+        model: APP.settings.model || 'claude-3-5-sonnet-20241022',
+        max_tokens: 1024,
+        messages: [{ role: 'user', content: `أنت مساعد متخصص في الأمن السيبراني باللغة العربية. أجب على هذا السؤال بطريقة مفيدة: ${msg}` }]
+      })
+    });
+    if (!res.ok) throw new Error('خطأ في الاتصال بـ Anthropic');
+    const data = await res.json();
+    return data.content[0].text;
+  }
+
+  async function callOpenRouter(msg, apiKey) {
+    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + apiKey
+      },
+      body: JSON.stringify({
+        model: APP.settings.model || 'anthropic/claude-3.5-sonnet',
+        messages: [{ role: 'user', content: `أنت مساعد متخصص في الأمن السيبراني باللغة العربية. أجب على هذا السؤال بطريقة مفيدة: ${msg}` }]
+      })
+    });
+    if (!res.ok) throw new Error('خطأ في الاتصال بـ OpenRouter');
+    const data = await res.json();
+    return data.choices[0].message.content;
+  }
+
+  aiSend.addEventListener('click', sendMessage);
+  aiInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') sendMessage(); });
+
+  if (aiMessages.children.length === 0) {
+    aiMessages.innerHTML = '<div class="ai-empty"><p>🤖 أهلاً! أنا مساعد Clearance Zero. اسألني عن أي مفهوم في الأمن السيبراني.</p></div>';
+  }
+}
+
+// ==================== SETTINGS ====================
+function initSettings() {
+  const modal = document.getElementById('settingsModal');
+  const providerSelect = document.getElementById('providerSelect');
+  const modelInput = document.getElementById('modelInput');
+  const apiKeyInput = document.getElementById('apiKeyInput');
+  const keyStatus = document.getElementById('keyStatus');
+  const modelHelp = document.getElementById('modelHelp');
+
+  function updateSettingsUI() {
+    providerSelect.value = APP.settings.provider;
+    modelInput.value = APP.settings.model;
+    apiKeyInput.value = APP.settings.apiKey;
+    if (APP.settings.apiKey) {
+      keyStatus.textContent = '✓ مفتاح API محفوظ — المساعد الذكي مفعّل';
+      keyStatus.className = 'key-status set';
+    } else {
+      keyStatus.textContent = 'لا يوجد مفتاح محفوظ — المساعد الذكي معطّل';
+      keyStatus.className = 'key-status unset';
+    }
+    if (APP.settings.provider === 'openrouter') {
+      modelHelp.textContent = 'أدخل اسم النموذج الكامل، مثل: anthropic/claude-3.5-sonnet أو openai/gpt-4o';
+    } else {
+      modelHelp.textContent = 'تحقق من الأسماء الحالية للنماذج من موقع Anthropic.';
+    }
+  }
+
+  document.getElementById('settingsBtn').addEventListener('click', () => {
+    updateSettingsUI();
+    modal.classList.add('open');
+  });
+
+  document.getElementById('closeSettings').addEventListener('click', () => modal.classList.remove('open'));
+  modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('open'); });
+
+  providerSelect.addEventListener('change', () => updateSettingsUI());
+
+  document.getElementById('saveSettingsBtn').addEventListener('click', () => {
+    APP.settings.provider = providerSelect.value;
+    APP.settings.model = modelInput.value.trim();
+    APP.settings.apiKey = apiKeyInput.value.trim();
+    saveState();
+    updateSettingsUI();
+    modal.classList.remove('open');
+    showToast('⚙️', 'تم', 'تم حفظ الإعدادات');
+  });
+
+  document.getElementById('clearKeyBtn').addEventListener('click', () => {
+    APP.settings.apiKey = '';
+    apiKeyInput.value = '';
+    saveState();
+    updateSettingsUI();
+    showToast('🗑️', 'تم', 'تم مسح مفتاح API');
+  });
+
+  document.getElementById('resetProgressBtn').addEventListener('click', () => {
+    if (confirm('هل أنت متأكد من إعادة تعيين كل التقدم؟ لا يمكن التراجع عن هذا.')) {
+      resetProgress();
+      modal.classList.remove('open');
+    }
+  });
+}
+
+// ==================== SIDE NAV TOGGLE ====================
+function initSideNav() {
+  const nav = document.getElementById('sideNav');
+  const overlay = document.getElementById('navOverlay');
+  const toggle = document.getElementById('menuToggle');
+
+  function openSideNav() { nav.classList.add('open'); overlay.classList.add('open'); }
+  function closeSideNav() { nav.classList.remove('open'); overlay.classList.remove('open'); }
+
+  toggle.addEventListener('click', openSideNav);
+  overlay.addEventListener('click', closeSideNav);
+
+  document.querySelectorAll('.nav-cta[data-nav]').forEach(btn => {
+    btn.addEventListener('click', () => navigateTo(btn.dataset.nav));
+  });
+
+  window.closeSideNav = closeSideNav;
+}
+
+// ==================== MATRIX CANVAS ====================
+function initMatrixCanvas() {
+  const canvas = document.getElementById('matrixCanvas');
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const chars = '01';
+  const fontSize = 14;
+  const columns = Math.floor(canvas.width / fontSize);
+  const drops = Array(columns).fill(1);
+
+  function draw() {
+    ctx.fillStyle = 'rgba(7,10,9,0.08)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#1c8f52';
+    ctx.font = fontSize + 'px monospace';
+    for (let i = 0; i < drops.length; i++) {
+      const text = chars[Math.floor(Math.random() * chars.length)];
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+      drops[i]++;
+    }
+  }
+  setInterval(draw, 45);
+}
+
+// ==================== BOOT SEQUENCE ====================
+function initBootSequence() {
   const bootLines = document.getElementById('bootLines');
   const bootCta = document.getElementById('bootCta');
   const enterBtn = document.getElementById('enterBtn');
   const bootScreen = document.getElementById('bootScreen');
 
-  // إظهار محاكاة للنص
-  bootLines.innerHTML = "INITIALIZING SYSTEM...\nLOAD_MODULES: OK\nCLEARANCE LEVEL: ZERO\nREADY.";
-  bootCta.classList.add('show');
+  const lines = [
+    'INITIALIZING CLEARANCE ZERO SYSTEM...',
+    'CHECKING SECURE ENCLAVE: <span class="cyan-line">OK</span>',
+    'LOADING TRAINING MODULES: <span class="cyan-line">5 MODULES DETECTED</span>',
+    'LOADING CHALLENGES: <span class="cyan-line">7 CHALLENGES READY</span>',
+    'AI ASSISTANT: <span class="dim">AWAITING API KEY</span>',
+    'ESTABLISHING SECURE CONNECTION...',
+    '<span class="cyan-line">CLEARANCE ZERO v2.0 — READY.</span>'
+  ];
 
-  // إخفاء الشاشة عند الضغط
+  let lineIdx = 0;
+  function typeLine() {
+    if (lineIdx < lines.length) {
+      const line = lines[lineIdx];
+      const div = document.createElement('div');
+      div.innerHTML = line;
+      bootLines.appendChild(div);
+      lineIdx++;
+      setTimeout(typeLine, 350 + Math.random() * 400);
+    } else {
+      bootCta.classList.add('show');
+    }
+  }
+
+  bootLines.innerHTML = '';
+  setTimeout(typeLine, 400);
+
   enterBtn.addEventListener('click', () => {
     bootScreen.classList.add('fade-out');
+    navigateTo('home');
+    updateAllUI();
   });
+}
+
+// ==================== INIT ====================
+document.addEventListener('DOMContentLoaded', () => {
+  loadState();
+  initMatrixCanvas();
+  initBootSequence();
+  initSideNav();
+  initSettings();
+  initAIWidget();
+  updateAllUI();
 });
 </script>
-
-
+</body>
+</html>
